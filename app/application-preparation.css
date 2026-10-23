@@ -1,0 +1,56 @@
+/* A clear next step for each application, with a personal plan for each JDP. */
+.applications-refined .application-tabs {display:flex;gap:6px;flex-wrap:wrap}
+.applications-view-hint {font-size:13px;line-height:1.8;color:#7b6e82;max-width:760px;margin:0 0 24px}
+.application-cards {display:grid;gap:22px}
+.application-card {display:grid;grid-template-columns:minmax(200px,.7fr) minmax(0,1.3fr);overflow:hidden;border:1px solid #e3dce7;border-radius:16px;background:#fff;box-shadow:0 3px 16px #34233904;min-width:0}
+.application-card>.application-cover {display:block;position:relative;margin:0;height:auto;min-height:300px;border-radius:0}
+.application-cover>img {position:absolute;inset:0;height:100%;width:100%;object-fit:cover}
+.application-card-body {padding:24px 26px;min-width:0}
+.application-card-status {display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.application-card h2 {margin:15px 0 7px;font-size:24px;line-height:1.3;letter-spacing:-.6px;color:#392a42}
+.application-card h2>button {font:inherit;line-height:inherit;color:inherit;background:none;border:0;padding:0;text-align:left}
+.application-host {font-size:12px;line-height:1.7;color:#786980;margin:0}.application-host>span {white-space:nowrap}
+.application-card .meeting-schedule {margin:18px 0 16px}
+.application-card .application-progress {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;padding:0;margin:18px 0;list-style:none}
+.application-card .application-progress>li {display:flex;align-items:flex-start;gap:7px;min-width:0}.application-card .application-progress b {font-size:10px;line-height:1.6;white-space:normal;font-weight:500}
+.application-card .application-progress>li>span {flex-shrink:0;margin:0;width:23px;height:23px}
+.application-next-copy {font-size:13px;line-height:1.8;color:#7e6d88;margin:17px 0}
+.application-card-actions {display:flex;flex-wrap:wrap;gap:10px;padding-top:16px;border-top:1px solid #eee8f1}
+.application-card-actions>button {flex:1;min-height:46px;font-size:12px;padding:11px 13px;white-space:normal;line-height:1.5}
+.application-card-tools {display:flex;align-items:center;flex-wrap:wrap;gap:6px 17px;margin-top:10px}
+.application-card-tools>button {display:flex;align-items:center;gap:7px;min-height:44px;padding:8px 0;border:0;background:none;color:#815494;font-size:11px;text-align:left}
+.application-request-date {display:block;font-size:10px;color:#9a8ca2;line-height:1.7;margin-top:10px}
+.application-report-sent {display:flex;align-items:center;gap:7px;margin-top:12px;font-size:12px;color:#4d8372}
+.preparation-context {padding:20px;background:#fff;border:1px solid #e3dce7;border-radius:14px}
+.preparation-meeting-choice {display:flex;align-items:center;gap:20px;border-bottom:1px solid #eee7f2;padding-bottom:16px;margin-bottom:18px}
+.preparation-meeting-choice>span {font-size:12px;font-weight:600;white-space:nowrap;color:#73617f}
+.preparation-meeting-choice>select {flex:1;min-width:0;border:1px solid #e3d9e8;border-radius:8px;background:#faf8fc;color:#5d456b;padding:11px 12px;min-height:46px;font-size:13px}
+.preparation-context-body {display:grid;grid-template-columns:180px minmax(0,1fr);grid-template-areas:'photo copy' 'photo time' 'photo actions';gap:15px 24px}
+.preparation-context-body>.preparation-context-photo {grid-area:photo;display:block;margin:0;border-radius:9px;height:auto;min-height:220px;position:relative}
+.preparation-context-photo>img {position:absolute;inset:0;height:100%;width:100%;object-fit:cover}
+.preparation-context-copy {grid-area:copy;min-width:0}.preparation-context-copy h2 {font-size:24px;line-height:1.4;letter-spacing:-.5px;margin:8px 0 5px;color:#3e2b4a}.preparation-context-copy p {font-size:12px;line-height:1.8;color:#86728f;margin:0}
+.preparation-context-body>.meeting-schedule {grid-area:time;margin:0}
+.preparation-context-actions {grid-area:actions;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.preparation-context-actions>button {min-height:44px;font-size:12px}
+.preparation-context-note {margin:18px 0 0;padding-top:15px;border-top:1px solid #eee7f2;font-size:12px;line-height:1.8;color:#8b709a}
+.preparation-general {display:flex;align-items:center;gap:18px;flex-wrap:wrap;padding:3px 0}.preparation-general>svg {color:#9978ab;flex-shrink:0}.preparation-general>p {flex:1;min-width:200px;font-size:13px;line-height:1.8;color:#84708d;margin:0}.preparation-general>button {min-height:44px;font-size:12px}
+.preparation-section-tabs {display:flex;gap:20px;border-bottom:1px solid #e2dbe8;margin:27px 0 24px}
+.preparation-section-tabs>button {position:relative;display:flex;align-items:center;justify-content:center;gap:9px;min-height:49px;padding:12px 7px;background:none;border:0;color:#9a879f;font-size:14px}
+.preparation-section-tabs>button[aria-pressed=true] {color:#754092}.preparation-section-tabs>button[aria-pressed=true]:after {content:'';position:absolute;bottom:-1px;left:0;right:0;background:#9460b5;height:3px;border-radius:3px 3px 0 0}
+.preparation-refined .story-studio {margin-top:0}.studio-program-context {font-size:12px;line-height:1.8;color:#90789e;margin:0 0 22px}
+.preparation-checklist-scoped {max-width:900px;padding:25px}.preparation-checklist-scoped .section-heading {margin:0 0 12px}.preparation-checklist-scoped .subtle-copy {font-size:13px;line-height:1.8;margin:0 0 15px}
+.preparation-progress {display:block;appearance:none;-webkit-appearance:none;border:0;height:6px;border-radius:4px;background:#eee6f3;width:100%;overflow:hidden;margin:19px 0 11px}.preparation-progress::-webkit-progress-bar {background:#eee6f3}.preparation-progress::-webkit-progress-value {background:#9c6fba;border-radius:4px}.preparation-progress::-moz-progress-bar {background:#9c6fba;border-radius:4px}
+.preparation-checklist-scoped .prep-step {min-height:80px}.preparation-checklist-scoped .prep-step b {font-size:14px;line-height:1.6}.preparation-checklist-scoped .prep-step small {font-size:12px;line-height:1.8}.preparation-checklist-scoped .prep-step:focus-within {outline:2px solid #a576c6;outline-offset:3px;border-radius:8px}
+.preparation-save-status {font-size:11px;line-height:1.7;color:#9a869f;margin:15px 0}
+.preparation-checklist-tools {display:flex;align-items:center;flex-wrap:wrap;gap:12px 20px;margin-top:18px}.preparation-checklist-tools>button {min-height:44px;font-size:12px}
+.preparation-personal-note {display:block;font-size:11px;line-height:1.8;color:#9b8c9f;margin-top:18px}
+@media(hover:hover) and (pointer:fine) {.application-card h2>button:hover,.application-card-tools>button:hover {color:#743699}.application-card-tools>button:hover {text-decoration:underline;text-underline-offset:4px}}
+@media(max-width:1000px) {.application-card {grid-template-columns:minmax(150px,.6fr) minmax(0,1.4fr)}.application-card-body {padding:23px}.application-card .application-progress>li {flex-direction:column;gap:6px}.preparation-context-body {grid-template-columns:145px minmax(0,1fr);column-gap:20px}}
+@media(max-width:700px) {
+ .applications-refined .application-tabs {gap:3px;flex-wrap:nowrap}.applications-refined .application-tabs>button {flex:1;min-width:0;white-space:nowrap;padding:9px 6px;font-size:10px;min-height:44px}.applications-refined .application-tabs>button>span {font-size:9px;min-width:16px}.applications-view-hint {font-size:12px;line-height:1.8;margin-bottom:18px}
+ .application-card {display:block;border-radius:14px}.application-card>.application-cover {height:175px;min-height:0}.application-card-body {padding:21px}.application-card h2 {font-size:23px;margin:14px 0 7px}.application-host {font-size:12px}.application-card .application-progress {gap:10px;margin:18px 0}.application-card .application-progress b {font-size:10px;line-height:1.7}.application-next-copy {font-size:13px}.application-card-actions {gap:8px}.application-card-actions>button {font-size:11px;padding:11px 10px;gap:7px;min-height:46px}.application-card-actions>button>svg {width:15px;flex-shrink:0}.application-card-tools>button {font-size:12px}.application-request-date {font-size:10px}
+ .preparation-refined .page-heading h1 {font-size:27px;line-height:1.3;max-width:340px}.preparation-context {padding:17px;border-radius:12px}.preparation-meeting-choice {display:block;padding-bottom:15px;margin-bottom:16px}.preparation-meeting-choice>span {display:block;font-size:12px;margin-bottom:9px}.preparation-meeting-choice>select {display:block;width:100%;font-size:16px;padding:10px;min-height:46px;text-overflow:ellipsis}
+ .preparation-context-body {grid-template-columns:74px minmax(0,1fr);grid-template-areas:'photo copy' 'time time' 'actions actions';gap:15px 13px}.preparation-context-body>.preparation-context-photo {height:100%;min-height:105px}.preparation-context-copy h2 {font-size:18px;line-height:1.4;letter-spacing:-.35px;margin:7px 0 5px}.preparation-context-copy p {font-size:11px;line-height:1.75}.preparation-context-actions {gap:8px 15px}.preparation-context-actions>button {font-size:11px}.preparation-context-note {font-size:11px;line-height:1.85;margin-top:15px;padding-top:13px}.preparation-general {align-items:flex-start;gap:12px}.preparation-general>p {min-width:180px;font-size:12px}.preparation-general>button {margin-left:37px}
+ .preparation-section-tabs {gap:12px;margin:23px 0 20px}.preparation-section-tabs>button {flex:1;font-size:13px;gap:8px;padding:12px 5px;min-height:48px}.studio-program-context {font-size:11px;line-height:1.9}
+ .preparation-checklist-scoped {padding:20px}.preparation-checklist-scoped .section-heading h2 {font-size:20px}.preparation-checklist-scoped .section-heading>span {font-size:12px}.preparation-checklist-scoped .subtle-copy {font-size:12px}.preparation-checklist-scoped .prep-step b {font-size:13px}.preparation-checklist-scoped .prep-step small {font-size:12px}.preparation-checklist-tools {gap:8px}.preparation-checklist-tools>button {font-size:11px}.preparation-personal-note {font-size:11px}.preparation-refined .prep-faq summary {min-height:46px;font-size:13px;line-height:1.7}.preparation-refined .prep-faq p {font-size:12px;line-height:1.9}
+}

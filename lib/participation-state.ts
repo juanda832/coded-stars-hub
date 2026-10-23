@@ -1,0 +1,15 @@
+import type { Meeting, Registration } from './types'
+
+export function participationState(meeting:Meeting, registration?:Registration, full=false, now=Date.now()) {
+ const start=Date.parse(meeting.startsAt),ended=meeting.status==='completed'||start+(meeting.duration??Infinity)*60000<=now
+ const confirmed=registration?.status==='confirmed'
+ const canRequest=meeting.status==='scheduled'&&start>now&&!full&&(!registration||registration.status==='withdrawn')
+ const shared={confirmed,canRequest,ended,hasApplication:!!registration&&registration.status!=='withdrawn'}
+ if(meeting.status==='cancelled')return {...shared,canRequest:false,key:'cancelled',label:'Cancelada',tone:'neutral',title:'La reunión fue cancelada',message:'No necesitas entrar. Puedes explorar otras oportunidades.',step:'closed'} as const
+ if(ended)return {...shared,canRequest:false,key:'ended',label:confirmed?'Finalizada':registration?.status==='pending'?'Sin confirmación · finalizada':'Finalizada',tone:'neutral',title:confirmed?'Tu encuentro ya terminó':'Esta reunión ya terminó',message:confirmed?'Cuéntanos qué pasó. Conectarse y compartir la experiencia se registran por separado.':registration?.status==='pending'?'Tu solicitud no recibió una confirmación para esta reunión. No se registra como una asistencia.':'Puedes revisar el resumen o explorar próximas JDP.',step:'closed'} as const
+ if(confirmed)return {...shared,key:'confirmed',label:'Confirmada',tone:'positive',title:'Este encuentro tiene tu voz',message:'Administración confirmó tu participación. Revisa las indicaciones y prepara tu historia.',step:'confirmed'} as const
+ if(registration?.status==='pending')return {...shared,key:'pending',label:'En revisión',tone:'waiting',title:'Tu solicitud ya está en manos del equipo',message:'Coordinación revisa los perfiles y elige a un único Star. Recibirás la decisión en Novedades.',step:'requested'} as const
+ if(registration?.status==='not_selected')return {...shared,key:'not_selected',label:'Otro Star fue elegido',tone:'neutral',title:'Esta vez participará otro Star',message:'Gracias por ofrecer tu tiempo. Si el lugar se libera, coordinación puede volver a revisar tu solicitud.',step:'closed'} as const
+ if(registration?.status==='withdrawn')return {...shared,key:'withdrawn',label:'Solicitud retirada',tone:'neutral',title:'Retiraste tu solicitud',message:canRequest?'La reunión sigue abierta. Puedes volver a solicitar si el horario te funciona.':'Puedes explorar otras oportunidades en la agenda.',step:'closed'} as const
+ return {...shared,key:canRequest?'open':'unavailable',label:canRequest?'Solicitudes abiertas':full?'Cupo asignado':meeting.status==='live'?'En vivo':'Solicitudes cerradas',tone:canRequest?'open':'neutral',title:canRequest?'Tu experiencia puede ayudar a una familia':'Consulta el estado de esta JDP',message:canRequest?'Solicitar toma un momento. El equipo revisará tu perfil antes de confirmar al participante.':'La inscripción y la confirmación son pasos diferentes.',step:'none'} as const
+}

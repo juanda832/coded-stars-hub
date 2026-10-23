@@ -1,0 +1,30 @@
+import test from 'node:test'
+import assert from 'node:assert/strict'
+import { matchesAgendaFilters, matchesAgendaPeriod, matchesMeetingSearch } from '../lib/agenda.ts'
+const now=Date.parse('2026-10-20T14:00:00Z')
+const meeting={id:'m',title:'JDP · Mi experiencia en Tokyo',program:'Tokyo',language:'English',description:'Cómo aprendí a trabajar en equipo.',host:'Sofía Méndez',startsAt:'2026-10-21T15:00:00Z',duration:45,status:'scheduled'}
+const filters={program:'Todos',language:'Todos',openOnly:true}
+const account=(role,registration,full=false)=>({user:{id:'one',role},registrations:registration?[{userId:'one',meetingId:'m',status:registration}]:[],confirmedCounts:full?{m:1}:{}})
+test('Search accepts Spanish language names without accents',()=>assert.equal(matchesMeetingSearch(meeting,'ingles'),true))
+test('Search accepts words in a different order',()=>assert.equal(matchesMeetingSearch(meeting,'equipo Tokyo'),true))
+test('Search finds an accented host without typing accents',()=>assert.equal(matchesMeetingSearch(meeting,'sofia mendez'),true))
+test('All search terms must match',()=>assert.equal(matchesMeetingSearch(meeting,'Tokyo portugues'),false))
+test('Portuguese aliases work',()=>assert.equal(matchesMeetingSearch({...meeting,language:'Português'},'portugués'),true))
+test('Europe can be found using its Spanish program name',()=>assert.equal(matchesMeetingSearch({...meeting,program:'London'},'Europa'),true))
+test('London remains searchable in Spanish and English',()=>{assert.equal(matchesMeetingSearch({...meeting,program:'London'},'Londres'),true);assert.equal(matchesMeetingSearch({...meeting,program:'London'},'London'),true)})
+test('Blank and punctuation-only queries show the unfiltered results',()=>assert.equal(matchesMeetingSearch(meeting,' ¿? '),true))
+test('Open Star filter includes a meeting accepting requests',()=>assert.equal(matchesAgendaFilters(meeting,account('star'),filters,now),true))
+for(const status of ['pending','confirmed','not_selected'])test(`A Star with ${status} cannot appear as able to request`,()=>assert.equal(matchesAgendaFilters(meeting,account('star',status),filters,now),false))
+test('A withdrawn request may be sent again',()=>assert.equal(matchesAgendaFilters(meeting,account('star','withdrawn'),filters,now),true))
+test('Someone else’s pending application does not hide the opportunity',()=>assert.equal(matchesAgendaFilters(meeting,{...account('star'),registrations:[{userId:'other',meetingId:'m',status:'pending'}]},filters,now),true))
+for(const role of ['admin','host'])test(`${role} can find an active live meeting without a Star`,()=>assert.equal(matchesAgendaFilters({...meeting,status:'live'},account(role),filters,now),true))
+for(const role of ['star','admin','host'])test(`${role} excludes a meeting with a confirmed Star`,()=>assert.equal(matchesAgendaFilters(meeting,account(role,undefined,true),filters,now),false))
+test('An ended meeting is not an active unassigned meeting',()=>assert.equal(matchesAgendaFilters({...meeting,startsAt:'2026-10-18T15:00:00Z'},account('admin'),filters,now),false))
+test('Cancelled meetings do not accept requests',()=>assert.equal(matchesAgendaFilters({...meeting,status:'cancelled'},account('star'),filters,now),false))
+test('Program and language filters both apply',()=>assert.equal(matchesAgendaFilters(meeting,account('star'),{...filters,program:'Tokyo',language:'Español'},now),false))
+test('Today uses the chosen time zone rather than UTC',()=>assert.equal(matchesAgendaPeriod({...meeting,startsAt:'2026-10-21T00:30:00Z'},'Hoy','America/La_Paz',now),true))
+test('An elapsed meeting still appears in today’s history',()=>assert.equal(matchesAgendaPeriod({...meeting,startsAt:'2026-10-20T12:00:00Z'},'Hoy','America/La_Paz',now),true))
+test('Upcoming excludes completed meetings even with future dates',()=>assert.equal(matchesAgendaPeriod({...meeting,status:'completed'},'Próximas','America/La_Paz',now),false))
+test('All periods include cancelled meetings for explicit history',()=>assert.equal(matchesAgendaPeriod({...meeting,status:'cancelled'},'Todas','America/La_Paz',now),true))
+test('Seven days excludes the same day next week',()=>assert.equal(matchesAgendaPeriod({...meeting,startsAt:'2026-10-27T15:00:00Z'},'7 días','America/La_Paz',now),false))
+test('Seven calendar days work across a DST clock change',()=>assert.equal(matchesAgendaPeriod({...meeting,startsAt:'2026-11-03T18:00:00Z'},'7 días','America/New_York',Date.parse('2026-10-29T12:00:00Z')),true))

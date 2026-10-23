@@ -1,0 +1,192 @@
+/* Review edition: short labels, real photography and quiet working surfaces. */
+:root {--hub-canvas:#f6f5f2;--coded-gradient:linear-gradient(110deg,#7130aa,#61288f)}
+body,.shell {background:#f6f5f2}
+.primary,.hero-button,.action-button,.candidate-actions .primary {background:#6e2ca3;border-color:#6e2ca3;box-shadow:none;color:#fff}
+.primary:hover,.candidate-actions .primary:hover {background:#592084;border-color:#592084}
+.secondary-button {background:#fff;border-color:#ddd5e2;box-shadow:none;color:#603b75}
+.review-presentation .sidebar {background:#fff;border-right:1px solid #e6e1e8}
+.review-presentation .sidebar nav {margin-top:29px}
+.review-presentation .sidebar .nav-item {min-height:43px;font-size:13px;color:#675d6d;border-radius:8px}
+.review-presentation .sidebar .nav-item.active {color:#602b83;background:#efe7f5;box-shadow:none}
+.review-presentation .sidebar .nav-item:last-child {margin-top:15px;border-top:1px solid #eee9f0;border-radius:0;padding-top:14px}
+.review-presentation .side-user {border-top:1px solid #e9e3eb;padding-top:20px}
+.review-presentation .side-user b {color:#43374c;font-size:12px}.review-presentation .side-user small {color:#807587;font-size:11px}
+.review-presentation .topbar {background:#fff;border-bottom:1px solid #e6e1e8;box-shadow:none}
+.review-presentation .breadcrumb {font-size:13px;color:#716477}
+.review-presentation .demo-pill {background:#f3f0eb;color:#7a6b59;border:1px solid #e9e3d9;font-size:10px;letter-spacing:0}
+.review-presentation .demo-pill>span {background:#a99273}
+.review-presentation .professional-content {padding:30px 44px 45px;max-width:1220px;margin:0 auto}
+.review-presentation .page-heading {margin-bottom:24px;gap:18px;align-items:center}
+.review-presentation .page-heading h1,.review-presentation .home-welcome h1 {font-size:31px;line-height:1.25;letter-spacing:-.9px;color:#2e2535;margin:0 0 8px}
+.review-presentation .page-heading p,.review-presentation .home-welcome p {font-size:13px;line-height:1.75;color:#7c7183;margin:0}
+.review-presentation .section-heading h2 {font-size:21px;letter-spacing:-.4px;line-height:1.4;color:#44324f}
+.review-presentation .program-tag {font-size:11px;font-weight:500;color:#79598b;background:#f4eff7}
+.review-presentation .hub-footer {border-top:1px solid #e6e0e9;gap:19px;font-size:10px;color:#8a7c92;margin-top:16px}
+.footer-help {background:none;border:0;padding:0;color:#80558e;font-size:11px;min-height:36px}
+.review-presentation .hub-footer>small {margin-left:auto;font-size:10px;color:#8a7c92}
+/* Team overview. */
+.staff-review-home .staff-task-grid {gap:15px;margin:0 0 25px}
+.staff-review-home .staff-task {min-height:0;padding:20px;border-radius:11px;background:#fff;border:1px solid #e3dce7;box-shadow:none;position:relative}
+.staff-review-home .staff-task .task-top {margin-bottom:15px}
+.staff-review-home .staff-task .task-icon {width:34px;height:34px;border-radius:9px}
+.staff-review-home .staff-task strong {font-size:30px;color:#60367a;font-weight:600}
+.staff-review-home .staff-task>b {font-size:13px;color:#55415f;font-weight:600;line-height:1.6}
+.staff-review-home .staff-task>small {font-size:11px;color:#96819f;line-height:1.7;margin-top:4px}
+.staff-review-home .staff-task>.task-go {display:none}
+.staff-next-card {display:grid;grid-template-columns:minmax(210px,.8fr) minmax(0,1.2fr);background:#fff;border:1px solid #e1dbe5;border-radius:13px;overflow:hidden;margin-bottom:25px}
+.staff-next-card>.staff-next-photo {position:relative;display:block;width:100%;height:100%;min-height:345px;margin:0;border-radius:0}
+.staff-next-photo>img {position:absolute;inset:0;height:100%;width:100%;object-fit:cover}
+.staff-next-copy {padding:25px 28px;min-width:0}
+.section-label {display:block;font-size:11px;color:#95829e;margin:0 0 12px;letter-spacing:.2px}
+.staff-next-copy>.program-tag {width:fit-content;display:block}
+.staff-next-copy>h2 {font-size:27px;letter-spacing:-.6px;line-height:1.35;color:#3c2b46;margin:12px 0 7px}
+.staff-next-copy>p {font-size:12px;color:#86738f;margin:0;line-height:1.7}
+.staff-next-copy .meeting-schedule {margin:16px 0 15px;padding:12px 14px}
+.staff-next-status {display:flex;gap:8px;align-items:center;font-size:12px;color:#8b7298;margin:13px 0 14px;line-height:1.7}
+.staff-next-actions {display:flex;align-items:center;gap:15px;flex-wrap:wrap}.staff-next-actions>button {min-height:44px;font-size:12px}
+.staff-review-home .staff-agenda {margin-top:31px}
+.staff-review-home .staff-agenda-row {border-radius:10px;box-shadow:none;padding:18px;gap:18px}
+.staff-review-home .agenda-main>b {font-size:15px;color:#533b60}.staff-review-home .agenda-main>small {font-size:11px;color:#8d789b}.staff-review-home .agenda-assignment {display:block;min-width:110px}
+/* Candidate review: a single selector and a compact context card. */
+.review-presentation .review-refined .meeting-select-secondary {display:flex;align-items:center;gap:14px;font-size:12px;margin:0 0 16px;color:#82708f}
+.review-presentation .review-refined .meeting-select-secondary>select {flex:1;max-width:590px;font-size:13px;min-height:44px}
+.review-presentation .review-meeting-context {grid-template-columns:210px minmax(0,1fr);margin-bottom:17px;min-height:0;border-radius:11px}
+.review-presentation .review-meeting-context>.review-context-photo {min-height:190px}
+.review-presentation .review-meeting-context>div:not(.review-context-photo) {padding:20px 23px}
+.review-presentation .review-meeting-context h2 {font-size:24px;line-height:1.3;margin:9px 0 6px}
+.review-presentation .review-meeting-context .meeting-schedule {padding:0;border:0;background:none;margin:12px 0 0}
+.review-presentation .review-meeting-context .schedule-hours {margin-top:5px;gap:9px}.review-presentation .review-meeting-context .schedule-hours>time {font-size:22px}
+.review-presentation .review-meeting-context .schedule-hours>span {margin-left:7px}
+.review-presentation .review-meeting-context .meeting-schedule>small {margin-top:6px;font-size:10px}
+.review-presentation .review-decision-note {padding:13px 16px;margin-bottom:15px}.review-presentation .review-decision-note b {font-size:12px}.review-presentation .review-decision-note p {font-size:11px;margin-top:3px}
+.review-presentation .review-refined .criteria-block {margin-bottom:16px}
+.review-presentation .review-refined .criteria-block>summary {padding:12px 15px;font-size:11px;min-height:42px}
+.review-presentation .review-filter-panel {padding:15px;border-radius:10px;margin-bottom:13px;gap:12px}
+.review-presentation .review-refined .candidate-count {margin:14px 0 15px}
+.review-presentation .review-refined .candidate-grid {gap:15px}
+.review-presentation .review-refined .candidate-card {padding:21px;border-radius:11px}
+.review-presentation .review-refined .candidate-heading h3 {font-size:19px;color:#493354}
+.review-presentation .review-refined .candidate-experience {font-size:12px;color:#82708d}
+/* The student home keeps the invitation and removes repeated slogans. */
+.review-presentation .home-welcome {margin-bottom:24px}.review-presentation .home-welcome h1>span {color:inherit}
+.review-presentation .home-invitation,.review-presentation .home-confirmed {background:#fff;border-color:#e2dce7;box-shadow:none;border-radius:13px;isolation:auto}
+.review-presentation .home-invitation:before,.review-presentation .home-invitation:after,.review-presentation .home-confirmed:before,.review-presentation .home-confirmed:after {display:none}
+.review-presentation .home-invitation h2,.review-presentation .home-confirmed h2 {color:#3d2a49;font-size:30px;line-height:1.3;letter-spacing:-.7px}
+.review-presentation .home-invitation p,.review-presentation .home-confirmed>div:first-child>p {color:#85718e;font-size:13px;line-height:1.85}
+.review-presentation .home-invitation .home-hero-kicker,.review-presentation .home-confirmed .home-hero-kicker {color:#9677a3;font-size:10px;letter-spacing:.2px}
+.review-presentation .home-invitation .primary,.review-presentation .home-confirmed .primary {color:#fff;background:#6e2ca3;border-color:#6e2ca3;box-shadow:none}
+.review-presentation .home-invitation-note,.review-presentation .home-zone,.review-presentation .home-calendar-button {color:#997ea9}
+.review-presentation .home-confirmed .friendly-time {color:#745583}
+.review-presentation .request-focus-copy h2 {font-size:27px;line-height:1.3;letter-spacing:-.6px}
+.review-presentation .home-opportunities {margin-top:30px}.review-presentation .home-action-dock {margin:22px 0 29px}
+.review-presentation .experience-spotlight>.section-heading h2 {font-size:25px}
+.review-presentation .experience-section-note {font-size:11px;color:#95809b}
+.review-presentation .experience-editorial-copy .experience-copy>h3 {font-size:22px;line-height:1.4}
+.review-presentation .studio-heading h2 {font-size:24px;letter-spacing:-.4px}.review-presentation .studio-heading p {font-size:12px}
+/* Access page: the product, the photos and the three roles. */
+.access-review {background:#fff}.access-review .access-story {background:#f0eee8;padding:40px 52px}
+.access-review .access-story-copy {padding-top:25px}
+.access-review .access-story h1 {font-size:49px;line-height:1.15;letter-spacing:-1.9px;color:#36283e;max-width:550px;margin:0 0 18px}
+.access-review .access-story-copy>p {font-size:15px;line-height:1.8;color:#827286;max-width:450px}
+.access-review .access-community-art {height:320px;border-radius:12px;margin:29px 0 10px}
+.access-review .access-footnote {font-size:11px;color:#948498}
+.access-review .access-card h2 {font-size:30px;letter-spacing:-.7px;line-height:1.3;margin:0 0 11px;color:#3d2b46}
+.access-review .access-card>p {font-size:13px;line-height:1.8;color:#8a7495;margin-bottom:23px}
+.access-review .access-roles>button {box-shadow:none;border:1px solid #e3dbe9;background:#fff;min-height:76px;padding:16px}
+.access-review .access-roles>button[aria-pressed=true] {border-color:#9b73b8;background:#f8f4fb;box-shadow:0 0 0 1px #9b73b8}
+.access-review .access-roles b {font-size:14px;color:#61426f}.access-review .access-roles small {font-size:11px;line-height:1.7;color:#947c9f;margin-top:5px}
+.access-review .access-role-icon {background:#f0e9f6;color:#9873ac}
+.access-review .access-privacy {display:block;padding-top:19px;margin-top:19px;border-top:1px solid #eee8f2;font-size:10px!important;line-height:1.8;color:#a18cab!important}
+.access-review .primary.full {min-height:47px}
+@media(max-width:1050px) {.review-presentation .professional-content {padding:28px 28px 42px}.staff-next-card {grid-template-columns:minmax(175px,.7fr) minmax(0,1.3fr)}.staff-next-copy {padding:22px}.staff-next-copy>h2 {font-size:24px}.staff-next-actions {gap:8px}.staff-next-actions>button {font-size:11px}.access-review .access-story {padding:35px}.access-review .access-story h1 {font-size:41px}}
+@media(max-width:760px) {
+ .review-presentation .professional-content {padding:24px 19px 34px}.review-presentation .page-heading {align-items:flex-start;gap:15px;margin-bottom:22px}.review-presentation .page-heading h1,.review-presentation .home-welcome h1 {font-size:28px;line-height:1.3;margin:0 0 7px}.review-presentation .page-heading p,.review-presentation .home-welcome p {font-size:12px;line-height:1.8}
+ .review-presentation .demo-pill {display:none}.review-presentation .topbar .zone-select select {font-size:11px;color:#876a99}.review-presentation .hub-footer {gap:12px;flex-wrap:wrap;padding-top:19px}.review-presentation .hub-footer>small {flex-basis:100%;margin-left:0;font-size:10px}.footer-help {font-size:11px}
+ .staff-review-home .staff-task-grid {grid-template-columns:minmax(0,1fr);gap:9px;margin:0 0 22px}
+ .staff-review-home .staff-task {display:grid;grid-template-columns:43px minmax(0,1fr) 16px;grid-template-areas:'amount title go' 'amount detail go';gap:5px 12px;min-height:91px;padding:15px;min-width:0}
+ .staff-review-home .staff-task .task-top {grid-area:amount;display:flex;flex-direction:column;gap:7px;margin:0}.staff-review-home .staff-task .task-icon {width:29px;height:29px}.staff-review-home .staff-task strong {font-size:20px}.staff-review-home .staff-task>b {grid-area:title;font-size:13px;line-height:1.5}.staff-review-home .staff-task>small {grid-area:detail;font-size:11px;line-height:1.7;margin:0}.staff-review-home .staff-task>.task-go {grid-area:go;display:flex;margin:0;font-size:0;gap:0}
+ .staff-next-card {grid-template-columns:minmax(0,1fr);border-radius:11px;margin-bottom:22px}.staff-next-card>.staff-next-photo {height:166px;min-height:0}.staff-next-copy {padding:20px}.staff-next-copy>h2 {font-size:24px}.section-label {font-size:10px;margin-bottom:12px}.staff-next-copy .meeting-schedule {margin:15px 0}.staff-next-copy .schedule-hours>time {font-size:24px}.staff-next-actions {gap:9px;justify-content:space-between}.staff-next-actions>button {font-size:11px}
+ .staff-review-home .staff-agenda .section-heading h2 {font-size:18px}.staff-review-home .staff-agenda-row {padding:15px;gap:12px}.staff-review-home .agenda-assignment {display:none}
+ .review-presentation .review-refined .meeting-select-secondary {display:flex;flex-direction:column;align-items:stretch;gap:7px;font-size:11px}.review-presentation .review-refined .meeting-select-secondary>select {width:100%;max-width:100%;font-size:16px}
+ .review-presentation .review-meeting-context {grid-template-columns:minmax(0,1fr)}.review-presentation .review-meeting-context>.review-context-photo {min-height:0;height:125px}.review-presentation .review-meeting-context>div:not(.review-context-photo) {padding:18px}.review-presentation .review-meeting-context h2 {font-size:23px}.review-presentation .review-meeting-context .schedule-hours>time {font-size:24px}
+ .review-presentation .review-filter-panel {padding:14px}.review-presentation .review-refined .candidate-card {padding:19px}.review-presentation .review-refined .candidate-heading h3 {font-size:20px}
+ .review-presentation .home-invitation h2,.review-presentation .home-confirmed h2,.review-presentation .request-focus-copy h2 {font-size:27px}.review-presentation .home-invitation p {font-size:12px}.review-presentation .home-invitation-note {font-size:10px;line-height:1.8}
+ .review-presentation .experience-spotlight>.section-heading h2 {font-size:24px}.review-presentation .experience-section-note {font-size:10px}.review-presentation .experience-editorial-copy .experience-copy>h3 {font-size:21px}
+ .access-review .access-form-side {padding:34px 25px}.access-review .access-card h2 {font-size:28px}.access-review .access-card>p {font-size:13px}.access-review .access-mobile-brand {margin-bottom:34px}.access-review .access-roles>button {min-height:76px}.access-review .input {font-size:16px}.access-review .access-privacy {font-size:11px!important}
+}
+
+.access-review .access-story:before,.access-review .access-story:after {display:none}
+
+.meeting-question-shortcut {display:grid;grid-template-columns:42px minmax(0,1fr);gap:10px 13px;align-items:start;margin:24px 0;padding:19px;border:1px solid #e3dce7;border-radius:12px;background:#faf8fc}
+.meeting-question-icon {display:grid;place-items:center;width:38px;height:38px;border-radius:10px;color:#6e2ca3;background:#eee7f5}
+.meeting-question-shortcut h3 {font-size:15px;line-height:1.4;margin:0 0 5px;color:#32263b}
+.meeting-question-shortcut p {font-size:12px;line-height:1.7;margin:0;color:#76677f}
+.meeting-question-shortcut>.secondary-button {grid-column:2;justify-self:start;min-height:42px;font-size:12px;margin-top:3px}
+.meeting-dialog .detail-section>summary {color:#594266;font-size:13px;font-weight:600;line-height:1.6;min-height:44px;padding:10px 0}
+
+.meeting-editor.meeting-editor-refined {max-width:980px}
+.meeting-editor-grid {display:grid;grid-template-columns:minmax(0,1.35fr) minmax(260px,.85fr);gap:30px;align-items:start}
+.meeting-editor-fields {min-width:0}.meeting-editor-refined .meeting-editor-fields>.field-label:first-child {margin-top:0}
+.meeting-editor-refined .field-label {font-size:12px;color:#63536e!important}.meeting-editor-refined textarea {min-height:100px;color:#44354d;font-size:13px}
+.meeting-editor-refined .input {font-size:13px;min-height:43px;color:#44354d}.meeting-editor-refined .editor-time {margin:22px 0;padding:18px;background:#f8f6fa;border:1px solid #e4dce9;border-radius:11px}
+.meeting-editor-refined .editor-time h3 {font-size:14px;line-height:1.5;color:#594266;margin:0;display:flex;gap:8px;align-items:center}
+.meeting-editor-refined .editor-extra>summary {color:#594266;font-size:13px;min-height:44px}.meeting-editor-refined .editor-extra>summary>span {color:#7a6c83;font-size:11px}
+.meeting-editor-refined .editor-extra .subtle-copy {color:#716279;font-size:11px;line-height:1.7}
+.meeting-editor-preview {position:sticky;top:0;min-width:0;border:1px solid #e2dce5;border-radius:12px;background:#fff;overflow:hidden}
+.meeting-editor-preview>h2 {font-size:12px;letter-spacing:.2px;padding:15px 17px;margin:0;background:#f8f6fa;color:#6a5c73;border-bottom:1px solid #e9e2ed}
+.meeting-editor-preview .editor-preview-photo {height:155px;min-height:0;width:100%;margin:0;border-radius:0}.editor-preview-copy {padding:17px}.editor-preview-copy>.program-tag {font-size:10px;line-height:1.5}
+.editor-preview-copy h3 {font-size:22px;line-height:1.3;letter-spacing:-.5px;color:#32253c;margin:12px 0 10px;overflow-wrap:anywhere}
+.editor-preview-copy>p {font-size:12px;line-height:1.8;color:#76677e;margin:0 0 14px;white-space:pre-wrap;overflow-wrap:anywhere}
+.editor-preview-copy>.meeting-schedule {margin:18px 0;padding:13px}.editor-preview-copy .schedule-hours>time {font-size:23px}.editor-preview-copy .schedule-hours>span {font-size:10px}
+.editor-preview-copy .editor-preview-host,.editor-preview-copy .editor-preview-no-date {display:flex;align-items:center;gap:8px;font-size:12px;color:#66536f}
+.editor-preview-copy>small {display:block;font-size:10px;line-height:1.7;color:#7e7086}.editor-preview-toggle {display:none}
+.meeting-editor-footer {border-top:1px solid #e7dfea;padding-top:18px;margin-top:24px}
+.editor-selection-note {display:flex;align-items:start;gap:8px;font-size:11px;line-height:1.8;color:#75677d;margin:0 0 15px}.editor-selection-note>svg {flex-shrink:0;margin-top:2px}
+.editor-submit-row {display:flex;align-items:center;justify-content:space-between;gap:16px}.editor-submit-row>.primary {margin-left:auto;flex-shrink:0;min-height:45px}
+.editor-draft-status {display:flex;align-items:center;gap:7px;font-size:11px;line-height:1.7;color:#776a80}.editor-draft-status>svg {flex-shrink:0}
+@media(max-width:760px) {
+ .meeting-editor-grid {grid-template-columns:minmax(0,1fr);gap:20px}.meeting-editor-preview {position:static}
+ .meeting-editor-preview>h2 {display:none}.editor-preview-toggle {display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;min-height:48px;padding:14px 17px;border:0;background:#f8f6fa;color:#594266;font-size:13px;text-align:left}
+ .editor-preview-toggle[aria-expanded=true]>svg {transform:rotate(180deg)}.editor-preview-body {display:none}.editor-preview-body.is-open {display:block}
+ .meeting-editor-refined .input,.meeting-editor-refined textarea {font-size:16px}.meeting-editor-refined .editor-time {padding:15px;margin:20px 0}
+ .editor-submit-row {flex-direction:column;align-items:stretch;gap:13px}.editor-submit-row>.primary {width:100%;margin:0;min-height:46px}.editor-draft-status {font-size:11px}
+}
+
+/* Programme photographs: six visible frames and a shared, keyboard-accessible viewer. */
+.expanded-photo-grid {grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:repeat(2,190px)}
+.expanded-photo-grid .destination-gallery-caption {left:14px;right:14px;bottom:14px}
+.expanded-photo-grid .destination-gallery-caption>b {font-size:14px;line-height:1.4}
+.program-photo-shelf {margin:34px 0 8px}
+.program-photo-shelf>.section-heading {margin-bottom:16px;align-items:baseline}
+.program-photo-shelf h2 {font-size:22px;letter-spacing:-.5px}
+.program-photo-shelf .section-heading>span {font-size:11px;color:#786f7d}
+.program-photo-shelf-grid {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.program-photo-shelf-grid>button {display:block;position:relative;height:210px;min-width:0;padding:0;border:0;border-radius:12px;overflow:hidden;background:#d8dedb;color:white;text-align:left}
+.program-photo-shelf-grid>button>img {display:block;width:100%;height:100%;object-fit:cover}
+.shelf-photo-caption {position:absolute;inset:auto 17px 17px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.shelf-photo-caption>span {display:grid;gap:4px}.shelf-photo-caption b {font-size:19px;line-height:1.3;font-weight:600}.shelf-photo-caption small {font-size:11px;color:#fff}
+@media(hover:hover) and (pointer:fine) {.program-photo-shelf-grid>button:hover>img {transform:scale(1.035)}}
+@media(prefers-reduced-motion:no-preference) {.program-photo-shelf-grid>button>img {transition:transform .3s ease}}
+@media(max-width:1050px) {.expanded-photo-grid {grid-template-rows:repeat(2,165px)}.program-photo-shelf-grid>button {height:185px}.shelf-photo-caption b {font-size:16px}}
+@media(max-width:700px) {
+ .expanded-photo-grid {grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(3,145px);gap:7px}
+ .expanded-photo-grid .destination-gallery-caption {left:10px;right:10px;bottom:11px}.expanded-photo-grid .destination-gallery-caption>b {font-size:11px}
+ .program-photo-shelf {margin-top:27px}.program-photo-shelf>.section-heading {display:block}.program-photo-shelf h2 {font-size:21px;margin-bottom:7px}
+ .program-photo-shelf-grid {grid-template-columns:minmax(0,1fr);gap:12px}.program-photo-shelf-grid>button {height:185px}.shelf-photo-caption b {font-size:20px}
+}
+
+/* Registration follows the five calendar fields supplied by coordination. */
+.quick-meeting-editor {max-width:620px!important}.quick-meeting-editor .dialog-lead {font-size:13px;line-height:1.7;margin-bottom:19px}.quick-meeting-editor .field-label {font-size:12px;color:#594866;line-height:1.6;margin-top:15px}.quick-meeting-editor .field-label>span,.quick-coordination-options summary>span {font-size:10px;font-weight:400;color:#87748f;margin-left:7px}
+.quick-meeting-editor .input,.quick-meeting-editor textarea {font-size:14px;min-height:43px;color:#3e2b4b}.quick-date-fields {display:grid;grid-template-columns:1fr 1fr;gap:15px}.quick-meeting-editor .subtle-copy,.quick-zone-note {font-size:11px;line-height:1.75;color:#796780;margin:9px 0 0}.quick-zone-note {padding:10px 12px;background:#f7f3fa;border-radius:8px;border:1px solid #e9e0ef}
+.quick-coordination-options,.quick-preview {margin-top:17px;border:1px solid #e4dce9;border-radius:10px;padding:0 15px;background:#fcfbfd}.quick-coordination-options>summary,.quick-preview>summary {cursor:pointer;min-height:45px;padding:12px 0;color:#62466e;font-size:12px;font-weight:600}.quick-coordination-options[open],.quick-preview[open] {padding-bottom:15px}.quick-coordination-options textarea {min-height:85px}
+.quick-preview .meeting-editor-preview {position:static;margin:0;max-width:100%;border-radius:9px}.quick-preview .editor-preview-photo {width:100%;height:125px;margin:0;border-radius:0}.quick-preview .editor-preview-copy {padding:17px}.quick-meeting-editor .meeting-editor-footer {margin-top:18px;padding-top:15px}.quick-meeting-editor .editor-selection-note {font-size:11px}.quick-meeting-editor .editor-draft-status {font-size:10px;max-width:265px}
+.neutral-meeting-artwork {display:flex!important;flex-direction:column;gap:13px;align-items:center;justify-content:center;min-height:140px;background:linear-gradient(135deg,#e9e1f2,#f5f0e8)!important;color:#846593;overflow:hidden}.neutral-meeting-artwork>span {font-size:12px;letter-spacing:.3px;position:static;background:none;padding:0;color:inherit;text-shadow:none}.neutral-meeting-artwork>svg {opacity:.65}
+.school-jdp-invitation {display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,.6fr);border:1px solid #e3dae8;border-radius:16px;overflow:hidden;background:white}.school-jdp-invitation>div:first-child {padding:30px}.school-jdp-invitation h2 {font-size:29px;line-height:1.3;color:#3c2848;margin:0 0 16px;overflow-wrap:anywhere}.school-jdp-invitation p {font-size:13px}.school-jdp-invitation .meeting-schedule {margin:18px 0}.school-jdp-invitation small {display:block;font-size:11px;line-height:1.7;color:#86728d;margin-top:13px}.school-jdp-invitation>.program-artwork {height:100%;margin:0;border-radius:0;width:100%}
+@media(max-width:700px) {.quick-meeting-editor .input,.quick-meeting-editor textarea {font-size:16px}.quick-meeting-editor .quick-date-fields {gap:11px}.quick-meeting-editor .editor-submit-row {align-items:stretch}.quick-meeting-editor .editor-draft-status {max-width:none}.school-jdp-invitation {grid-template-columns:minmax(0,1fr)}.school-jdp-invitation>.program-artwork {display:none!important}.school-jdp-invitation>div:first-child {padding:23px}.school-jdp-invitation h2 {font-size:26px}}
+.quick-meeting-editor {padding:24px!important}.quick-meeting-editor .field-label {color:#5c4569!important;margin:12px 0 5px}.quick-meeting-editor fieldset>.field-label:first-child {margin-top:0}.quick-meeting-editor input.input {margin-top:0;height:43px}.quick-meeting-editor .quick-date-fields .field-label {margin-bottom:0}.quick-meeting-editor .quick-date-fields input {margin-top:5px;height:44px}.quick-meeting-editor .dialog-lead {margin-bottom:16px;font-size:12px}.quick-meeting-editor .quick-zone-note {padding:8px 10px;font-size:10px}.quick-meeting-editor .editor-selection-note {margin-bottom:11px}.quick-meeting-editor .quick-coordination-options {margin-top:14px}
+
+.quick-meeting-editor {padding:0!important}.quick-meeting-editor .dialog-inner {padding:24px 28px!important}.quick-meeting-editor .dialog-inner>h2 {font-size:26px;line-height:1.3;margin:0 0 10px!important}.quick-meeting-editor .dialog-lead {margin-top:0}
+@media(min-width:1200px) {.agenda-program-options {grid-template-columns:repeat(auto-fit,minmax(205px,1fr))}}
+@media(max-width:700px) {.quick-meeting-editor .dialog-inner {padding:24px 21px!important}.quick-meeting-editor .dialog-inner>h2 {font-size:24px}}
+
+.quick-meeting-editor .quick-date-fields {grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.quick-meeting-editor .quick-date-fields input {min-width:0;width:100%}
