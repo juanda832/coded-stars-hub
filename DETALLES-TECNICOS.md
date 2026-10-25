@@ -46,7 +46,7 @@ Para comprobar y ejecutar la compilación: `pnpm build` y `pnpm start`.
 
 La pantalla de acceso permite elegir Coded Star, Host o Administración. Cada rol tiene un selector de perfiles. Administración incluye Isa, Ela y Marina; Host incluye Sofía y Diego; Star incluye Alex, Valentina, Nicolás y Camila. Contraseña demo para todos: `Demo2026!`.
 
-Cuentas: `star@demo.coded`, `valentina@demo.coded`, `nicolas@demo.coded`, `camila@demo.coded`, `host@demo.coded`, `diego@demo.coded`, `isa@demo.coded`, `ela@demo.coded`, `admin@demo.coded`.
+Cuentas: `star@example.com`, `valentina@example.com`, `nicolas@example.com`, `camila@example.com`, `host@example.com`, `diego@example.com`, `isa@example.com`, `ela@example.com`, `admin@example.com`.
 
 Para probar selección y reasignación: entra como Admin → Solicitudes → revisa una reunión con varios candidatos → selecciona y confirma uno. Después entra como ese Star y cancela su participación. Al volver a Admin, verás el lugar disponible y las demás solicitudes pendientes para elegir el reemplazo.
 

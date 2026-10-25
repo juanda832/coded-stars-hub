@@ -6,6 +6,12 @@ Abre **http://127.0.0.1:3000/** en la computadora del proyecto. Elige **Administ
 
 Ambas pueden administrar reuniones, solicitudes y publicaciones. Cada perfil conserva sus propios avisos y borradores privados. Para cambiar de perfil, usa **Cerrar sesión**.
 
+## Acceso personal de la beta
+
+La beta incorpora una pantalla de acceso individual: cada persona utiliza el correo habilitado y completa la verificación que solicite el servicio. Las cuentas de Isa y Ela tienen permisos de administración. No necesitan compartir una contraseña ni cambiarse de perfil para entrar con su identidad.
+
+La versión alojada utiliza este acceso personal y comparte los cambios entre las administradoras. La demo local anterior conserva sus perfiles de prueba. El registro de cuentas está separado de la publicación de la web y no habilita el uso de datos reales de menores.
+
 ## Registrar una JDP
 
 1. En **Inicio**, toca **Nueva reunión** para abrir **Registrar JDP**.

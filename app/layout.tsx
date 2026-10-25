@@ -1,3 +1,6 @@
+import {ClerkProvider} from '@clerk/nextjs'
+import {esES} from '@clerk/localizations'
+import {personalAccessEnabled} from '@/lib/auth-mode'
 import './globals.css'
 import './theme.css'
 import './experience.css'
@@ -16,5 +19,5 @@ import './communication-refinement.css'
 import './staff-refinement.css'
 import './review-presentation.css'
 import './invitation-photography.css'
-export const metadata = { title: 'CODED Stars Hub · Demo', description: 'Reuniones, solicitudes y mensajes del equipo CODED. Versión de revisión con datos de ejemplo.', icons: {icon:'/brand/coded-icon.png',apple:'/brand/coded-icon.png'} }
-export default function RootLayout({children}:{children:React.ReactNode}) { return <html lang="es"><body>{children}</body></html> }
+export const metadata = { title: personalAccessEnabled()?'CODED Stars Hub · Beta':'CODED Stars Hub · Demo', description: 'Reuniones, solicitudes y mensajes del equipo CODED. Versión de revisión con datos de ejemplo.', icons: {icon:'/brand/coded-icon.png',apple:'/brand/coded-icon.png'} }
+export default function RootLayout({children}:{children:React.ReactNode}) { return <html lang="es"><body>{personalAccessEnabled()?<ClerkProvider localization={{...esES,signIn:{...esES.signIn,start:{...esES.signIn?.start,subtitle:'para continuar a CODED Stars Hub'}}}}>{children}</ClerkProvider>:children}</body></html> }

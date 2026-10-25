@@ -1,8 +1,8 @@
-# CODED Stars Hub · Prueba 1
+# CODED Stars Hub · Beta 1
 
 Una primera versión para revisar con Isa y Ela: encontrar una JDP, solicitar participar y coordinar la selección de un Coded Star.
 
-**Versión de revisión con cuentas y datos ficticios.** Las funciones del Hub siguen abiertas a comentarios del equipo.
+**Versión de revisión con datos ficticios y acceso personal para administración.** Las funciones del Hub siguen abiertas a comentarios del equipo.
 
 ![Inicio de CODED Stars Hub](docs/revision/inicio.png)
 
@@ -15,7 +15,7 @@ No hace falta instalar nada para revisar estas imágenes y documentos:
 - **[Proceso de las JDP](PROCESO-JDP.md)**: los cinco datos del calendario y las funciones propuestas para organizarlos.
 - **[Recorrido de 7 minutos](PARA-MOSTRAR.md)**: una guía para presentar la versión.
 
-**Este enlace de GitHub muestra el proyecto y su presentación. La plataforma interactiva funciona por ahora en la computadora del proyecto.** El enlace `localhost` o `127.0.0.1` no permite entrar desde otro dispositivo.
+La beta se prepara para Vercel con acceso personal y almacenamiento compartido. Este repositorio contiene el código y los materiales de revisión; las direcciones locales sirven solo para el desarrollo.
 
 ## Qué se puede probar en la plataforma
 
@@ -71,9 +71,21 @@ pnpm build
 pnpm start
 ```
 
-La revisión de esta versión incluye **146 comprobaciones unitarias** y **244 comprobaciones de servidor**, además de un recorrido en navegador por creación, solicitud, selección, acceso del anfitrión, cierre y resultado del Star. Los detalles y las condiciones de las pruebas están en **[VERIFICATION.md](VERIFICATION.md)**.
+La revisión de esta versión incluye **156 comprobaciones unitarias**, **400 comprobaciones de servidor** y **24 comprobaciones de PostgreSQL compartido**, además de un recorrido en navegador por creación, solicitud, selección, acceso del anfitrión, cierre y resultado del Star. Los detalles y las condiciones de las pruebas están en **[VERIFICATION.md](VERIFICATION.md)**.
 
 Las pruebas de servidor modifican datos: deben ejecutarse exclusivamente con una base de prueba independiente. Instrucciones completas en **[DETALLES-TECNICOS.md](DETALLES-TECNICOS.md)**.
+
+## Acceso personal para la beta
+
+Las cuentas personales se gestionan con Clerk. El servidor exige una sesión válida, un identificador del Hub asignado desde el servidor, el permiso registrado en metadatos privados y un correo verificado que coincida con el directorio privado. Los permisos enviados por el navegador no se utilizan.
+
+Isa y Ela tienen asignados los perfiles de administración. Sus correos se configuran en variables privadas de Vercel; no forman parte del código. Sus direcciones se reservan al crear las cuentas y cada una debe verificar su correo en su primer acceso. No se genera una contraseña compartida.
+
+`NEXT_PUBLIC_CODED_AUTH_MODE=clerk` activa la pantalla de acceso personal. La aplicación alojada en Vercel exige autenticación personal incluso si falta ese indicador. El acceso público de demostración queda deshabilitado en el servidor. El modo local de revisión conserva los perfiles ficticios.
+
+Variables del acceso: `CLERK_SECRET_KEY`, `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`, `CODED_ADMIN_ISA_EMAIL` y `CODED_ADMIN_ELA_EMAIL`. Configurarlas únicamente en el alojamiento o en archivos de entorno ignorados por Git. La instancia actual de Clerk es de desarrollo para la beta; no se presenta como una configuración de producción terminada.
+
+El almacenamiento compartido usa PostgreSQL de Neon, con entornos separados para beta, vistas previas y pruebas. La aplicación alojada no utiliza el disco temporal para guardar reuniones. Consulta [BASE-COMPARTIDA.md](BASE-COMPARTIDA.md) para las migraciones y sus límites de escala. `CODED_BUILD_DIR` permite comprobar una compilación de acceso personal sin cambiar los archivos servidos por la demo local.
 
 ## Código y recursos
 
@@ -88,8 +100,8 @@ Next.js, TypeScript y Tailwind. El asistente es una ayuda local basada en reglas
 
 ## Antes de una publicación con usuarios reales
 
-Esta versión utiliza cuentas de demostración y SQLite local. El servidor comprueba los permisos, pero las credenciales de prueba son públicas. Las notificaciones funcionan dentro del Hub.
+La demo local utiliza perfiles ficticios y SQLite. La beta alojada exige acceso personal y PostgreSQL compartido. Las notificaciones funcionan dentro del Hub; no se envían correos a los solicitantes.
 
-Para alojarla en Vercel hay que conectar una base compartida y configurar autenticación de producción. El disco local de las funciones no proporciona persistencia compartida. El uso de datos reales de menores requiere autorización.
+Antes de pasar de esta beta a un uso de producción con datos reales, debe completarse la configuración de producción de Clerk y la revisión del equipo. El uso de datos reales de menores requiere autorización.
 
 Esta revisión no implica la aprobación de CODED. Las fotografías ilustran lugares; no garantizan actividades de una edición concreta. Los créditos y derechos de marca se conservan en sus documentos de origen.

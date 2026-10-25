@@ -16,8 +16,8 @@ def expect(name,actual,expected):
  passed.append(name)
 def data(client):return call(client,'/api/data')[1]
 def action(client,**body):return call(client,'/api/action',body)
-admin,admin2,host=login('admin@demo.coded'),login('admin@demo.coded'),login('host@demo.coded')
-stars={f'star-{i+1}':login(email) for i,email in enumerate(['star@demo.coded','valentina@demo.coded','nicolas@demo.coded','camila@demo.coded'])}
+admin,admin2,host=login('admin@example.com'),login('admin@example.com'),login('host@example.com')
+stars={f'star-{i+1}':login(email) for i,email in enumerate(['star@example.com','valentina@example.com','nicolas@example.com','camila@example.com'])}
 title='JDP · Integridad '+uuid.uuid4().hex[:8]
 future=(datetime.datetime.now(datetime.timezone.utc)+datetime.timedelta(days=3)).isoformat()
 expect('Admin creates meeting',action(admin,action='create',hostId='host-1',title=title,program='Orlando',startsAt=future,language='Español')[0],200)

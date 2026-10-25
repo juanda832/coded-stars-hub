@@ -16,7 +16,7 @@ def action(client,**body):return call(client,'/api/action',body)
 def expect(name,actual,expected):
  assert actual==expected,(name,actual,expected)
  passed.append(name)
-star,star2,other,host,admin,anon=[login(email) for email in ['star@demo.coded','star@demo.coded','valentina@demo.coded','host@demo.coded','admin@demo.coded',None]]
+star,star2,other,host,admin,anon=[login(email) for email in ['star@example.com','star@example.com','valentina@example.com','host@example.com','admin@example.com',None]]
 payload={'action':'report','meetingId':'m5','scenario':'no_turn','families':'no','issues':[],'comment':'Entré y estuve disponible, pero no recibí la palabra.'}
 expect('Anonymous cannot report',call(anon,'/api/action',payload)[0],401)
 expect('Only assigned Star can report',call(other,'/api/action',payload)[0],403)

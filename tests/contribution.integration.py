@@ -14,7 +14,7 @@ def expect(name,value,expected):
     passed.append(name)
 def login(email,role):
     client=urllib.request.build_opener(urllib.request.HTTPCookieProcessor(http.cookiejar.CookieJar()))
-    code,result=call(client,'/api/auth',{'email':email+'@demo.coded','password':'Demo2026!'})
+    code,result=call(client,'/api/auth',{'email':email+'@example.com','password':'Demo2026!'})
     expect(email+' can enter',code,200)
     expect(email+' has intended role',result['user']['role'],role)
     return client

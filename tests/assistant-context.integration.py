@@ -9,7 +9,7 @@ def call(client,path,body=None):
  except urllib.error.HTTPError as error:return error.code,json.load(error)
 def login(name):
  client=urllib.request.build_opener(urllib.request.HTTPCookieProcessor(http.cookiejar.CookieJar()))
- assert call(client,'/api/auth',{'email':name+'@demo.coded','password':'Demo2026!'})[0]==200
+ assert call(client,'/api/auth',{'email':name+'@example.com','password':'Demo2026!'})[0]==200
  return client
 def expect(name,actual,expected=True):
  assert actual==expected,(name,actual,expected)

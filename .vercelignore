@@ -1,0 +1,15 @@
+.git/
+node_modules/
+.next*/
+.vercel/
+.data/
+.env*
+*.sqlite*
+*.db
+*.db-*
+*.key
+*.tsbuildinfo
+__pycache__/
+tests/
+docs/
+*.md

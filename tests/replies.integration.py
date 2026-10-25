@@ -18,7 +18,7 @@ def expect(name,actual,expected):
  assert actual==expected,(name,actual,expected)
  passed.append(name)
 
-admin,host,isa,ela,other_host,star,other_star=[login(email) for email in ['admin@demo.coded','host@demo.coded','isa@demo.coded','ela@demo.coded','diego@demo.coded','star@demo.coded','valentina@demo.coded']]
+admin,host,isa,ela,other_host,star,other_star=[login(email) for email in ['admin@example.com','host@example.com','isa@example.com','ela@example.com','diego@example.com','star@example.com','valentina@example.com']]
 title='JDP · Conversación de prueba '+uuid.uuid4().hex[:6]
 future=(datetime.datetime.now(datetime.timezone.utc)+datetime.timedelta(days=3)).isoformat()
 expect('Create isolated conversation meeting',action(admin,action='create',hostId='host-1',title=title,program='London',language='English',startsAt=future,description='Datos ficticios para comprobar preguntas y respuestas.',duration=45,hostNote='Puedes preparar un recuerdo real de tu experiencia.')[0],200)

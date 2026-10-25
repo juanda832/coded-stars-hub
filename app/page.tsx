@@ -1,5 +1,8 @@
 'use client'
 import { useCallback, useEffect, useState } from 'react'
+import {useClerk} from '@clerk/nextjs'
+import {personalAccessEnabled} from '@/lib/auth-mode'
+import PersonalAccess from './components/PersonalAccess'
 import { ArrowRight, Bell, BookOpen, CalendarDays, Check, ClipboardCheck, Globe2, LayoutDashboard, LogOut, Menu, MessageCircle, HelpCircle, BarChart3, Users, UserRound, Megaphone, X } from 'lucide-react'
 import type { HubData, Meeting } from '@/lib/types'
 import { isActiveMeeting } from '@/lib/meeting-utils'
@@ -30,7 +33,9 @@ import HubAssistant from './components/HubAssistant'
 import type { AssistantAction, AssistantDraft } from '@/lib/assistant-types'
 
 type NavItem = {label:string;icon:typeof LayoutDashboard;badge?:number}
-export default function Home() {
+export default function Home(){return personalAccessEnabled()?<PersonalHome/>:<HubHome/>}
+function PersonalHome(){const {signOut}=useClerk();return <HubHome signOut={()=>signOut({redirectUrl:'/'})}/>}
+function HubHome({signOut}:{signOut?:()=>Promise<unknown>}) {
  const [data,setData]=useState<HubData|null>(null),[loading,setLoading]=useState(true),[busy,setBusy]=useState(false),[error,setError]=useState(''),[toast,setToast]=useState('')
  const [messagesMeetingId,setMessagesMeetingId]=useState('')
  const [preparationProgram,setPreparationProgram]=useState<string|undefined>(undefined)
@@ -47,7 +52,7 @@ export default function Home() {
  useEffect(()=>{if(!data?.user.id)return;const role=data.user.role;function syncRoute(){const route=readRoute(window.location.hash,role);setSection(route.section);setMessagesTab(route.section==='Mensajes'?route.view:'');setApplicationsTab(route.section==='Mis solicitudes'?(route.view||'Todas'):'Todas');setMobile(false);setSelectedId(null);setReportFor(null);setEditor(null);setBooked(null);setError('');window.history.replaceState(null,'',routeHash(route.section,route.view));window.scrollTo({top:0,behavior:'instant'})}syncRoute();window.addEventListener('hashchange',syncRoute);return()=>window.removeEventListener('hashchange',syncRoute)},[data?.user.id,data?.user.role])
  function navigate(next:string,view=''){if(next!=='Mensajes')setMessagesMeetingId('');if(next==='Mensajes')setMessagesTab(view);if(next==='Mis solicitudes')setApplicationsTab(view||'Todas');const hash=routeHash(next,view);if(window.location.hash!==hash)window.history.pushState(null,'',hash);setSection(next);setMobile(false);setError('');window.scrollTo({top:0,behavior:'instant'});requestAnimationFrame(()=>document.getElementById('main-content')?.focus({preventScroll:true}))}
  async function login(email:string,password:string){setBusy(true);setError('');try{const response=await fetch('/api/auth',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password})});const result=await response.json();if(!response.ok)throw new Error(result.error);await refresh()}catch(e){setError((e as Error).message)}finally{setBusy(false)}}
- async function logout(){await fetch('/api/auth',{method:'DELETE'});setData(null);setPreparationProgram(undefined);setPreparationMeetingId(undefined);setAssistantDraft(null);setSelectedId(null);setReportFor(null);setEditor(null);navigate('Inicio')}
+ async function logout(){if(signOut){await signOut();return}await fetch('/api/auth',{method:'DELETE'});setData(null);setPreparationProgram(undefined);setPreparationMeetingId(undefined);setAssistantDraft(null);setSelectedId(null);setReportFor(null);setEditor(null);navigate('Inicio')}
  async function action(body:Record<string,unknown>,message:string){setBusy(true);setError('');try{const response=await fetch('/api/action',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});const result=await response.json();if(!response.ok){if(response.status===409)await refresh();throw new Error(result.error)}await refresh();setToast(message);if(body.action==='report')setReportFor(null);return true}catch(e){setError((e as Error).message);return false}finally{setBusy(false)}}
  function handleAssistantAction(item:AssistantAction){
   if(item.kind==='navigate'){navigate(item.section,item.view);return}
@@ -62,7 +67,7 @@ export default function Home() {
  function reviewMeeting(meeting:Meeting){setReviewMeetingId(meeting.id);setSelectedId(null);navigate('Solicitudes')}
  function reportMeeting(meeting:Meeting){setSelectedId(null);setError('');setReportFor(meeting)}
  if(loading)return <div className="loading"><Brand/><span className="loading-orbit"/><p>Cargando…</p></div>
- if(!data)return <AccessScreen busy={busy} error={error} onLogin={login}/>
+ if(!data)return personalAccessEnabled()?<PersonalAccess onRetry={()=>void refresh()}/>:<AccessScreen busy={busy} error={error} onLogin={login}/>
  const role=data.user.role,star=role==='star',admin=role==='admin',unread=data.notifications.filter(n=>!n.readAt).length
  const pending=data.registrations.filter(r=>r.status==='pending'&&data.meetings.some(m=>m.id===r.meetingId&&isActiveMeeting(m))).length
  const nav:NavItem[]=[{label:'Inicio',icon:LayoutDashboard},{label:'Reuniones',icon:CalendarDays},...(star?[{label:'Mis solicitudes',icon:Check,badge:pending},{label:'Preparación',icon:BookOpen}]:admin?[{label:'Solicitudes',icon:Users,badge:pending},{label:'Seguimiento',icon:ClipboardCheck},{label:'Estadísticas',icon:BarChart3}]:[{label:'Participante',icon:Users},{label:'Resultados',icon:ClipboardCheck}]),{label:'Mensajes',icon:MessageCircle,badge:unread},{label:'Publicaciones',icon:Megaphone},...(star?[{label:'Mi experiencia',icon:ClipboardCheck}]:[]),{label:'Mi cuenta',icon:UserRound},{label:'Asistente',icon:HelpCircle}]

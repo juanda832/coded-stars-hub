@@ -537,3 +537,31 @@ Las pruebas de servidor de las revisiones anteriores no se repitieron: no cambia
 - Se actualizaron la guía de equipo, el recorrido de presentación, README y PROCESO-JDP.md. El PDF de ocho páginas incluye el formulario actual y distingue la estructura informada por Isa de las propuestas del Hub. Se comprobaron texto e imágenes, se renderizaron las ocho páginas y se inspeccionaron, incluidas las páginas modificadas a tamaño completo.
 
 El alcance sigue siendo una demo local con datos ficticios. No se crearon cuentas reales ni se incorporó información real de menores.
+
+
+## Acceso personal de administración · 25 de octubre de 2026
+
+- Servicio Clerk provisionado en Vercel con el plan Hobby gratuito, conectado al proyecto en producción y vista previa. Instancia de desarrollo para la beta.
+- Dos identidades creadas por petición del usuario, con correo reservado y no verificado automáticamente, sin una contraseña generada. Identificadores del Hub y permisos administrativos almacenados en metadatos privados.
+- Correos configurados como secretos de Vercel, separados del código y del directorio público de demostración.
+- La resolución de acceso exige sesión del proveedor, namespace del Hub, coincidencia entre identificador y rol privados, dirección verificada y directorio del servidor. Las cuentas bloqueadas, sin permiso o con información incompatible no obtienen acceso.
+- Vercel siempre deshabilita la creación de sesiones de demostración; la pantalla personal usa los componentes oficiales de Clerk en español y el cierre de sesión del proveedor.
+- Revisión de tipos y 156 comprobaciones unitarias superadas, incluidas 10 pruebas nuevas con casos de verificación de correo, permisos, namespace y desactivación de accesos públicos alojados.
+
+La validación de las bandejas de correo y el primer inicio de sesión de Isa y Ela corresponden a sus titulares. El almacenamiento compartido de las reuniones sigue pendiente y no se declara publicada la beta por haber registrado estas cuentas.
+
+Verificación final del acceso personal: compilaciones independientes con acceso de demostración y con las credenciales reales del proveedor completadas. Las cinco suites de regresión de servidor conservaron sus 244 comprobaciones; otras 9 comprobaron rechazo de credenciales de demostración, suplantación de identidad por cuerpo o cookie y privacidad de las API sin sesión. La pantalla individual se comprobó en navegador, en español, sin utilizar las cuentas de Isa o Ela ni enviarles códigos de prueba.
+
+## Beta con almacenamiento compartido · 25 de octubre de 2026
+
+Esta sección actualiza el estado anterior: Neon está provisionado y conectado al proyecto de Vercel. La migración 001 se comprobó primero en un esquema aislado y después se aplicó a los esquemas de vista previa y beta. No reemplazó datos existentes.
+
+- 156 pruebas unitarias y revisión de tipos correctas. Compilaciones independientes de demo local y acceso personal completadas.
+- Las ocho suites de servidor pasaron sus 400 comprobaciones en bases locales temporales nuevas: calendario 64, solicitudes 36, comunicación 42, contribuciones 87, respuestas 15, informes 46, asistente 54 y contexto del asistente 56.
+- 24 comprobaciones contra PostgreSQL real, en `coded_hub_qa_20261025`: persistencia desde otro proceso, solicitudes múltiples, confirmaciones simultáneas, un único confirmado, cancelación sin selección automática, reasignación manual, privacidad, conflicto de ediciones, informes y reversión de cambios tras un fallo. El índice único también rechazó una segunda confirmación escrita directamente.
+- 18 comprobaciones positivas del recorrido HTTP completo: sesión del proveedor → permisos del servidor → PostgreSQL → respuesta filtrada. Se utilizaron cuatro identidades ficticias temporales, eliminadas junto con sus sesiones al terminar. No se accedió como Isa ni como Ela y no se enviaron mensajes a sus correos.
+- Otras 9 comprobaciones verificaron que la instancia personal rechaza credenciales demo, roles enviados por el cliente y cookies falsas, sin exponer contactos por las API sin sesión.
+- Las direcciones ficticias usan el dominio reservado para ejemplos `example.com`; no pertenecen a estudiantes reales.
+- Revisión de código y archivos públicos sin claves privadas ni correos reales de administración. Los secretos de Vercel y los datos de prueba permanecen fuera de Git y de la carga del despliegue.
+
+El acceso personal de Isa y Ela exige que cada titular verifique su propio correo. Clerk sigue en instancia de desarrollo para esta beta; el paso a producción y el uso de datos reales de menores requieren la preparación y autorización correspondientes. El bloqueo general por entorno está documentado como límite para una beta de poco tráfico en BASE-COMPARTIDA.md.

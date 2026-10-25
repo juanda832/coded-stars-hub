@@ -16,7 +16,7 @@ def data(client):return call(client,'/api/data')[1]
 def expect(name,value,expected):
  assert value==expected,(name,value,expected)
  passed.append(name)
-admin,host,star,other=[login(mail) for mail in ['admin@demo.coded','host@demo.coded','star@demo.coded','valentina@demo.coded']]
+admin,host,star,other=[login(mail) for mail in ['admin@example.com','host@example.com','star@example.com','valentina@example.com']]
 future=(datetime.datetime.now(datetime.timezone.utc)+datetime.timedelta(days=5)).isoformat()
 draft={'action':'create','hostId':'host-1','title':'JDP · Comunicación '+uuid.uuid4().hex[:7],'description':'Una reunión de demostración para nuevas familias.','program':'Orlando','language':'Español','startsAt':future,'duration':45,'joinUrl':'https://example.com/private-demo-room','hostNote':'Reservaremos un turno para tu historia.'}
 expect('Host cannot create meetings',call(host,'/api/action',draft)[0],403)

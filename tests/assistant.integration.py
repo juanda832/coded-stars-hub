@@ -14,7 +14,7 @@ def expect(name,value,expected):
     passed.append(name)
 def login(email):
     client=urllib.request.build_opener(urllib.request.HTTPCookieProcessor(http.cookiejar.CookieJar()))
-    assert call(client,'/api/auth',{'email':email+'@demo.coded','password':'Demo2026!'})[0]==200
+    assert call(client,'/api/auth',{'email':email+'@example.com','password':'Demo2026!'})[0]==200
     return client
 def data(client):return call(client,'/api/data')[1]
 def ask(client,message,conversation=None,**extra):
