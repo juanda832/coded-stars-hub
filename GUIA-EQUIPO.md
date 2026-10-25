@@ -2,7 +2,7 @@
 
 ## Entrar
 
-Abre **http://127.0.0.1:3000/** en la computadora del proyecto. Elige **Administración**, selecciona **Isa** o **Ela** y toca **Entrar**. Las credenciales de prueba ya están cargadas.
+Abre **[CODED Stars Hub](https://coded-stars-beta.vercel.app/)**, escribe tu correo habilitado y completa la verificación del servicio. Cada una entra con su propia identidad. Los perfiles de estudiantes y las reuniones siguen siendo datos de prueba.
 
 Ambas pueden administrar reuniones, solicitudes y publicaciones. Cada perfil conserva sus propios avisos y borradores privados. Para cambiar de perfil, usa **Cerrar sesión**.
 

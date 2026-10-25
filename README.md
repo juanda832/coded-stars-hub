@@ -15,7 +15,7 @@ No hace falta instalar nada para revisar estas imágenes y documentos:
 - **[Proceso de las JDP](PROCESO-JDP.md)**: los cinco datos del calendario y las funciones propuestas para organizarlos.
 - **[Recorrido de 7 minutos](PARA-MOSTRAR.md)**: una guía para presentar la versión.
 
-La beta se prepara para Vercel con acceso personal y almacenamiento compartido. Este repositorio contiene el código y los materiales de revisión; las direcciones locales sirven solo para el desarrollo.
+**[Abrir la beta](https://coded-stars-beta.vercel.app/)** · Alojada en Vercel, con acceso personal y almacenamiento compartido. Este repositorio contiene el código y los materiales de revisión; las direcciones locales sirven solo para el desarrollo.
 
 ## Qué se puede probar en la plataforma
 

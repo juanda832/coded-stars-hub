@@ -565,3 +565,7 @@ Esta sección actualiza el estado anterior: Neon está provisionado y conectado 
 - Revisión de código y archivos públicos sin claves privadas ni correos reales de administración. Los secretos de Vercel y los datos de prueba permanecen fuera de Git y de la carga del despliegue.
 
 El acceso personal de Isa y Ela exige que cada titular verifique su propio correo. Clerk sigue en instancia de desarrollo para esta beta; el paso a producción y el uso de datos reales de menores requieren la preparación y autorización correspondientes. El bloqueo general por entorno está documentado como límite para una beta de poco tráfico en BASE-COMPARTIDA.md.
+
+Verificación alojada: despliegue `dpl_kSimumQ3Ry5GzifyYi52991eke86`, commit `39783c9`, Next.js, región iad1, compilación de 44 segundos y estado READY. Las mismas 18 comprobaciones de acceso completo pasaron en el propio despliegue. Se eliminaron solo los registros de esa ejecución de prueba y se revocaron y eliminaron sus identidades y sesiones ficticias. La comprobación de registros de ejecución de los últimos cinco minutos devolvió cero errores.
+
+Se promocionó ese despliegue y se conectó el dominio de producción https://coded-stars-beta.vercel.app/. Una petición anónima obtiene 200 en la pantalla de acceso y 401 de la aplicación en `/api/data`; las vistas previas mantienen la protección de Vercel. La pantalla de acceso se comprobó en el navegador, en español y con aviso de datos de prueba. Clerk conserva su atribución y la indicación de modo de desarrollo.
