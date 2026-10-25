@@ -1,0 +1,20 @@
+.hub-load-failure{min-height:100svh;padding:48px 24px;background:radial-gradient(ellipse at top,#f3ebff,transparent 65%),#faf9fc;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:32px}
+.hub-load-failure>section{width:min(100%,460px);padding:32px;border:1px solid #e6dcef;border-radius:20px;background:#fff;box-shadow:0 12px 40px #3a175a09;text-align:center}
+.connection-icon{display:inline-grid;place-items:center;width:52px;height:52px;border-radius:16px;background:#f3edff;color:#6200c7}
+.hub-load-failure h1{font:700 25px/1.35 'Plus Jakarta Sans',sans-serif;letter-spacing:-.7px;color:#30163f;margin:20px 0 12px}
+.hub-load-failure p{font-size:14px;line-height:1.8;color:#6f6079;margin:0 0 24px}
+.hub-load-failure .primary{width:100%;min-height:46px}
+.hub-load-failure .text-link{display:block;margin:16px auto 0;min-height:40px}
+.connection-notice{display:flex;align-items:center;gap:14px;background:#fff8e9;color:#674817;border:1px solid #ead8b3;border-radius:14px;padding:16px 18px;margin:0 0 24px}
+.connection-notice>span{display:flex;flex-shrink:0}
+.connection-notice>div{flex:1;min-width:0}
+.connection-notice b{font-size:13px;font-weight:700}
+.connection-notice p{font-size:12px;line-height:1.65;margin:4px 0 0}
+.connection-notice .secondary-button{min-height:42px;background:#fff;border-color:#dac79f;color:#674817;font-size:12px}
+.account-summary .account-email{display:block;font-size:12px;line-height:1.6;color:#74617d;margin-top:5px;overflow-wrap:anywhere}
+.account-summary>div{min-width:0}
+.team-examples{margin-top:20px;border:1px solid #e5daee;border-radius:12px;padding:0 18px;background:#fff}
+.team-examples summary{padding:16px 0;cursor:pointer;color:#5e4370;font-size:13px;font-weight:600;min-height:48px}
+.team-examples[open]{padding-bottom:18px}
+.team-examples .team-role{font-size:10px}
+@media(max-width:760px){.hub-load-failure{padding:30px 20px}.hub-load-failure>section{padding:26px 22px}.hub-load-failure h1{font-size:23px}.connection-notice{align-items:flex-start;gap:10px;flex-wrap:wrap;padding:15px}.connection-notice>div{flex-basis:calc(100% - 35px)}.connection-notice .secondary-button{margin-left:30px}.team-examples{padding:0 14px}}

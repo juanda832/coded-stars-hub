@@ -569,3 +569,14 @@ El acceso personal de Isa y Ela exige que cada titular verifique su propio corre
 Verificación alojada: despliegue `dpl_kSimumQ3Ry5GzifyYi52991eke86`, commit `39783c9`, Next.js, región iad1, compilación de 44 segundos y estado READY. Las mismas 18 comprobaciones de acceso completo pasaron en el propio despliegue. Se eliminaron solo los registros de esa ejecución de prueba y se revocaron y eliminaron sus identidades y sesiones ficticias. La comprobación de registros de ejecución de los últimos cinco minutos devolvió cero errores.
 
 Se promocionó ese despliegue y se conectó el dominio de producción https://coded-stars-beta.vercel.app/. Una petición anónima obtiene 200 en la pantalla de acceso y 401 de la aplicación en `/api/data`; las vistas previas mantienen la protección de Vercel. La pantalla de acceso se comprobó en el navegador, en español y con aviso de datos de prueba. Clerk conserva su atribución y la indicación de modo de desarrollo.
+
+## Acceso y recuperación de conexión · Revisión del 25 de octubre de 2026
+
+- El cliente espera a que Clerk termine de cargar y confirme la sesión antes de consultar el Hub. El espacio se monta de nuevo cuando cambia la identidad del proveedor, para separar datos y formularios entre cuentas.
+- Las respuestas antiguas, las consultas canceladas y las respuestas que terminan después de cerrar sesión no pueden volver a mostrar una cuenta anterior. Un fallo de conexión o del servicio conserva la última información cargada y ofrece actualizarla. Una respuesta 401 sí retira los datos privados.
+- Se añadieron once comprobaciones de esas condiciones; el total es de 167 pruebas de lógica correctas. Las consultas de lectura tienen un límite de espera; las escrituras no se reintentan automáticamente.
+- Prueba de navegador en un servidor aislado y una base ficticia nueva: iniciar sesión, abrir Mi cuenta, simular 503 en la API, conservar la información cargada, recargar con el servicio caído y recuperar la vista mediante Volver a intentar sin otro inicio de sesión.
+- Un borrador de JDP conservó colegio, fecha, hora y enlace durante un fallo de carga. El intento de guardar con información desactualizada mostró un aviso y conservó el formulario; se verificaron cero reuniones creadas con ese colegio en la base de prueba. Se cerró la pestaña, se detuvieron ambos servidores de prueba y se eliminó esa base temporal.
+- Mi cuenta distingue el acceso personal de los perfiles de demostración. En la beta, las administradoras se muestran primero y los otros perfiles se identifican como ejemplos, dentro de un apartado desplegable. No se modificaron permisos del servidor ni se registraron nuevas cuentas.
+
+Las comprobaciones existentes de PostgreSQL, permisos y flujo del servidor siguen documentadas en la revisión anterior. Esta actualización cambia la carga y recuperación del cliente; no modifica las reglas de solicitudes ni la selección manual.

@@ -1,10 +1,12 @@
 'use client'
-import { useCallback, useEffect, useState } from 'react'
-import {useClerk} from '@clerk/nextjs'
+import { useEffect, useState } from 'react'
+import {useClerk,useUser} from '@clerk/nextjs'
 import {personalAccessEnabled} from '@/lib/auth-mode'
 import PersonalAccess from './components/PersonalAccess'
+import {useHubSnapshot} from './components/useHubSnapshot'
+import {ConnectionNotice,HubLoadFailure,HubLoading} from './components/HubConnection'
 import { ArrowRight, Bell, BookOpen, CalendarDays, Check, ClipboardCheck, Globe2, LayoutDashboard, LogOut, Menu, MessageCircle, HelpCircle, BarChart3, Users, UserRound, Megaphone, X } from 'lucide-react'
-import type { HubData, Meeting } from '@/lib/types'
+import type { Meeting } from '@/lib/types'
 import { isActiveMeeting } from '@/lib/meeting-utils'
 import { zoneChoices } from '@/lib/time-zones'
 import { readRoute, routeHash } from '@/lib/navigation'
@@ -34,26 +36,30 @@ import type { AssistantAction, AssistantDraft } from '@/lib/assistant-types'
 
 type NavItem = {label:string;icon:typeof LayoutDashboard;badge?:number}
 export default function Home(){return personalAccessEnabled()?<PersonalHome/>:<HubHome/>}
-function PersonalHome(){const {signOut}=useClerk();return <HubHome signOut={()=>signOut({redirectUrl:'/'})}/>}
+function PersonalHome(){
+ const {isLoaded,isSignedIn,user}=useUser(),{signOut}=useClerk()
+ if(!isLoaded)return <HubLoading/>
+ if(!isSignedIn||!user)return <PersonalAccess onRetry={()=>window.location.reload()}/>
+ return <HubHome key={user.id} signOut={()=>signOut({redirectUrl:'/'})}/>
+}
 function HubHome({signOut}:{signOut?:()=>Promise<unknown>}) {
- const [data,setData]=useState<HubData|null>(null),[loading,setLoading]=useState(true),[busy,setBusy]=useState(false),[error,setError]=useState(''),[toast,setToast]=useState('')
+ const {data,phase,issue,refreshing,refresh,reset}=useHubSnapshot()
+ const [busy,setBusy]=useState(false),[error,setError]=useState(''),[toast,setToast]=useState('')
  const [messagesMeetingId,setMessagesMeetingId]=useState('')
  const [preparationProgram,setPreparationProgram]=useState<string|undefined>(undefined)
  const [preparationMeetingId,setPreparationMeetingId]=useState<string|undefined>(undefined)
  const [assistantDraft,setAssistantDraft]=useState<AssistantDraft|null>(null)
  const [zone,setZone]=useState('America/La_Paz'),[section,setSection]=useState('Inicio'),[mobile,setMobile]=useState(false)
  const [selectedId,setSelectedId]=useState<string|null>(null),[reportFor,setReportFor]=useState<Meeting|null>(null),[editor,setEditor]=useState<Meeting|'new'|null>(null),[booked,setBooked]=useState<Meeting|null>(null),[reviewMeetingId,setReviewMeetingId]=useState(''),[messagesTab,setMessagesTab]=useState(''),[applicationsTab,setApplicationsTab]=useState('Todas')
- const refresh=useCallback(async()=>{try{const response=await fetch('/api/data',{cache:'no-store'});if(response.ok)setData(await response.json());else if(response.status===401)setData(null);else throw new Error('No pudimos actualizar el Hub. Intenta de nuevo.')}catch(e){setError((e as Error).message)}finally{setLoading(false)}},[])
- useEffect(()=>{void refresh();try{const saved=localStorage.getItem('coded-zone');if(saved&&zoneChoices.some(([value])=>value===saved))setZone(saved)}catch{}},[refresh])
+ useEffect(()=>{try{const saved=localStorage.getItem('coded-zone');if(saved&&zoneChoices.some(([value])=>value===saved))setZone(saved)}catch{}},[])
  useEffect(()=>{try{localStorage.setItem('coded-zone',zone)}catch{}},[zone])
- useEffect(()=>{if(!data?.user.id)return;const timer=setInterval(refresh,30000);const onFocus=()=>void refresh();window.addEventListener('focus',onFocus);return()=>{clearInterval(timer);window.removeEventListener('focus',onFocus)}},[data?.user.id,refresh])
  useEffect(()=>{if(!toast)return;const timer=setTimeout(()=>setToast(''),4500);return()=>clearTimeout(timer)},[toast])
  useEffect(()=>{document.title=`${section==='Asistente'?'Ayuda':section} · CODED Stars Hub`},[section,data?.user.id])
  useEffect(()=>{if(!data?.user.id)return;const role=data.user.role;function syncRoute(){const route=readRoute(window.location.hash,role);setSection(route.section);setMessagesTab(route.section==='Mensajes'?route.view:'');setApplicationsTab(route.section==='Mis solicitudes'?(route.view||'Todas'):'Todas');setMobile(false);setSelectedId(null);setReportFor(null);setEditor(null);setBooked(null);setError('');window.history.replaceState(null,'',routeHash(route.section,route.view));window.scrollTo({top:0,behavior:'instant'})}syncRoute();window.addEventListener('hashchange',syncRoute);return()=>window.removeEventListener('hashchange',syncRoute)},[data?.user.id,data?.user.role])
  function navigate(next:string,view=''){if(next!=='Mensajes')setMessagesMeetingId('');if(next==='Mensajes')setMessagesTab(view);if(next==='Mis solicitudes')setApplicationsTab(view||'Todas');const hash=routeHash(next,view);if(window.location.hash!==hash)window.history.pushState(null,'',hash);setSection(next);setMobile(false);setError('');window.scrollTo({top:0,behavior:'instant'});requestAnimationFrame(()=>document.getElementById('main-content')?.focus({preventScroll:true}))}
  async function login(email:string,password:string){setBusy(true);setError('');try{const response=await fetch('/api/auth',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password})});const result=await response.json();if(!response.ok)throw new Error(result.error);await refresh()}catch(e){setError((e as Error).message)}finally{setBusy(false)}}
- async function logout(){if(signOut){await signOut();return}await fetch('/api/auth',{method:'DELETE'});setData(null);setPreparationProgram(undefined);setPreparationMeetingId(undefined);setAssistantDraft(null);setSelectedId(null);setReportFor(null);setEditor(null);navigate('Inicio')}
- async function action(body:Record<string,unknown>,message:string){setBusy(true);setError('');try{const response=await fetch('/api/action',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});const result=await response.json();if(!response.ok){if(response.status===409)await refresh();throw new Error(result.error)}await refresh();setToast(message);if(body.action==='report')setReportFor(null);return true}catch(e){setError((e as Error).message);return false}finally{setBusy(false)}}
+ async function logout(){try{reset();if(signOut){await signOut();return}const response=await fetch('/api/auth',{method:'DELETE'});if(!response.ok)throw new Error('No pudimos cerrar la sesión. Intenta de nuevo.');setPreparationProgram(undefined);setPreparationMeetingId(undefined);setAssistantDraft(null);setSelectedId(null);setReportFor(null);setEditor(null);navigate('Inicio')}catch{setError('No pudimos cerrar la sesión. Intenta de nuevo.')}}
+ async function action(body:Record<string,unknown>,message:string){if(!navigator.onLine){setError('Necesitas conexión para guardar. Tu borrador sigue aquí.');return false}if(issue){setError('Actualiza la información antes de guardar cambios. Tu borrador sigue aquí.');void refresh();return false}setBusy(true);setError('');try{const response=await fetch('/api/action',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});const result=await response.json();if(!response.ok){if(response.status===409)await refresh();if(response.status===401)reset();throw new Error(result.error)}await refresh();setToast(message);if(body.action==='report')setReportFor(null);return true}catch(e){setError(e instanceof TypeError||e instanceof SyntaxError?'No pudimos confirmar el guardado. Revisa tu conexión y actualiza antes de volver a enviar.':(e as Error).message);return false}finally{setBusy(false)}}
  function handleAssistantAction(item:AssistantAction){
   if(item.kind==='navigate'){navigate(item.section,item.view);return}
   if(item.kind==='meeting'){const meeting=data?.meetings.find(m=>m.id===item.meetingId);if(meeting)openMeeting(meeting);return}
@@ -66,7 +72,8 @@ function HubHome({signOut}:{signOut?:()=>Promise<unknown>}) {
  async function register(meeting:Meeting){if(await action({action:'request',meetingId:meeting.id},'Solicitud enviada. El equipo la revisará.')){setSelectedId(null);setBooked(meeting)}}
  function reviewMeeting(meeting:Meeting){setReviewMeetingId(meeting.id);setSelectedId(null);navigate('Solicitudes')}
  function reportMeeting(meeting:Meeting){setSelectedId(null);setError('');setReportFor(meeting)}
- if(loading)return <div className="loading"><Brand/><span className="loading-orbit"/><p>Cargando…</p></div>
+ if(phase==='loading'&&!data)return <HubLoading/>
+ if(phase==='unavailable'&&!data)return <HubLoadFailure issue={issue} onRetry={()=>void refresh()} onLogout={()=>void logout()}/>
  if(!data)return personalAccessEnabled()?<PersonalAccess onRetry={()=>void refresh()}/>:<AccessScreen busy={busy} error={error} onLogin={login}/>
  const role=data.user.role,star=role==='star',admin=role==='admin',unread=data.notifications.filter(n=>!n.readAt).length
  const pending=data.registrations.filter(r=>r.status==='pending'&&data.meetings.some(m=>m.id===r.meetingId&&isActiveMeeting(m))).length
@@ -76,6 +83,7 @@ function HubHome({signOut}:{signOut?:()=>Promise<unknown>}) {
  const navButtons=()=>nav.map(({label,icon:Icon,badge})=><button key={label} className={'nav-item '+(section===label?'active':'')} aria-current={section===label?'page':undefined} onClick={()=>navigate(label)}><Icon size={19}/><span>{label==='Asistente'?'Ayuda':label}</span>{!!badge&&<b className="sidebar-badge">{badge}</b>}</button>)
  function renderMeeting(meeting:Meeting){return star?<FriendlyMeetingCard key={meeting.id} meeting={meeting} registration={data!.registrations.find(r=>r.meetingId===meeting.id)} full={!!data!.confirmedCounts[meeting.id]} zone={zone} busy={busy} onDetails={openMeeting} onRegister={register} onQuestion={askAboutMeeting}/>:<StaffMeetingCard key={meeting.id} meeting={meeting} data={data!} zone={zone} onOpen={openMeeting}/>}
  return <div className="shell review-presentation"><a className="skip-link" href="#main-content" onClick={e=>{e.preventDefault();document.getElementById('main-content')?.focus()}}>Ir al contenido</a><aside className="sidebar"><Brand/><nav aria-label="Menú principal">{navButtons()}</nav><div className="side-bottom"><div className="side-user"><span className="avatar">{data.user.initials}</span><div><b>{data.user.name.replace(/ · Demo$/,'')}</b><small>{star?'Coded Star':admin?'Administración':'Anfitrión'}</small></div><button className="icon-button" aria-label="Cerrar sesión" title="Cerrar sesión" onClick={logout}><LogOut size={17}/></button></div></div></aside><div className="main"><header className="topbar"><button className="menu-btn" onClick={()=>setMobile(true)} aria-label="Abrir menú" aria-expanded={mobile}><Menu size={22}/></button><div className="header-brand"><Brand compact onClick={()=>navigate('Inicio')}/></div><span className="breadcrumb"><b>{section==='Asistente'?'Ayuda':section}</b></span><div className="top-actions"><span className="demo-pill" title="Versión de revisión con datos de ejemplo"><span/> Vista previa</span><label className="zone-select"><Globe2 size={15}/><select value={zone} onChange={e=>setZone(e.target.value)} aria-label="Zona horaria">{zoneChoices.map(([value,label])=><option key={value} value={value}>{label}</option>)}</select></label><button className="header-inbox" aria-label={`Ver mensajes${unread?`, ${unread} ${unread===1?'novedad':'novedades'} sin leer`:''}`} onClick={()=>navigate('Mensajes','Novedades')}><Bell size={20}/>{unread>0&&<span>{unread}</span>}</button></div>{busy&&<div className="save-progress" role="progressbar" aria-label="Guardando cambios"/>}</header><main id="main-content" tabIndex={-1} aria-busy={busy} className={'content professional-content '+(star?'star-content':'')+(section==='Asistente'?' assistant-content':'')}>
+ <ConnectionNotice issue={issue} refreshing={refreshing} onRetry={()=>void refresh()}/>
  {section==='Inicio'&&(star?<StarHome onQuestion={askAboutMeeting} onNavigate={navigate} data={data} zone={zone} busy={busy} onExplore={()=>navigate('Reuniones')} onDetails={openMeeting} onRegister={register} onMessages={tab=>navigate('Mensajes',tab)} onFeedback={()=>navigate('Mi experiencia')} onPreparation={program=>{setPreparationProgram(program);setPreparationMeetingId(undefined);navigate('Preparación')}} onApplications={tab=>navigate('Mis solicitudes',tab)} action={action}/>:<StaffHome onReview={reviewMeeting} data={data} zone={zone} onNavigate={navigate} onMeeting={openMeeting} onCreate={()=>setEditor('new')}/>)}
  {section==='Asistente'&&<HubAssistant key={data.user.id} data={data} zone={zone} onAction={handleAssistantAction}/>}
  {section==='Publicaciones'&&<Publications initialDraft={assistantDraft?.kind==='publication'?assistantDraft:undefined} onDraftDone={()=>setAssistantDraft(null)} data={data} busy={busy} error={error} action={action} onClearError={()=>setError('')}/>}
