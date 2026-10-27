@@ -1,6 +1,6 @@
 'use client'
 import { useEffect, useState } from 'react'
-import { ArrowRight, CalendarDays, ChevronLeft, ChevronRight, Globe2, List, Plus, Search, X } from 'lucide-react'
+import { ArrowRight, CalendarDays, ChevronLeft, ChevronRight, Globe2, List, Plus, Download, Search, X } from 'lucide-react'
 import type { HubData, Meeting } from '@/lib/types'
 import { dayKey, friendlyDay, isActiveMeeting, languageText } from '@/lib/meeting-utils'
 import { matchesAgendaFilters, matchesAgendaPeriod, matchesMeetingSearch } from '@/lib/agenda'
@@ -13,7 +13,7 @@ function weekDays(offset:number,zone:string) {
  today.setUTCDate(today.getUTCDate()-((today.getUTCDay()+6)%7)+offset*7)
  return Array.from({length:7},(_,i)=>{const date=new Date(today);date.setUTCDate(date.getUTCDate()+i);return {key:date.toISOString().slice(0,10),short:new Intl.DateTimeFormat('es',{weekday:'short',timeZone:'UTC'}).format(date).replace('.',''),day:date.getUTCDate(),date}})
 }
-export default function MeetingExplorer({data,zone,renderMeeting,onCreate,onCalendar}:{data:HubData;zone:string;renderMeeting:(m:Meeting)=>React.ReactNode;onCreate:()=>void;onCalendar:()=>void}) {
+export default function MeetingExplorer({data,zone,renderMeeting,onCreate,onCalendar,onImport}:{data:HubData;zone:string;renderMeeting:(m:Meeting)=>React.ReactNode;onCreate:()=>void;onCalendar:()=>void;onImport:()=>void}) {
  const [view,setView]=useState<'list'|'week'>('list'),[period,setPeriod]=useState<AgendaPeriod>('Próximas')
  const [query,setQuery]=useState(''),[program,setProgram]=useState('Todos'),[language,setLanguage]=useState('Todos'),[openOnly,setOpenOnly]=useState(false)
  const [offset,setOffset]=useState(0),[selectedDay,setSelectedDay]=useState(''),[savedFor,setSavedFor]=useState('')
@@ -40,7 +40,7 @@ export default function MeetingExplorer({data,zone,renderMeeting,onCreate,onCale
  function clearFilters(){setProgram('Todos');setLanguage('Todos');setOpenOnly(false);setQuery('')}
  function nextMeetings(){setView('list');setPeriod('Próximas');setSelectedDay('')}
  return <section className="meeting-explorer agenda-v2 agenda-simplified" data-view={view}>
-  <div className="page-heading"><div><h1>Reuniones</h1><p>{star?'Busca un colegio o una reunión y solicita participar.':'Agenda y gestión de las JDP.'}</p></div><div className="meeting-calendar-tools">{!data.user.reviewer&&<button className="secondary-button" onClick={onCalendar}><CalendarDays size={17}/> Google Calendar</button>}{data.user.role==='admin'&&<button className="primary" onClick={onCreate}><Plus size={18}/> Crear reunión</button>}</div></div>
+  <div className="page-heading"><div><h1>Reuniones</h1><p>{star?'Busca un colegio o una reunión y solicita participar.':'Agenda y gestión de las JDP.'}</p></div><div className="meeting-calendar-tools">{!data.user.reviewer&&<button className="secondary-button" onClick={onCalendar}><CalendarDays size={17}/> Google Calendar</button>}{data.user.role==='admin'&&<><button className="secondary-button" onClick={onImport}><Download size={17}/> Importar calendario</button><button className="primary" onClick={onCreate}><Plus size={18}/> Crear reunión</button></>}</div></div>
   <ProgramFilter programs={[...programs,...(program!=='Todos'&&!programs.includes(program)?[program]:[])]} selected={program} counts={programCounts} total={visible.length} onSelect={setProgram}/>
   <div className="agenda-controls agenda-controls-visible">
    <div className="agenda-search-row"><label className="explorer-search"><Search size={19}/><input aria-label="Buscar reuniones" placeholder="Busca un colegio, tema o anfitrión…" value={query} onChange={e=>setQuery(e.target.value)}/>{query&&<button aria-label="Limpiar búsqueda" onClick={()=>setQuery('')}><X size={16}/></button>}</label><label className="agenda-language"><Globe2 size={16}/><span className="sr-only">Idioma de la reunión</span><select aria-label="Idioma de la reunión" value={language} onChange={e=>setLanguage(e.target.value)}><option value="Todos">Cualquier idioma</option><option value="Español">Español</option><option value="English">Inglés</option><option value="Português">Portugués</option></select></label><div className="view-switch" aria-label="Vista de reuniones"><button aria-label="Vista de lista" aria-pressed={view==='list'} onClick={()=>setView('list')}><List size={17}/><span>Lista</span></button><button aria-label="Vista semanal" aria-pressed={view==='week'} onClick={()=>setView('week')}><CalendarDays size={17}/><span>Semana</span></button></div></div>

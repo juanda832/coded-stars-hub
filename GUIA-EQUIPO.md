@@ -85,3 +85,10 @@ Usa datos ficticios. Los perfiles de Isa y Ela son de demostración, los avisos 
 ## Agenda personal en Google Calendar
 
 Abre **Mi cuenta → Tu agenda en Google Calendar**, prepara y copia el enlace. Agrégalo en Google desde **Configuración → Agregar calendario → Desde URL**. Cada persona debe confirmar esa adición desde su propia cuenta; el Hub no envía invitaciones ni necesita leer otros calendarios. Los recorridos de prueba separados no comparten agendas. [Guía completa](CALENDARIO.md).
+## Encontrar algo rápido
+
+Pulsa la lupa de la barra superior. Busca un colegio, programa o herramienta del Hub. Solo aparecen las opciones de tu perfil. En computadora también puedes usar Ctrl/⌘ + K.
+
+## Importar reuniones de un host
+
+En **Reuniones → Importar calendario**, carga un archivo `.ics` o una dirección iCal de Google autorizada. Revisa y marca solo las JDP que quieres guardar. Confirma el colegio, deja vacío lo que no haya informado el host y pulsa **Importar**. Si ya existe, abre la reunión para revisar sus cambios; no se duplica. [Pasos y límites](CALENDARIO.md).

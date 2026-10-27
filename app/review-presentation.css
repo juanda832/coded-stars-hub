@@ -1,6 +1,6 @@
 /* Review edition: short labels, real photography and quiet working surfaces. */
-:root {--hub-canvas:#f6f5f2;--coded-gradient:linear-gradient(110deg,#7130aa,#61288f)}
-body,.shell {background:#f6f5f2}
+:root {--hub-canvas:#f5f5fa;--coded-gradient:linear-gradient(115deg,#7433d1,#5b26a8);--hub-ink:#282037;--hub-copy:#61576d;--hub-border:#e4e0ec}
+body,.shell {background:var(--hub-canvas)}
 .primary,.hero-button,.action-button,.candidate-actions .primary {background:#6e2ca3;border-color:#6e2ca3;box-shadow:none;color:#fff}
 .primary:hover,.candidate-actions .primary:hover {background:#592084;border-color:#592084}
 .secondary-button {background:#fff;border-color:#ddd5e2;box-shadow:none;color:#603b75}
@@ -190,3 +190,77 @@ body,.shell {background:#f6f5f2}
 @media(max-width:700px) {.quick-meeting-editor .dialog-inner {padding:24px 21px!important}.quick-meeting-editor .dialog-inner>h2 {font-size:24px}}
 
 .quick-meeting-editor .quick-date-fields {grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.quick-meeting-editor .quick-date-fields input {min-width:0;width:100%}
+
+/* Finishing pass: stronger text, clear actions and a keyboard-friendly finder. */
+.review-presentation .page-heading p,.review-presentation .home-welcome p {color:var(--hub-copy)}
+.review-presentation .sidebar .nav-item {min-height:45px;color:#60576e}
+.review-presentation .sidebar .nav-item.active {background:linear-gradient(110deg,#ede6fb,#f4effc);color:#5b25a7;box-shadow:inset 3px 0 0 #7a40c9}
+.review-presentation .sidebar .nav-item.active>svg {color:#6934b6}
+.review-presentation .topbar {gap:16px;background:#ffffffed;backdrop-filter:blur(14px)}
+.review-presentation .top-actions {gap:12px;min-width:0}
+.review-presentation .primary {background:var(--coded-gradient);border-color:transparent;box-shadow:0 3px 9px #5b26a81a;min-height:44px}
+.review-presentation .primary:hover {background:linear-gradient(115deg,#6528b8,#4e1f92)}
+.review-presentation .secondary-button {color:#553b70;border-color:#d9d0e4;min-height:44px}
+.review-presentation :is(button,a,summary,input,select,textarea):focus-visible {outline:3px solid #7841bd;outline-offset:3px}
+.review-presentation .program-invitation {border-color:#ded6e7;box-shadow:0 8px 25px #2f164308}
+.review-presentation .invitation-copy {background:linear-gradient(135deg,#fffdf9,#f5f0fc)}
+.review-presentation .invitation-copy>p,.review-presentation .invitation-program-picker small {color:#675b74}
+.review-presentation .invitation-copy>small {color:#71617c}
+.review-presentation .staff-task,.review-presentation .friendly-meeting,.review-presentation .home-action-dock>button {box-shadow:0 3px 10px #38254905}
+.review-presentation .staff-task>small,.review-presentation .agenda-main>small,.review-presentation .staff-next-copy>p,.review-presentation .home-action-dock small {color:#6f607b}
+.review-presentation .staff-next-card {border-radius:17px;box-shadow:0 5px 20px #30203e06}
+.review-presentation .meeting-schedule {border-color:#e0d7eb;background:#f7f3fc}
+.review-presentation .meeting-schedule>small,.review-presentation .staff-next-status {color:#6b557c}
+.review-presentation .account-summary {background:linear-gradient(115deg,#f1eafb,#f4f6ff);border-color:#ded5eb}
+.review-presentation .calendar-connect-heading p,.review-presentation .calendar-connect-steps p,.review-presentation .calendar-connect-start>p {color:#6d5d7b}
+.review-presentation .calendar-connect-note,.review-presentation .calendar-connect-privacy,.review-presentation .calendar-connect-start small {color:#746382}
+.review-presentation .calendar-connect-controls .text-link {color:#674281}
+.review-presentation .directory-heading p,.review-presentation .managed-account-state small,.review-presentation .account-management-intro p {color:#6b5c77}
+.hub-quick-find {display:flex;align-items:center;gap:9px;min-height:40px;padding:9px 12px;border:1px solid #e2dce9;border-radius:10px;background:#f9f7fc;color:#71627e;font-size:12px;white-space:nowrap}
+.hub-quick-find kbd {margin-left:17px;border:1px solid #e5dfec;background:#fff;padding:3px 5px;border-radius:4px;color:#83708e;font-family:inherit;font-size:10px}
+.quick-find-dialog {width:min(620px,calc(100vw - 32px));max-height:min(760px,calc(100dvh - 40px));padding:0;border:1px solid #e2d9ed;border-radius:20px}
+.quick-find-dialog .dialog-inner {padding:25px 0 0}
+.quick-find-dialog .dialog-inner>h2 {font-size:21px;margin:0 55px 19px 25px;letter-spacing:-.5px}
+.quick-find-dialog .dialog-tools {padding-right:14px}
+.quick-find-input {display:flex;align-items:center;gap:12px;margin:0 24px 9px;padding:12px 14px;border:1px solid #d5c7e8;border-radius:12px;background:#fcfaff;color:#7845ac}
+.quick-find-input:focus-within {border-color:#8651c2;box-shadow:0 0 0 3px #8e57c811}
+.quick-find-input input {background:transparent;border:0;outline:none!important;box-shadow:none;width:100%;min-width:0;font:inherit;font-size:14px;color:#382646;min-height:24px}
+.quick-find-input input::placeholder {color:#877393}
+.quick-find-input input::-webkit-search-cancel-button {display:none}
+.quick-find-input button {display:grid;place-items:center;width:30px;height:30px;flex-shrink:0;border:0;background:transparent;color:#765985;border-radius:6px}
+.quick-find-results {max-height:min(450px,calc(100dvh - 260px));overflow-y:auto;overscroll-behavior:contain;padding:0 14px 14px;scrollbar-gutter:stable}
+.quick-find-results h3 {font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#81708d;padding:17px 12px 8px;margin:0}
+.quick-find-results section>button {display:flex;align-items:center;gap:12px;width:100%;padding:12px 11px;border:1px solid transparent;border-radius:11px;background:#fff;text-align:left;color:#715484;min-height:67px}
+.quick-result-icon {display:grid;place-items:center;flex-shrink:0;width:38px;height:38px;border-radius:10px;background:#f0eafb;color:#793eb8}
+.quick-result-icon.meeting {background:#eaf5f1;color:#23795f}
+.quick-find-results button>span:nth-child(2) {flex:1;min-width:0;display:grid;gap:5px}
+.quick-find-results b {font-size:13px;line-height:1.5;color:#49335b;font-weight:600;overflow-wrap:anywhere}
+.quick-find-results small {font-size:11px;line-height:1.65;color:#7a6887;overflow-wrap:anywhere}
+.quick-find-results button>svg {color:#a691b2;flex-shrink:0}
+.quick-find-results section>button:focus-visible {outline:0;background:#f5effb;border-color:#bca0d6;box-shadow:inset 3px 0 #8150b8}
+.quick-find-empty {display:flex;align-items:center;flex-direction:column;gap:13px;text-align:center;padding:40px 20px;color:#8c72a0}
+.quick-find-empty p {font-size:12px;line-height:1.8;margin:0;max-width:300px;color:#7b658a}
+.quick-find-footer {display:flex;justify-content:space-between;gap:14px;padding:13px 24px;border-top:1px solid #ebe4f2;background:#fcfaff;color:#806c8f;font-size:10px;line-height:1.8}
+.quick-find-footer kbd {font:inherit;border:1px solid #e5dbed;border-radius:4px;padding:2px 4px;background:#fff}
+@media(hover:hover) and (pointer:fine) {
+ .review-presentation .staff-task:hover,.review-presentation .home-action-dock>button:hover {border-color:#c8b4df;box-shadow:0 6px 18px #4c2e6b0c;transform:translateY(-2px)}
+ .quick-find-results section>button:hover {background:#f7f2fc;border-color:#eee3f6}
+ .hub-quick-find:hover {background:#f1eafa;border-color:#cbb4e1;color:#613497}
+}
+@media(prefers-reduced-motion:no-preference) {
+ .review-presentation .staff-task,.review-presentation .home-action-dock>button,.hub-quick-find,.quick-find-results section>button {transition:background .17s ease,border-color .17s ease,box-shadow .17s ease,transform .17s ease}
+ .quick-find-dialog[open] {animation:finder-in .16s ease-out}
+ @keyframes finder-in {from {opacity:0;transform:translateY(-7px)} to {opacity:1;transform:translateY(0)}}
+}
+@media(max-width:1100px) {.hub-quick-find kbd {display:none}.hub-quick-find span {font-size:11px}.review-presentation .top-actions {gap:9px}}
+@media(max-width:760px) {
+ .hub-quick-find {width:40px;height:40px;padding:0;justify-content:center;background:#fff}.hub-quick-find span {display:none}
+ .review-presentation .topbar {gap:10px}.review-presentation .top-actions {gap:8px}
+ .quick-find-dialog .dialog-inner {padding-top:23px}.quick-find-dialog .dialog-inner>h2 {font-size:20px;margin-left:20px}
+ .quick-find-input {margin:0 16px 8px;padding:11px 12px}.quick-find-input input {font-size:16px}
+ .quick-find-results {padding:0 8px 10px}.quick-find-results section>button {padding:11px 10px;gap:10px}.quick-find-results h3 {padding-left:10px}
+ .quick-find-footer {padding:12px 18px}.quick-find-footer>span:last-child {display:none}
+}
+
+.quick-find-dialog .dialog-tools .dialog-close {right:14px;top:-9px}
+.friendly-dialog h2[tabindex="-1"]:focus {outline:none}

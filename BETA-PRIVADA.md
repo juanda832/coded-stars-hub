@@ -63,3 +63,8 @@ La agenda personal está disponible desde **Mi cuenta**. Cada persona agrega su 
 5. Revisar rendimiento y granularidad de bloqueos antes de ampliar el número de participantes.
 
 Gamificación y chat interno continúan fuera del alcance de esta beta.
+### Calendarios de hosts
+
+Administración puede importar un `.ics` o revisar una dirección iCal de Google autorizada desde **Reuniones → Importar calendario**. Solo se guardan las JDP seleccionadas y revisadas; los duplicados no crean reuniones nuevas. Es una importación bajo demanda, sin sincronización automática. Los archivos de prueba deben contener datos ficticios.
+
+Para la versión 1.1 quedan la conexión OAuth con consentimiento individual, las actualizaciones automáticas con revisión de conflictos y el soporte de series recurrentes. La beta actual no los presenta como terminados. Consulta [CALENDARIO.md](CALENDARIO.md).

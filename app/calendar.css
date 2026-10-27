@@ -1,3 +1,55 @@
 .calendar-connect{margin:24px 0 28px;border:1px solid #e1d9eb;border-radius:18px;background:#fff;overflow:hidden}.calendar-connect-heading{display:flex;align-items:center;gap:15px;padding:24px 26px;background:linear-gradient(115deg,#f1edfb,#f6f9ff);border-bottom:1px solid #ebe4f2}.calendar-connect-heading>span{display:grid;place-items:center;width:48px;height:48px;background:#fff;border:1px solid #e5ddf0;color:#7443aa;border-radius:14px;flex-shrink:0}.calendar-connect-heading>div{flex:1}.calendar-connect h2{font-size:17px;color:#4c305d;margin:0 0 7px;letter-spacing:-.3px}.calendar-connect-heading p{font-size:12px;color:#8d759a;line-height:1.7;margin:0}.calendar-connect-heading>b{display:flex;align-items:center;gap:5px;font-size:10px;color:#38815c;background:#eaf7ef;padding:6px 9px;border-radius:7px;white-space:nowrap}.calendar-connect-start{padding:23px 26px}.calendar-connect-start>p{font-size:13px;line-height:1.85;color:#8b7597;max-width:630px;margin:0 0 19px}.calendar-connect .primary{font-size:12px;min-height:43px}.calendar-connect-start small{display:block;font-size:11px;color:#a28aaf;margin-top:13px}.calendar-connect-steps{list-style:none;padding:24px 26px 0;margin:0;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px}.calendar-connect-steps b{font-size:13px;color:#725181}.calendar-connect-steps p{font-size:12px;line-height:1.8;color:#957ba2;margin:9px 0 14px}.calendar-connect-steps small{font-size:11px;color:#368862;display:block;margin-top:10px}.calendar-private-link{display:flex;align-items:center;gap:8px}.calendar-private-link input{flex:1;min-width:0;border:1px solid #e4d9ec;background:#faf7fd;padding:12px;border-radius:9px;font-size:12px;color:#9b7aac}.calendar-private-link .secondary-button{font-size:11px;min-height:42px;white-space:nowrap;padding:10px 13px}.calendar-connect-note{display:flex;align-items:flex-start;gap:10px;margin:22px 26px;font-size:12px;line-height:1.85;color:#9b82a8}.calendar-connect-note svg{margin-top:3px;flex-shrink:0;color:#ad92bd}.calendar-connect-controls{display:flex;gap:22px;margin:0 26px 20px;padding-top:17px;border-top:1px solid #eee7f4}.calendar-connect-controls .text-link{font-size:11px;color:#8e709f;min-height:40px}.calendar-connect-privacy{display:flex;align-items:flex-start;gap:9px;margin:0;padding:17px 26px;border-top:1px solid #eee7f4;background:#fcfaff;font-size:11px;line-height:1.85;color:#a48bae}.calendar-connect-privacy svg{flex-shrink:0;margin-top:2px}.calendar-connect-error{margin:20px 26px;padding:14px;border-radius:10px;border:1px solid #ebd2d2;background:#fff8f8}.calendar-connect-error p{font-size:12px;line-height:1.75;color:#a06161;margin:0 0 10px}.calendar-connect-error button{font-size:11px;min-height:38px}.calendar-confirm-dialog{max-width:500px}.calendar-confirm-dialog p{font-size:13px;color:#937c9e;line-height:1.9;margin:20px 0}.calendar-confirm-dialog .dialog-inner>div:last-child{display:flex;justify-content:flex-end;gap:10px}.calendar-confirm-dialog button{font-size:12px;min-height:42px}.meeting-calendar-tools{display:flex;align-items:center;gap:10px}.meeting-calendar-tools .secondary-button{font-size:12px;min-height:42px}
 @media(max-width:900px){.calendar-connect-steps{grid-template-columns:1fr;gap:22px}.calendar-connect-heading>b{display:none}}
 @media(max-width:760px){.calendar-connect-heading{padding:20px;gap:12px}.calendar-connect-heading>span{width:42px;height:42px;border-radius:12px}.calendar-connect h2{font-size:16px;line-height:1.5}.calendar-connect-heading p{font-size:11px}.calendar-connect-start,.calendar-connect-steps{padding:20px}.calendar-connect-start .primary{width:100%}.calendar-connect-note{margin:18px 20px;font-size:11px}.calendar-connect-controls{margin:0 20px 16px;gap:15px;flex-wrap:wrap}.calendar-connect-privacy{padding:16px 20px;font-size:10px}.calendar-private-link{flex-wrap:wrap}.calendar-private-link input{flex-basis:100%}.calendar-private-link button{width:100%;justify-content:center}.calendar-connect-error{margin:18px 20px}.meeting-calendar-tools{width:100%;flex-wrap:wrap}.meeting-calendar-tools button{flex:1;justify-content:center}.meeting-calendar-tools .secondary-button{font-size:11px}}
+
+/* Calendar import: pick a source, inspect, then explicitly save the chosen JDP. */
+.calendar-import-dialog {width:min(760px,calc(100vw - 32px));max-width:760px}
+.calendar-import-dialog .dialog-inner {padding:28px}
+.calendar-import-dialog .dialog-inner>h2 {font-size:25px;line-height:1.35;letter-spacing:-.6px;margin:0 35px 13px 0}
+.calendar-import-lead {font-size:13px;color:#70607e;line-height:1.85;margin:0 0 19px}
+.calendar-import-method {display:flex;gap:9px;background:#f5f1f9;padding:6px;border-radius:11px;margin:0 0 20px}
+.calendar-import-method button {display:flex;align-items:center;justify-content:center;gap:9px;flex:1;min-height:44px;font-size:12px;border:1px solid transparent;border-radius:8px;background:transparent;color:#7b638d}
+.calendar-import-method button[aria-pressed=true] {background:#fff;border-color:#dbcee8;color:#653894;box-shadow:0 2px 5px #3c1b5d08}
+.calendar-import-upload {display:flex;flex-direction:column;align-items:center;text-align:center;gap:14px;padding:29px 24px;border:1px dashed #b69acb;border-radius:14px;background:#fcfaff;color:#8658a5}
+.calendar-import-upload b {font-size:14px;color:#5b3e70;overflow-wrap:anywhere;max-width:100%}
+.calendar-import-upload>span {font-size:12px;line-height:1.85;color:#7b648a;max-width:450px}
+.calendar-import-upload input {width:100%;max-width:310px;font-size:12px;color:#756080;min-height:40px}
+.calendar-import-upload input::file-selector-button {padding:10px 13px;border:1px solid #d8c5e7;border-radius:7px;background:#fff;color:#613580;font:inherit;margin-right:8px;cursor:pointer}
+.calendar-import-upload small {font-size:10px;color:#897295}
+.calendar-import-url,.calendar-import-host {display:block;font-size:12px;font-weight:600;color:#654c76;margin:18px 0}
+.calendar-import-url input,.calendar-import-host select,.calendar-import-list input:not([type=checkbox]) {width:100%;display:block;margin-top:8px;border:1px solid #dfd3e8;border-radius:8px;background:#fff;color:#594169;font:inherit;font-size:13px;min-height:44px;padding:10px 12px;min-width:0;box-sizing:border-box}
+.calendar-import-url small {display:block;color:#7d658b;font-size:11px;line-height:1.8;font-weight:400;margin-top:11px}
+.calendar-import-privacy {display:flex;gap:9px;font-size:11px;line-height:1.9;color:#796487;background:#f8f5fb;border:1px solid #ede4f5;padding:13px 15px;border-radius:10px;margin:18px 0}
+.calendar-import-privacy svg {flex-shrink:0;margin-top:3px;color:#8956b0}
+.calendar-import-actions {display:flex;justify-content:space-between;align-items:center;gap:12px;border-top:1px solid #e8deef;padding-top:19px;margin-top:20px}
+.calendar-import-actions button {font-size:12px;min-height:44px}
+.calendar-import-zone {display:flex;align-items:center;gap:8px;color:#6f4c8b;font-size:11px;background:#f4edf9;border-radius:8px;padding:10px 13px}
+.calendar-import-host>span,.calendar-import-list label>span {font-size:10px;font-weight:400;color:#897096;margin-left:5px}
+.calendar-import-host select {max-width:330px}
+.calendar-import-list {display:grid;gap:12px}
+.calendar-import-list article {padding:17px;border:1px solid #e3d9ec;border-radius:12px;background:#fff}
+.calendar-import-list article.selected {background:#fdfbff;border-color:#bfa4d4}
+.calendar-import-choice {display:flex;gap:12px;align-items:center;cursor:pointer;min-height:44px}
+.calendar-import-choice>input {width:18px;height:18px;flex-shrink:0;accent-color:#7c3db5}
+.calendar-import-choice>span:first-of-type {display:grid;gap:6px;flex:1;min-width:0;margin:0}
+.calendar-import-choice b {font-size:13px;color:#5c4070;line-height:1.65;overflow-wrap:anywhere}
+.calendar-import-choice small {font-size:11px;font-weight:400;color:#82668f;line-height:1.8}
+.calendar-import-existing {display:flex;align-items:center;gap:5px;color:#37785c!important;white-space:nowrap}
+.calendar-import-list fieldset {display:grid;grid-template-columns:1fr 1fr;gap:15px;border:0;margin:16px 0 0;padding:16px 0 0;border-top:1px solid #e8deef;min-width:0}
+.calendar-import-list fieldset label {font-size:11px;color:#6a4d7d;font-weight:600;min-width:0}
+.calendar-import-list .calendar-import-link {grid-column:1/-1}
+.calendar-import-list fieldset>p {grid-column:1/-1;color:#8c6633;font-size:11px;line-height:1.85;margin:0;background:#fff9ed;padding:10px 12px;border-radius:8px}
+.calendar-import-omitted {font-size:11px;color:#80658f;line-height:1.85;margin:15px 0;padding:12px 14px;background:#faf7fc;border-radius:9px;border:1px solid #e9dff1}
+.calendar-import-omitted summary {cursor:pointer;font-weight:600;min-height:25px}
+.calendar-import-empty {padding:35px 22px;text-align:center;color:#90759e;border:1px dashed #ddd0e8;border-radius:12px}
+.calendar-import-empty h3 {font-size:15px;color:#6c4f7d}.calendar-import-empty p {font-size:12px;line-height:1.85}
+.meeting-explorer>.page-heading {flex-wrap:wrap}.meeting-calendar-tools {flex-wrap:wrap;gap:8px}
+@media(max-width:760px) {
+ .calendar-import-dialog .dialog-inner {padding:24px 19px}.calendar-import-dialog .dialog-inner>h2 {font-size:23px}
+ .calendar-import-method button {font-size:11px;gap:6px}.calendar-import-upload {padding:24px 16px}.calendar-import-upload input {font-size:11px}
+ .calendar-import-dialog :is(input:not([type=checkbox]):not([type=file]),select) {font-size:16px}
+ .calendar-import-list article {padding:14px}.calendar-import-list fieldset {gap:15px 11px}.calendar-import-choice {flex-wrap:wrap}
+ .calendar-import-existing {margin-left:30px!important;flex-basis:100%;margin-top:3px}
+ .calendar-import-actions {flex-wrap:wrap}.calendar-import-actions .primary {flex:1;justify-content:center}
+ .meeting-calendar-tools .primary {flex-basis:100%}
+}
