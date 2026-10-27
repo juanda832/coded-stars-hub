@@ -1,6 +1,6 @@
 export type Role = 'star' | 'host' | 'admin'
 export type MeetingStatus = 'scheduled' | 'live' | 'completed' | 'cancelled'
-export type Meeting = { id:string; title:string; schoolName?:string; sourceTimeZone?:string; program:string; language:''|'Español'|'English'|'Português'; startsAt:string; duration:number|null; host:string; hostId:string; capacity:1; status:MeetingStatus; description:string; color:string; takeaway?:string; agenda?:string[]; hostNote?:string; joinUrl?:string }
+export type Meeting = { calendarRevision?:number; updatedAt?:string; id:string; title:string; schoolName?:string; sourceTimeZone?:string; program:string; language:''|'Español'|'English'|'Português'; startsAt:string; duration:number|null; host:string; hostId:string; capacity:1; status:MeetingStatus; description:string; color:string; takeaway?:string; agenda?:string[]; hostNote?:string; joinUrl?:string }
 export type ApplicationStatus = 'pending'|'confirmed'|'not_selected'|'withdrawn'
 export type Registration = { id:string; meetingId:string; userId:string; status:ApplicationStatus; requestedAt:string; updatedAt:string }
 export type Feedback = { meetingId:string; userId:string; rating:number; comment:string }

@@ -219,7 +219,7 @@ export async function changeMeeting(user: User, body: Record<string, unknown>) {
         const host = (await directoryUsers()).find(u => u.id === hostId && u.role === 'host');
         if (hostId && !host)
             throw new WorkflowError('Elige un anfitrión válido.');
-        const meeting: Meeting = { id: previous?.id || randomUUID(), capacity: 1, status: 'scheduled', color: 'purple', ...previous, ...fields, host: host?.name || '', hostId: host?.id || '' };
+        const meeting: Meeting = { id: previous?.id || randomUUID(), capacity: 1, status: 'scheduled', color: 'purple', ...previous, ...fields, host: host?.name || '', hostId: host?.id || '', calendarRevision:(previous?.calendarRevision||0)+1, updatedAt:new Date().toISOString() };
         await saveRecord('meetings', meeting.id, meeting);
         if (previous) {
             const changed = ['schoolName', 'title', 'description', 'startsAt', 'duration', 'language', 'program', 'hostNote', 'joinUrl', 'hostId'].some(key => previous[key as keyof Meeting] !== meeting[key as keyof Meeting]);
@@ -243,7 +243,7 @@ export async function changeMeetingStatus(meetingId: string, user: User, status:
             throw new WorkflowError('Estado inválido.');
         if (meeting.status === status)
             return;
-        await saveRecord('meetings', meetingId, { ...meeting, status });
+        await saveRecord('meetings', meetingId, { ...meeting, status, calendarRevision:(meeting.calendarRevision||0)+1, updatedAt:new Date().toISOString() });
         const label = status === 'cancelled' ? 'Reunión cancelada' : status === 'completed' ? 'La reunión finalizó' : status === 'live' ? 'La reunión está en vivo' : 'Reunión programada';
         await notifyApplicants(meeting, label, `${meeting.title}: consulta el estado y los próximos pasos en el Hub.`);
         if (user.id !== meeting.hostId)

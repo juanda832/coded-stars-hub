@@ -81,3 +81,7 @@ Los horarios se muestran en la zona elegida. En **Reuniones** se puede buscar po
 ## Alcance de esta revisión
 
 Usa datos ficticios. Los perfiles de Isa y Ela son de demostración, los avisos se muestran dentro del Hub y el acceso actual funciona en esta computadora. La publicación, las cuentas reales y el uso de datos reales de menores requieren la preparación y autorización correspondientes.
+
+## Agenda personal en Google Calendar
+
+Abre **Mi cuenta → Tu agenda en Google Calendar**, prepara y copia el enlace. Agrégalo en Google desde **Configuración → Agregar calendario → Desde URL**. Cada persona debe confirmar esa adición desde su propia cuenta; el Hub no envía invitaciones ni necesita leer otros calendarios. Los recorridos de prueba separados no comparten agendas. [Guía completa](CALENDARIO.md).

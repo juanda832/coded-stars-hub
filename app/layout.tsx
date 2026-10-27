@@ -22,5 +22,6 @@ import './invitation-photography.css'
 import './connection.css'
 import './accounts.css'
 import './beta-review.css'
+import './calendar.css'
 export const metadata = { title: personalAccessEnabled()?'CODED Stars Hub · Beta':'CODED Stars Hub · Demo', description: 'Reuniones, solicitudes y mensajes del equipo CODED. Versión de revisión con datos de ejemplo.', icons: {icon:'/brand/coded-icon.png',apple:'/brand/coded-icon.png'} }
 export default function RootLayout({children}:{children:React.ReactNode}) { return <html lang="es"><body>{personalAccessEnabled()?<ClerkProvider signInUrl="/sign-in" localization={{...esES,signIn:{...esES.signIn,start:{...esES.signIn?.start,subtitle:'para continuar a CODED Stars Hub'}}}}>{children}</ClerkProvider>:children}</body></html> }

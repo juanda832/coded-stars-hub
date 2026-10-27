@@ -50,6 +50,10 @@ La beta admite únicamente nombres ficticios y direcciones `@example.com`. Esos 
 - **Acceso definitivo:** Clerk sigue en modo de desarrollo. El dominio propio y la configuración de producción quedan pendientes antes del uso con datos reales.
 - **Personas reales:** no habilitadas desde el formulario de la beta. No se cargaron datos reales de menores.
 
+## Google Calendar
+
+La agenda personal está disponible desde **Mi cuenta**. Cada persona agrega su propio enlace en Google; los recorridos de prueba permanecen separados. Google consulta las novedades con su propia frecuencia. No se importan calendarios de hosts. Consulta [CALENDARIO.md](CALENDARIO.md).
+
 ## Para la versión 1.1
 
 1. Dominio autorizado y acceso de producción.
