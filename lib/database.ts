@@ -4,11 +4,13 @@ import { DatabaseSync, type SQLInputValue } from 'node:sqlite'
 import { mkdirSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 import { Client } from '@neondatabase/serverless'
+import {assertTeamConfiguration} from './workspace-policy'
 
 type Row = Record<string, unknown>
 type Result = { rows: Row[]; changes: number }
 type Connection = { scope:string; query: (sql: string, values: SQLInputValue[]) => Promise<Result> }
 const context = new AsyncLocalStorage<Connection>()
+export function currentDatabaseScope(){return context.getStore()?.scope}
 const locals = new Map<string,DatabaseSync>()
 let localQueue = Promise.resolve()
 
@@ -51,6 +53,7 @@ export async function execute(sql: string, ...values: SQLInputValue[]) {
 }
 
 export async function withDatabase<T>(fn: () => Promise<T>,scope?:string): Promise<T> {
+  assertTeamConfiguration(process.env)
   const current=context.getStore()
   if (current) {if(scope&&databaseSchema(scope)!==current.scope)throw new Error('Cross-scope database operation');return fn()}
   if (process.env.DATABASE_URL) {

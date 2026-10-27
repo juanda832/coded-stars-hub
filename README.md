@@ -75,7 +75,7 @@ pnpm build
 pnpm start
 ```
 
-La revisión de esta versión incluye **203 comprobaciones unitarias**, **400 comprobaciones de servidor** y **24 comprobaciones de PostgreSQL compartido**, además de un recorrido en navegador por creación, solicitud, selección, acceso del anfitrión, cierre y resultado del Star. Los detalles y las condiciones de las pruebas están en **[VERIFICATION.md](VERIFICATION.md)**.
+La revisión de esta versión incluye **211 comprobaciones unitarias**, **400 comprobaciones de servidor** y **24 comprobaciones de PostgreSQL compartido**, además de un recorrido en navegador por creación, solicitud, selección, acceso del anfitrión, cierre y resultado del Star. Los detalles y las condiciones de las pruebas están en **[VERIFICATION.md](VERIFICATION.md)**.
 
 Las pruebas de servidor modifican datos: deben ejecutarse exclusivamente con una base de prueba independiente. Instrucciones completas en **[DETALLES-TECNICOS.md](DETALLES-TECNICOS.md)**.
 
@@ -125,3 +125,7 @@ En **Mi cuenta**, cada persona puede preparar una agenda privada por URL para a�
 Administración también puede usar **Reuniones → Importar calendario** para revisar un `.ics` o una dirección iCal de Google autorizada. Elige las JDP antes de guardar, conserva los campos no informados y evita duplicados. No hay sincronización automática ni escritura en Google. Consulta [CALENDARIO.md](CALENDARIO.md).
 
 El buscador de la barra superior abre las herramientas disponibles para cada perfil y las reuniones que ya puede consultar. También se abre con **Ctrl/⌘ + K** y se puede recorrer con flechas, Enter y Escape.
+
+## Espacio del equipo
+
+Está preparado un modo vacío y separado de los ejemplos para el trabajo de coordinación. No se activa con las claves de desarrollo ni sobre la base de la beta. Su activación requiere un dominio autorizado y Clerk de producción. Consulta [PRODUCCION.md](PRODUCCION.md).

@@ -1,5 +1,6 @@
 import {ClerkProvider} from '@clerk/nextjs'
 import {esES} from '@clerk/localizations'
+import {teamWorkspaceEnabled} from '@/lib/workspace-mode'
 import {personalAccessEnabled} from '@/lib/auth-mode'
 import './globals.css'
 import './theme.css'
@@ -23,5 +24,5 @@ import './connection.css'
 import './accounts.css'
 import './beta-review.css'
 import './calendar.css'
-export const metadata = { title: personalAccessEnabled()?'CODED Stars Hub · Beta':'CODED Stars Hub · Demo', description: 'Reuniones, solicitudes y mensajes del equipo CODED. Versión de revisión con datos de ejemplo.', icons: {icon:'/brand/coded-icon.png',apple:'/brand/coded-icon.png'} }
+export const metadata = { title: teamWorkspaceEnabled()?'CODED Stars Hub':personalAccessEnabled()?'CODED Stars Hub · Beta':'CODED Stars Hub · Demo', description: teamWorkspaceEnabled()?'Reuniones, solicitudes y mensajes del equipo CODED.':'Reuniones, solicitudes y mensajes del equipo CODED. Versión de revisión con datos de ejemplo.', icons: {icon:'/brand/coded-icon.png',apple:'/brand/coded-icon.png'} }
 export default function RootLayout({children}:{children:React.ReactNode}) { return <html lang="es"><body>{personalAccessEnabled()?<ClerkProvider signInUrl="/sign-in" localization={{...esES,dividerText:'Ingresar con correo',formFieldInputPlaceholder__emailAddress:'nombre@correo.com',signIn:{...esES.signIn,start:{...esES.signIn?.start,subtitle:'para continuar a CODED Stars Hub'}}}}>{children}</ClerkProvider>:children}</body></html> }

@@ -34,7 +34,7 @@ export default function MeetingEditor({meeting,hosts,userId,zone,busy,error,acti
   event.preventDefault();setValidation('')
   try {
    zonedDateTime(form.date,ORLANDO_ZONE)
-   if(await action({action:meeting?'meeting_edit':'create',meetingId:meeting?.id,schoolName:form.schoolName,...(meeting?{title:meeting.title}:{}),description:form.description,program:form.program,language:form.language,duration:form.duration,date,time,sourceTimeZone:ORLANDO_ZONE,joinUrl:form.joinUrl,hostNote:form.hostNote,hostId:form.hostId},meeting?'JDP actualizada. Avisamos a las personas vinculadas.':'JDP registrada. Los Coded Stars ya pueden solicitar participar.')){
+   if(await action({action:meeting?'meeting_edit':'create',meetingId:meeting?.id,schoolName:form.schoolName,...(meeting?{title:meeting.title}:{}),description:form.description,program:form.program,language:form.language,duration:form.duration,date,time,sourceTimeZone:ORLANDO_ZONE,joinUrl:form.joinUrl,hostNote:form.hostNote,hostId:form.hostId},meeting?'JDP actualizada. Avisamos a las personas vinculadas.':'JDP registrada. Ya aparece en la agenda.')){
     if(storageKey)try{localStorage.removeItem(storageKey)}catch{}
     onClose()
    }

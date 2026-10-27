@@ -80,7 +80,7 @@ Los horarios se muestran en la zona elegida. En **Reuniones** se puede buscar po
 
 ## Alcance de esta revisión
 
-Usa datos ficticios. Los perfiles de Isa y Ela son de demostración, los avisos se muestran dentro del Hub y el acceso actual funciona en esta computadora. La publicación, las cuentas reales y el uso de datos reales de menores requieren la preparación y autorización correspondientes.
+La beta está publicada y las cuentas de Isa y Ela tienen acceso personal de administración. Los colegios, reuniones y perfiles de estudiantes de las pruebas son ficticios; los avisos llegan dentro del Hub. El espacio para cargar el trabajo del equipo se preparó por separado y sigue pendiente de activar el acceso de producción con un dominio autorizado. No cargues datos reales de estudiantes en los recorridos de prueba. [Estado de activación](PRODUCCION.md).
 
 ## Agenda personal en Google Calendar
 

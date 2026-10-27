@@ -1,7 +1,8 @@
 import 'server-only'
 import { users as examples } from './demo-users'
 import { requirePersonalAccess } from './auth-mode'
-import { execute, query, queryOne, withDatabase } from './database'
+import { execute, query, queryOne, withDatabase, currentDatabaseScope } from './database'
+import {exampleWorkspace} from './workspace-mode'
 import type { ManagedAccount, User } from './types'
 import { WorkflowError } from './workflow-error'
 
@@ -26,7 +27,7 @@ export async function saveAccount(account:PrivateAccount) {
  await execute('INSERT INTO records(collection,id,json) VALUES(?,?,?) ON CONFLICT(collection,id) DO UPDATE SET json=excluded.json','accounts',account.id,JSON.stringify(account))
 }
 export async function directoryUsers(includeInactive=false):Promise<User[]> {
- return withDatabase(async()=>[...users,...(await managedAccounts()).filter(account=>account.provisioning==='ready'&&(includeInactive||account.access==='active')).map(({id,name,email,role,initials})=>({id,name,email,role,initials}))])
+ return withDatabase(async()=>[...users.filter(user=>exampleWorkspace(currentDatabaseScope())||['admin-isa','admin-ela','admin-owner'].includes(user.id)),...(await managedAccounts()).filter(account=>account.provisioning==='ready'&&(includeInactive||account.access==='active')).map(({id,name,email,role,initials})=>({id,name,email,role,initials}))])
 }
 export async function assertAccountAccess(user:User) {
  if(user.reviewer&&(process.env.CODED_ALLOW_REAL_ACCOUNTS==='true'||!users.some(admin=>admin.id===user.reviewer!.id&&admin.role==='admin')))throw new WorkflowError('Este recorrido ya no está disponible.',401)

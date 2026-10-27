@@ -1,4 +1,5 @@
-import { query, queryOne, execute, withDatabase } from './database';
+import { query, queryOne, execute, withDatabase, currentDatabaseScope } from './database';
+import {exampleWorkspace} from './workspace-mode';
 import { randomUUID } from 'node:crypto';
 import type { Meeting, Registration, Feedback, MeetingQuestion, ParticipationAnswer, HubNotification, MeetingReport, ReportReview } from './types';
 import { seedMeetings, profiles } from './seed';
@@ -12,7 +13,9 @@ import { WorkflowError } from './workflow-error';
 export { WorkflowError } from './workflow-error';
 export async function withStore<T>(fn: () => Promise<T>,scope?:string): Promise<T> {
     return withDatabase(async () => {
-        if (!await queryOne("SELECT value FROM metadata WHERE key='seed-v3'")) {
+        const marker=await queryOne("SELECT value FROM metadata WHERE key='seed-v3'"),examples=exampleWorkspace(currentDatabaseScope());
+        if(!examples&&marker?.value==='1')throw new WorkflowError('Este espacio contiene ejemplos. Selecciona la base separada del equipo.',503);
+        if (!marker&&examples) {
             for (const meeting of seedMeetings())
                 await saveRecord('meetings', meeting.id, meeting);
             const time = new Date().toISOString();
@@ -21,6 +24,7 @@ export async function withStore<T>(fn: () => Promise<T>,scope?:string): Promise<
             await execute('INSERT INTO selection_criteria(meeting_id,text) VALUES(?,?)', 'm1', 'Revisar experiencia en Orlando, idioma de la reunión y disponibilidad. Criterios ilustrativos; la decisión es del administrador.');
             await execute("INSERT INTO metadata(key,value) VALUES('seed-v3','1')");
         }
+        if(!marker&&!examples)await execute("INSERT INTO metadata(key,value) VALUES('seed-v3','team-empty-v1')");
         return fn();
     },scope);
 }
