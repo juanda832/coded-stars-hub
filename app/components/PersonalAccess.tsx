@@ -14,7 +14,7 @@ export default function PersonalAccess({onRetry,signInPage=false}:{onRetry:()=>v
     <h2>Revisa tu acceso</h2><p>Tu sesión está iniciada, pero todavía no pudimos habilitar tu espacio. Verifica que estés usando el correo de tu cuenta.</p>
     <button className="primary full" onClick={onRetry}>Volver a comprobar</button>
     <button className="secondary full" onClick={()=>void signOut({redirectUrl:'/'})}>Usar otra cuenta</button>
-   </>:<><h2>Entrar al Hub</h2><p>Usa el correo habilitado para tu cuenta.</p>{signInPage?<Suspense fallback={<p role="status">Cargando acceso…</p>}><SignIn routing="path" path="/sign-in" withSignUp={false} transferable={false} fallbackRedirectUrl="/" appearance={{variables:{colorPrimary:'#6200c7',borderRadius:'14px'},elements:{rootBox:'personal-access-root',cardBox:'personal-access-box',footerAction:{display:'none'}}}}/></Suspense>:<a className="primary full" href="/sign-in">Continuar al acceso</a>}</>}
+   </>:<><h2>Entrar al Hub</h2><p>Usa el correo habilitado para tu cuenta.</p>{signInPage?<Suspense fallback={<p role="status">Cargando acceso…</p>}><SignIn routing="path" path="/sign-in" withSignUp={false} transferable={false} fallbackRedirectUrl="/" appearance={{variables:{colorPrimary:'#6200c7',borderRadius:'14px'},options:{socialButtonsPlacement:'top'},elements:{rootBox:'personal-access-root',cardBox:'personal-access-box',dividerText:{fontSize:'13px',fontWeight:600,color:'#654479'},footerAction:{display:'none'}}}}/></Suspense>:<a className="primary full" href="/sign-in">Continuar al acceso</a>}</>}
    <p className="access-privacy">Las reuniones y los perfiles de estudiantes siguen usando datos de prueba.</p>
   </div></section>
  </div>
