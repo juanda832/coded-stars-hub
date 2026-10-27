@@ -9,7 +9,7 @@ import { ArrowRight, Bell, BookOpen, CalendarDays, Check, ClipboardCheck, Globe2
 import type { Meeting } from '@/lib/types'
 import { isActiveMeeting } from '@/lib/meeting-utils'
 import { zoneChoices } from '@/lib/time-zones'
-import { readRoute, routeHash } from '@/lib/navigation'
+import { readRoute, routeHash, isHubHashRoute } from '@/lib/navigation'
 import { StarHome, FriendlyMeetingCard, BookingDialog } from './components/StarExperience'
 import AccessScreen from './components/AccessScreen'
 import MeetingDetails from './components/MeetingDetails'
@@ -41,8 +41,16 @@ export default function Home(){return personalAccessEnabled()?<PersonalHome/>:<H
 function PersonalHome(){
  const {isLoaded,isSignedIn,user}=useUser(),{signOut}=useClerk()
  if(!isLoaded)return <HubLoading/>
- if(!isSignedIn||!user)return <PersonalAccess onRetry={()=>window.location.reload()}/>
+ if(!isSignedIn||!user)return <PersonalEntry/>
  return <HubHome key={user.id} signOut={()=>signOut({redirectUrl:'/'})}/>
+}
+function PersonalEntry(){
+ useEffect(()=>{
+  const destination=window.location.hash
+  if(isHubHashRoute(destination)){try{sessionStorage.setItem('coded-auth-destination',destination)}catch{}}
+  window.location.replace('/sign-in')
+ },[])
+ return <HubLoading/>
 }
 function HubHome({signOut}:{signOut?:()=>Promise<unknown>}) {
  const {data,phase,issue,refreshing,refresh,reset}=useHubSnapshot()
@@ -57,7 +65,7 @@ function HubHome({signOut}:{signOut?:()=>Promise<unknown>}) {
  useEffect(()=>{try{localStorage.setItem('coded-zone',zone)}catch{}},[zone])
  useEffect(()=>{if(!toast)return;const timer=setTimeout(()=>setToast(''),4500);return()=>clearTimeout(timer)},[toast])
  useEffect(()=>{document.title=`${section==='Asistente'?'Ayuda':section} · CODED Stars Hub`},[section,data?.user.id])
- useEffect(()=>{if(!data?.user.id)return;const role=data.user.role;function syncRoute(){const restored=readRoute(window.location.hash,role);const route=data?.user.reviewer&&restored.section==='Cuentas'?{section:'Inicio',view:''}:restored;setSection(route.section);setMessagesTab(route.section==='Mensajes'?route.view:'');setApplicationsTab(route.section==='Mis solicitudes'?(route.view||'Todas'):'Todas');setMobile(false);setSelectedId(null);setReportFor(null);setEditor(null);setBooked(null);setError('');window.history.replaceState(null,'',routeHash(route.section,route.view));window.scrollTo({top:0,behavior:'instant'})}syncRoute();window.addEventListener('hashchange',syncRoute);return()=>window.removeEventListener('hashchange',syncRoute)},[data?.user.id,data?.user.role])
+ useEffect(()=>{if(!data?.user.id)return;const role=data.user.role;function syncRoute(){let destination=window.location.hash;try{const remembered=sessionStorage.getItem('coded-auth-destination');sessionStorage.removeItem('coded-auth-destination');if(!destination&&remembered)destination=remembered}catch{}const restored=readRoute(destination,role);const route=data?.user.reviewer&&restored.section==='Cuentas'?{section:'Inicio',view:''}:restored;setSection(route.section);setMessagesTab(route.section==='Mensajes'?route.view:'');setApplicationsTab(route.section==='Mis solicitudes'?(route.view||'Todas'):'Todas');setMobile(false);setSelectedId(null);setReportFor(null);setEditor(null);setBooked(null);setError('');window.history.replaceState(null,'',routeHash(route.section,route.view));window.scrollTo({top:0,behavior:'instant'})}syncRoute();window.addEventListener('hashchange',syncRoute);return()=>window.removeEventListener('hashchange',syncRoute)},[data?.user.id,data?.user.role])
  function navigate(next:string,view=''){if(next!=='Mensajes')setMessagesMeetingId('');if(next==='Mensajes')setMessagesTab(view);if(next==='Mis solicitudes')setApplicationsTab(view||'Todas');const hash=routeHash(next,view);if(window.location.hash!==hash)window.history.pushState(null,'',hash);setSection(next);setMobile(false);setError('');window.scrollTo({top:0,behavior:'instant'});requestAnimationFrame(()=>document.getElementById('main-content')?.focus({preventScroll:true}))}
  async function login(email:string,password:string){setBusy(true);setError('');try{const response=await fetch('/api/auth',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password})});const result=await response.json();if(!response.ok)throw new Error(result.error);await refresh()}catch(e){setError((e as Error).message)}finally{setBusy(false)}}
  async function logout(){try{if(data?.user.reviewer)await fetch('/api/review-session',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({role:'exit'})});reset();if(signOut){await signOut();return}const response=await fetch('/api/auth',{method:'DELETE'});if(!response.ok)throw new Error('No pudimos cerrar la sesión. Intenta de nuevo.');setPreparationProgram(undefined);setPreparationMeetingId(undefined);setAssistantDraft(null);setSelectedId(null);setReportFor(null);setEditor(null);navigate('Inicio')}catch{setError('No pudimos cerrar la sesión. Intenta de nuevo.')}}

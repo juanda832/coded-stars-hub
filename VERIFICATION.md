@@ -586,7 +586,7 @@ Las comprobaciones existentes de PostgreSQL, permisos y flujo del servidor sigue
 
 Historia verificada: administración prepara un acceso privado → la identidad debe acreditar su correo → el nuevo Star solicita una JDP → coordinación selecciona a una sola persona → el anfitrión recibe únicamente al participante confirmado. La pausa bloquea lecturas y escrituras con una sesión ya existente, conserva el historial y exige una versión vigente para reactivar.
 
-- **179 pruebas unitarias:** política de acceso, identidad, origen de solicitudes, zonas horarias, selección, interfaz de conexión y permisos de los recorridos.
+- **181 pruebas unitarias:** política de acceso, identidad, origen de solicitudes, zonas horarias, selección, interfaz de conexión y permisos de los recorridos.
 - **400 comprobaciones HTTP** de los ocho flujos existentes, cada uno con una base SQLite desechable: calendario, solicitudes, comunicación, contribuciones, respuestas, seguimiento y asistente.
 - **48 comprobaciones del directorio privado** en SQLite y otras **48 en PostgreSQL**: duplicados, reintentos, interrupción de proveedor, altas concurrentes, perfiles dinámicos, avisos, privacidad, pausa/reactivación, ediciones simultáneas y persistencia entre procesos.
 - **16 comprobaciones del espacio de revisión**: aislamiento entre roles, personas y Hub principal; rechazo de cambios de esquema anidados; aportes privados, validación, idempotencia y revisión concurrente.
@@ -597,3 +597,10 @@ Historia verificada: administración prepara un acceso privado → la identidad 
 **Correos externos:** se aceptaron las condiciones del proveedor; no se provisionó correo porque falta un dominio remitente autorizado. El titular decidió cerrar esta beta con avisos internos. No hubo pruebas de entrega SMTP/API ni invitaciones enviadas y no se presentan como implementadas.
 
 **Límites:** beta privada de revisión con datos ficticios y Clerk de desarrollo. Dominio/Clerk de producción, entrega de correo, altas autorizadas de personas reales y validación humana de Isa y Ela siguen pendientes. No se detectaron errores bloqueantes en los flujos ejecutados; esto no sustituye su revisión operativa ni las autorizaciones necesarias antes de usar datos de menores.
+
+
+### Enlaces de entrada y comprobación publicada
+
+La comprobación en navegador detectó una colisión entre los fragmentos de navegación del Hub y las rutas internas del componente de acceso. El acceso se movió a la ruta independiente `/sign-in/[[...sign-in]]`, con navegación interna por ruta y retorno al Hub. Se retiene únicamente el destino conocido del Hub y se restaura después de autenticar, aplicando otra vez los permisos del rol. El acceso ya no comparte fragmentos con el calendario ni con las solicitudes. La pantalla de acceso permanece en el Hub y en español. Se añadieron dos pruebas unitarias para esa distinción y para el límite de permisos del destino recordado.
+
+La versión publicada recibió **35 comprobaciones adicionales** con una identidad temporal ficticia: página pública sin correos privados, datos protegidos, configuración privada del administrador principal, rechazo de orígenes externos, recorridos de los tres roles en PostgreSQL y cookies seguras. La identidad y su sesión se eliminaron. La consulta de errores de ejecución del despliegue devolvió cero registros durante la ventana revisada.

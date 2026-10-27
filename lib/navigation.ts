@@ -19,6 +19,12 @@ const routes:Record<string,{slug:string;roles:Role[]}>= {
 }
 const messageViews:Record<string,string>={Novedades:'novedades',Preguntas:'preguntas',Indicaciones:'indicaciones'}
 const applicationViews:Record<string,string>={'En revisión':'revision',Confirmadas:'confirmadas',Historial:'historial',Todas:'todas'}
+// Only known Hub destinations are retained across the dedicated sign-in page.
+// They are resolved against the authenticated role before navigation resumes.
+export function isHubHashRoute(hash:string) {
+ const slug=hash.replace(/^#\/?/,'').split('?')[0]
+ return Object.values(routes).some(route=>route.slug===slug)
+}
 export function routeHash(section:string,view='') {
  const route=Object.hasOwn(routes,section)?routes[section]:routes.Inicio
  const views=section==='Mensajes'?messageViews:section==='Mis solicitudes'?applicationViews:{}

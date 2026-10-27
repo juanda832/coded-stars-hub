@@ -4,7 +4,7 @@ import {requirePersonalAccess} from './lib/auth-mode'
 
 export default function proxy(request:NextRequest,event:NextFetchEvent){
  if(!requirePersonalAccess())return NextResponse.next()
- return clerkMiddleware()(request,event)
+ return clerkMiddleware({signInUrl:'/sign-in'})(request,event)
 }
 export const config={matcher:[
  '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
