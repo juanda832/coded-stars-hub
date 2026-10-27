@@ -580,3 +580,20 @@ Se promocionó ese despliegue y se conectó el dominio de producción https://co
 - Mi cuenta distingue el acceso personal de los perfiles de demostración. En la beta, las administradoras se muestran primero y los otros perfiles se identifican como ejemplos, dentro de un apartado desplegable. No se modificaron permisos del servidor ni se registraron nuevas cuentas.
 
 Las comprobaciones existentes de PostgreSQL, permisos y flujo del servidor siguen documentadas en la revisión anterior. Esta actualización cambia la carga y recuperación del cliente; no modifica las reglas de solicitudes ni la selección manual.
+
+
+## Cierre de beta privada — 26 de octubre de 2026
+
+Historia verificada: administración prepara un acceso privado → la identidad debe acreditar su correo → el nuevo Star solicita una JDP → coordinación selecciona a una sola persona → el anfitrión recibe únicamente al participante confirmado. La pausa bloquea lecturas y escrituras con una sesión ya existente, conserva el historial y exige una versión vigente para reactivar.
+
+- **179 pruebas unitarias:** política de acceso, identidad, origen de solicitudes, zonas horarias, selección, interfaz de conexión y permisos de los recorridos.
+- **400 comprobaciones HTTP** de los ocho flujos existentes, cada uno con una base SQLite desechable: calendario, solicitudes, comunicación, contribuciones, respuestas, seguimiento y asistente.
+- **48 comprobaciones del directorio privado** en SQLite y otras **48 en PostgreSQL**: duplicados, reintentos, interrupción de proveedor, altas concurrentes, perfiles dinámicos, avisos, privacidad, pausa/reactivación, ediciones simultáneas y persistencia entre procesos.
+- **16 comprobaciones del espacio de revisión**: aislamiento entre roles, personas y Hub principal; rechazo de cambios de esquema anidados; aportes privados, validación, idempotencia y revisión concurrente.
+- **91 comprobaciones autenticadas** con Clerk real y PostgreSQL aislado: direcciones inicialmente reservadas, rechazo antes de verificar, nuevo Star/anfitrión, selección única, enlace privado, bloqueo por pausa de una sesión existente, aportes y recorridos separados. Solo se verificaron direcciones ficticias `@example.com` creadas por la prueba. Las identidades temporales, sesiones y datos propios de esa ejecución se eliminaron al terminar. No se usaron sesiones de Juan, Isa o Ela.
+- **Navegador:** formulario de alta con revisión, pausa y reactivación; guía en celular y computadora; apertura de Star y anfitrión desde administración, retorno explícito; aporte ficticio guardado y marcado en revisión. Sin desbordamiento horizontal en las vistas revisadas de 363 y 1265 píxeles de contenido. Sin errores de consola en el recorrido revisado.
+- Se consultaron los registros administrativos sin iniciar sesión como esas personas: roles correctos; Juan ya tiene correo verificado; Isa y Ela necesitan completar personalmente su verificación inicial. Se escanearon los archivos JavaScript públicos del build personal: no contienen las claves privadas ni los correos de los tres administradores.
+
+**Correos externos:** se aceptaron las condiciones del proveedor; no se provisionó correo porque falta un dominio remitente autorizado. El titular decidió cerrar esta beta con avisos internos. No hubo pruebas de entrega SMTP/API ni invitaciones enviadas y no se presentan como implementadas.
+
+**Límites:** beta privada de revisión con datos ficticios y Clerk de desarrollo. Dominio/Clerk de producción, entrega de correo, altas autorizadas de personas reales y validación humana de Isa y Ela siguen pendientes. No se detectaron errores bloqueantes en los flujos ejecutados; esto no sustituye su revisión operativa ni las autorizaciones necesarias antes de usar datos de menores.

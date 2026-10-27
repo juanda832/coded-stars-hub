@@ -1,11 +1,14 @@
+import { withHubStore } from '@/lib/review-session'
 import { NextRequest, NextResponse } from 'next/server';
 import { currentUser } from '@/lib/auth';
-import { snapshot, saveRecord, requestParticipation, withdrawParticipation, selectParticipant, saveCriteria, markRead, WorkflowError, submitReport, reviewReport, changeMeeting, changeMeetingStatus, askMeetingQuestion, replyMeetingQuestion, updateHostMessage, markAllRead, updateOwnProfile, savePublication, withStore } from '@/lib/store';
-import { users } from '@/lib/user-directory';
+import { snapshot, saveRecord, requestParticipation, withdrawParticipation, selectParticipant, saveCriteria, markRead, WorkflowError, submitReport, reviewReport, changeMeeting, changeMeetingStatus, askMeetingQuestion, replyMeetingQuestion, updateHostMessage, markAllRead, updateOwnProfile, savePublication } from '@/lib/store';
+import { directoryUsers, assertAccountAccess } from '@/lib/user-directory';
 import { participationOptions } from '@/lib/types';
+import { saveBetaContribution, reviewBetaContribution } from '@/lib/beta-review';
 export const runtime = 'nodejs';
 export async function POST(req: NextRequest) {
-    const user = await currentUser();
+    let user;
+    try { user = await currentUser(); } catch { return NextResponse.json({error:'No pudimos comprobar tu acceso. Intenta de nuevo.',},{status:503,headers:{'Cache-Control':'no-store'}}); }
     if (!user)
         return NextResponse.json({ error: 'Inicia sesión' }, { status: 401 });
     let body: Record<string, unknown>;
@@ -19,13 +22,21 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ error: 'Solicitud inválida' }, { status: 400 });
     const fail = (message: string, status = 400) => { throw new WorkflowError(message, status); };
     try {
-        return await withStore(async () => {
+        return await withHubStore(user,async () => {
+            await assertAccountAccess(user);
             const store = await snapshot(), meeting = store.meetings.find(m => m.id === body.meetingId);
             const admin = () => { if (user.role !== 'admin')
                 fail('Solo administración puede tomar esta decisión', 403); };
             const star = () => { if (user.role !== 'star')
                 fail('Sin permiso', 403); };
             switch (body.action) {
+                case 'beta_contribution':
+                    if(user.reviewer)fail('Vuelve a administración para compartir un aporte.',403);
+                    await saveBetaContribution(user,body);
+                    break;
+                case 'beta_review':
+                    await reviewBetaContribution(user,body);
+                    break;
                 case 'profile_update':
                     await updateOwnProfile(user, body);
                     break;
@@ -52,7 +63,7 @@ export async function POST(req: NextRequest) {
                 case 'confirm':
                 case 'select':
                     admin();
-                    if (!users.some(u => u.id === body.userId && u.role === 'star'))
+                    if (!(await directoryUsers()).some(u => u.id === body.userId && u.role === 'star'))
                         fail('Candidato no encontrado', 404);
                     await selectParticipant(String(body.meetingId), String(body.userId));
                     break;

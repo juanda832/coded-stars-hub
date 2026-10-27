@@ -4,7 +4,11 @@
 
 Abre **[CODED Stars Hub](https://coded-stars-beta.vercel.app/)**, escribe tu correo habilitado y completa la verificación del servicio. Cada una entra con su propia identidad. Los perfiles de estudiantes y las reuniones siguen siendo datos de prueba.
 
-Ambas pueden administrar reuniones, solicitudes y publicaciones. Cada perfil conserva sus propios avisos y borradores privados. Para cambiar de perfil, usa **Cerrar sesión**.
+Ambas pueden administrar reuniones, solicitudes, publicaciones y accesos. Cada perfil conserva sus propios avisos y borradores privados.
+
+Empieza por **Revisión beta → Cómo empezar**. Los botones Administración, Anfitrión y Coded Star abren un recorrido con datos ficticios separados. La franja superior permite cambiar de rol y **Volver a mi cuenta**. Deja tus aportes desde tu cuenta habitual en **Revisión beta → Errores e ideas**.
+
+La [guía de la beta privada](BETA-PRIVADA.md) contiene la lista corta de pruebas, los límites actuales y los próximos pasos. Los correos externos están pendientes; los avisos llegan dentro del Hub.
 
 ## Acceso personal de la beta
 

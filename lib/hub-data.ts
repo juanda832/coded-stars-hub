@@ -1,12 +1,15 @@
 import type { HubData, User } from './types';
 import { snapshot, notifications, criteria, starProfiles, visiblePublications } from './store';
-import { users } from './user-directory';
+import { directoryUsers, managedAccounts, accountView, assertAccountAccess } from './user-directory';
+import { accountPolicy } from './accounts-store';
+import { betaContributions } from './beta-review';
 import { participationOptions } from './types';
 import { reportAvailable, reportConflicts, reportSummary } from './reports';
 import { spanishCandidate, spanishCopy, spanishMeeting } from './spanish-copy';
 // Shared visibility boundary for the app and its local assistant.
 export async function hubDataFor(user: User): Promise<HubData> {
-    const profiles = await starProfiles(), ownProfile = profiles.find(p => p.userId === user.id);
+    await assertAccountAccess(user);
+    const users = await directoryUsers(), profiles = await starProfiles(), ownProfile = profiles.find(p => p.userId === user.id);
     const store = await snapshot(), visible = user.role === 'host' ? store.meetings.filter(m => m.hostId === user.id) : store.meetings;
     const canSee = (item: {
         meetingId: string;
@@ -22,7 +25,7 @@ export async function hubDataFor(user: User): Promise<HubData> {
     const candidates = candidateProfiles.map(spanishCandidate);
     const assignedIds = registrations.filter(r => r.status === 'confirmed').map(r => r.userId);
     return {
-        user, profile: user.role === 'star' && ownProfile ? { languages: ownProfile.languages, programs: ownProfile.programs, availability: ownProfile.availability, experience: spanishCopy(ownProfile.experience) } : undefined, hosts: user.role === 'admin' ? users.filter(u => u.role === 'host').map(({ id, name }) => ({ id, name })) : [], team: user.role === 'admin' ? users : [], publications: await visiblePublications(user), meetings, registrations, feedback: store.feedback.filter(canSee), reports: store.reports.filter(r => user.role === 'admin' || r.userId === user.id), reportReviews: user.role === 'admin' ? store.reportReviews : [], questions: store.questions.filter(canSee),
+        user, betaContributions:await betaContributions(user), ...(user.role==='admin'?{accounts:(await managedAccounts()).map(accountView),accountPolicy:accountPolicy()}:{}), profile: user.role === 'star' && ownProfile ? { languages: ownProfile.languages, programs: ownProfile.programs, availability: ownProfile.availability, experience: spanishCopy(ownProfile.experience) } : undefined, hosts: user.role === 'admin' ? users.filter(u => u.role === 'host').map(({ id, name }) => ({ id, name })) : [], team: user.role === 'admin' ? users : [], publications: await visiblePublications(user), meetings, registrations, feedback: store.feedback.filter(canSee), reports: store.reports.filter(r => user.role === 'admin' || r.userId === user.id), reportReviews: user.role === 'admin' ? store.reportReviews : [], questions: store.questions.filter(canSee),
         registrationCounts: Object.fromEntries(visible.map(m => [m.id, store.registrations.filter(r => r.meetingId === m.id && r.status !== 'withdrawn').length])),
         confirmedCounts: Object.fromEntries(visible.map(m => [m.id, store.registrations.filter(r => r.meetingId === m.id && r.status === 'confirmed').length])),
         candidates, assignedStars: user.role === 'star' ? [] : profiles.filter(p => assignedIds.includes(p.userId)).map(({ userId, name, initials, languages, programs }) => ({ userId, name, initials, languages, programs })),

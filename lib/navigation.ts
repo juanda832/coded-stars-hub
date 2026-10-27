@@ -1,5 +1,7 @@
 import type { Role } from './types'
 const routes:Record<string,{slug:string;roles:Role[]}>= {
+ 'Revisión beta':{slug:'revision-beta',roles:['admin','host','star']},
+ Cuentas:{slug:'cuentas',roles:['admin']},
  Asistente:{slug:'asistente',roles:['star','host','admin']},
  Publicaciones:{slug:'publicaciones',roles:['star','host','admin']},
  'Mi cuenta':{slug:'mi-cuenta',roles:['star','host','admin']},

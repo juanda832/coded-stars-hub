@@ -23,3 +23,10 @@ La serialización prioriza la consistencia para una beta de poco tráfico. Antes
 `pnpm test:storage` exige credenciales reales de PostgreSQL y un esquema aislado `coded_hub_qa_*` ya migrado. Comprueba persistencia desde otro proceso, múltiples solicitudes, confirmaciones simultáneas, reasignación manual, privacidad, ediciones en conflicto, informes y reversión ante un fallo. Las comprobaciones de acceso personal se ejecutan por separado; no utilizan las identidades de Isa ni Ela.
 
 El asistente sigue funcionando con reglas locales, sin llamadas a una API de IA de pago.
+
+
+## Recorridos privados de la beta
+
+`pnpm db:reviews`, con el entorno de base privado cargado, prepara tres esquemas adicionales mediante la migración idempotente existente. El nombre deriva del identificador de cada administrador con SHA-256, nunca de una entrada del navegador. Cada recorrido usa `withHubStore`: administración, Star y anfitrión comparten el espacio ficticio de esa persona, separado del Hub principal y de las demás administradoras. En local se utilizan archivos SQLite separados. Un intento de cambiar de esquema dentro de una transacción existente falla.
+
+El servidor solo acepta la preferencia de recorrido después de autenticar y autorizar a la administradora original. El cookie es HttpOnly, está ligado a su identidad y admite únicamente roles predefinidos. No concede permisos a Stars o anfitriones. Los recorridos se deshabilitan al habilitar datos reales; su gestión de cuentas está bloqueada. Los aportes se registran desde la cuenta habitual para que el equipo pueda revisarlos en un solo lugar.

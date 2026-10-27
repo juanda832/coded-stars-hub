@@ -2,16 +2,15 @@ import { query, queryOne, execute, withDatabase } from './database';
 import { randomUUID } from 'node:crypto';
 import type { Meeting, Registration, Feedback, MeetingQuestion, ParticipationAnswer, HubNotification, MeetingReport, ReportReview } from './types';
 import { seedMeetings, profiles } from './seed';
-import { users } from './user-directory';
+import { directoryUsers } from './user-directory';
 import type { SelfProfile, StarProfile, Publication } from './types';
 import { normalizeReport, reportAvailable, reportConflicts, needsReview } from './reports';
 import type { User } from './types';
 import { meetingDraft, secureMeetingLink } from './meeting-draft';
 export { users } from './user-directory';
-export class WorkflowError extends Error {
-    constructor(message: string, public status = 400) { super(message); }
-}
-export async function withStore<T>(fn: () => Promise<T>): Promise<T> {
+import { WorkflowError } from './workflow-error';
+export { WorkflowError } from './workflow-error';
+export async function withStore<T>(fn: () => Promise<T>,scope?:string): Promise<T> {
     return withDatabase(async () => {
         if (!await queryOne("SELECT value FROM metadata WHERE key='seed-v3'")) {
             for (const meeting of seedMeetings())
@@ -23,7 +22,7 @@ export async function withStore<T>(fn: () => Promise<T>): Promise<T> {
             await execute("INSERT INTO metadata(key,value) VALUES('seed-v3','1')");
         }
         return fn();
-    });
+    },scope);
 }
 export async function transaction<T>(fn: () => Promise<T>): Promise<T> { return withStore(fn); }
 export async function records<T>(collection: string): Promise<T[]> { return (await query('SELECT json FROM records WHERE collection=? ORDER BY rowid', collection)).map(row => JSON.parse(String(row.json)) as T); }
@@ -31,7 +30,11 @@ export async function starProfiles(): Promise<StarProfile[]> {
     const changes = await records<SelfProfile & {
         userId: string;
     }>('star_profiles');
-    return profiles.map(profile => ({ ...profile, ...changes.find(change => change.userId === profile.userId) }));
+    const directory = await directoryUsers(true);
+    return directory.filter(user => user.role === 'star').map(user => {
+        const seed = profiles.find(profile => profile.userId === user.id);
+        return { userId:user.id, name:user.name, initials:user.initials, languages:[], programs:[], availability:'', experience:'', history:[], internalNotes:'', ...seed, ...changes.find(change => change.userId === user.id) };
+    });
 }
 export async function updateOwnProfile(user: User, body: Record<string, unknown>) {
     return transaction(async () => {
@@ -72,7 +75,7 @@ export async function savePublication(user: User, body: Record<string, unknown>)
         const post: Publication = { id: previous?.id || randomUUID(), title, body: content, audience: body.audience as Publication['audience'], status: body.status as Publication['status'], authorId: previous?.authorId || user.id, authorName: previous?.authorName || user.name, updatedByName: user.name, createdAt: previous?.createdAt || time, updatedAt: time, version: (previous?.version || 0) + 1 };
         await saveRecord('publications', post.id, post);
         if (post.status === 'published' && (!previous || previous.status !== 'published' || previous.title !== post.title || previous.body !== post.body || previous.audience !== post.audience)) {
-            for (const recipient of users.filter(u => u.id !== user.id && (u.role === 'admin' || post.audience === 'all' || post.audience === u.role)))
+            for (const recipient of (await directoryUsers()).filter(u => u.id !== user.id && (u.role === 'admin' || post.audience === 'all' || post.audience === u.role)))
                 await notify(recipient.id, 'post:' + post.id, 'Nueva publicación para ti', 'El equipo compartió una novedad. Puedes leerla en Publicaciones.');
         }
         return post;
@@ -81,7 +84,7 @@ export async function savePublication(user: User, body: Record<string, unknown>)
 export async function saveRecord(collection: string, id: string, value: unknown) { await execute('INSERT INTO records(collection,id,json) VALUES(?,?,?) ON CONFLICT(collection,id) DO UPDATE SET json=excluded.json', collection, id, JSON.stringify(value)); }
 export async function registrations(): Promise<Registration[]> { return await query('SELECT id,meeting_id AS "meetingId",user_id AS "userId",status,requested_at AS "requestedAt",updated_at AS "updatedAt" FROM applications ORDER BY requested_at,id') as unknown as Registration[]; }
 export async function snapshot() { return { meetings: await records<Meeting>('meetings'), registrations: await registrations(), feedback: await records<Feedback>('feedback'), questions: await records<MeetingQuestion>('questions'), participation: await records<ParticipationAnswer>('participation'), reports: await records<MeetingReport>('reports'), reportReviews: await records<ReportReview>('report_reviews') }; }
-async function notifyAdmins(meetingId: string, title: string, body: string) { for (const user of users.filter(u => u.role === 'admin'))
+async function notifyAdmins(meetingId: string, title: string, body: string) { for (const user of (await directoryUsers()).filter(u => u.role === 'admin'))
     await notify(user.id, meetingId, title, body); }
 async function notify(userId: string, meetingId: string, title: string, body: string) { if (!userId)
     return; await execute('INSERT INTO notifications(id,user_id,meeting_id,title,body,created_at,read_at) VALUES(?,?,?,?,?,?,NULL)', randomUUID(), userId, meetingId, title, body, new Date().toISOString()); }
@@ -213,7 +216,7 @@ export async function changeMeeting(user: User, body: Record<string, unknown>) {
             throw new WorkflowError((error as Error).message);
         }
         const hostId = body.hostId === undefined ? (previous?.hostId || '') : body.hostId;
-        const host = users.find(u => u.id === hostId && u.role === 'host');
+        const host = (await directoryUsers()).find(u => u.id === hostId && u.role === 'host');
         if (hostId && !host)
             throw new WorkflowError('Elige un anfitrión válido.');
         const meeting: Meeting = { id: previous?.id || randomUUID(), capacity: 1, status: 'scheduled', color: 'purple', ...previous, ...fields, host: host?.name || '', hostId: host?.id || '' };

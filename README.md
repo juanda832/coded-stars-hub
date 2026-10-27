@@ -8,7 +8,11 @@ Una primera versión para revisar con Isa y Ela: encontrar una JDP, solicitar pa
 
 ## Para Isa y Ela
 
-No hace falta instalar nada para revisar estas imágenes y documentos:
+Abre la beta con tu correo y entra en **Revisión beta**. Allí puedes probar los tres perfiles en un espacio ficticio separado y registrar errores e ideas. No hace falta instalar nada.
+
+- **[Guía de la beta privada](BETA-PRIVADA.md)**: acceso, pruebas y pendientes.
+
+También se conservan los materiales de la primera presentación:
 
 - **[Ver la presentación en PDF](docs/revision/Revision-CODED-Stars-Hub.pdf)**: recorrido por las pantallas principales.
 - **[Guía del equipo](GUIA-EQUIPO.md)**: registrar reuniones, revisar solicitudes y publicar contenido.
@@ -71,7 +75,7 @@ pnpm build
 pnpm start
 ```
 
-La revisión de esta versión incluye **167 comprobaciones unitarias**, **400 comprobaciones de servidor** y **24 comprobaciones de PostgreSQL compartido**, además de un recorrido en navegador por creación, solicitud, selección, acceso del anfitrión, cierre y resultado del Star. Los detalles y las condiciones de las pruebas están en **[VERIFICATION.md](VERIFICATION.md)**.
+La revisión de esta versión incluye **179 comprobaciones unitarias**, **400 comprobaciones de servidor** y **24 comprobaciones de PostgreSQL compartido**, además de un recorrido en navegador por creación, solicitud, selección, acceso del anfitrión, cierre y resultado del Star. Los detalles y las condiciones de las pruebas están en **[VERIFICATION.md](VERIFICATION.md)**.
 
 Las pruebas de servidor modifican datos: deben ejecutarse exclusivamente con una base de prueba independiente. Instrucciones completas en **[DETALLES-TECNICOS.md](DETALLES-TECNICOS.md)**.
 
@@ -105,3 +109,11 @@ La demo local utiliza perfiles ficticios y SQLite. La beta alojada exige acceso 
 Antes de pasar de esta beta a un uso de producción con datos reales, debe completarse la configuración de producción de Clerk y la revisión del equipo. El uso de datos reales de menores requiere autorización.
 
 Esta revisión no implica la aprobación de CODED. Las fotografías ilustran lugares; no garantizan actividades de una edición concreta. Los créditos y derechos de marca se conservan en sus documentos de origen.
+
+## Cierre de la beta privada
+
+La sección **Cuentas** permite a administración preparar accesos privados de Stars y anfitriones, retomar altas y pausar o reactivar el acceso sin borrar el historial. En esta beta únicamente admite datos ficticios `@example.com`; no envía invitaciones. El directorio dinámico y sus correos se guardan en el servidor.
+
+**Revisión beta** reúne la guía, las listas por rol y los aportes del equipo. Los recorridos de administración, anfitrión y Star están vinculados a la cuenta administradora y usan bases separadas por persona. El retorno a la cuenta real es explícito y las cuentas no se pueden administrar desde un recorrido.
+
+Los avisos funcionan dentro del Hub. **Los correos externos quedan pendientes por decisión del titular** hasta disponer de un dominio remitente autorizado. Clerk sigue en modo de desarrollo. Consulta el alcance y la lista para la versión 1.1 en [BETA-PRIVADA.md](BETA-PRIVADA.md).
