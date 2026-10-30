@@ -1,6 +1,12 @@
 # CODED Stars Hub · Beta privada
 
-Revisión del 27 de octubre de 2026. Datos ficticios. No es un lanzamiento para estudiantes reales.
+Revisión del 30 de octubre de 2026. Agenda compartida vacía, sin ejemplos precargados. No es un lanzamiento para estudiantes reales.
+
+## Empezar desde cero
+
+Se retiraron los datos de prueba del espacio compartido. Se conservan los accesos personales de Juan, Isa y Ela. No se cargan automáticamente reuniones, solicitudes, publicaciones, avisos ni perfiles ficticios. Cada administradora puede agregar una JDP desde **Inicio → Nueva reunión** y contenido desde **Publicaciones → Agregar publicación**; los cambios se guardan para el equipo.
+
+Los recorridos de prueba siguientes son opcionales y están separados: abrirlos muestra ejemplos únicamente dentro de ese recorrido. El dominio y el acceso de producción siguen pendientes para trabajar con datos reales.
 
 ## Entrar
 

@@ -1,6 +1,6 @@
 # Espacio de trabajo para Isa y Ela
 
-**Preparado técnicamente, pendiente de activación.** El enlace actual sigue siendo la beta con acceso de desarrollo y ejemplos. Todavía no debe utilizarse como sistema definitivo con datos reales.
+**Preparado técnicamente, pendiente de activación.** El enlace actual sigue siendo la beta con acceso de desarrollo; su agenda compartida empieza vacía. Los ejemplos quedan en recorridos opcionales separados. Todavía no debe utilizarse como sistema definitivo con datos reales.
 
 ## Preparado
 
@@ -22,7 +22,7 @@ No se compró un dominio, no se aceptaron condiciones nuevas y no se enviaron in
 
 ## Configuración técnica preparada
 
-Mantener el proyecto y repositorio existentes. Usar la misma base PostgreSQL y su esquema separado `coded_hub_team`; la beta conserva `coded_hub_beta` y los recorridos sus esquemas privados.
+Mantener el proyecto y repositorio existentes. Usar la misma base PostgreSQL y su esquema separado `coded_hub_team`. La beta vacía usa `coded_hub_beta_empty` con `CODED_SEED_EXAMPLES=false`; el esquema anterior `coded_hub_beta` queda conservado fuera del espacio activo y los recorridos mantienen sus esquemas privados. Vaciar la beta no activa el modo del equipo ni cambia sus requisitos de producción.
 
 - `NEXT_PUBLIC_CODED_WORKSPACE_MODE=team`
 - `NEXT_PUBLIC_CODED_AUTH_MODE=clerk`

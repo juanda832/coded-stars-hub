@@ -129,3 +129,5 @@ El buscador de la barra superior abre las herramientas disponibles para cada per
 ## Espacio del equipo
 
 Está preparado un modo vacío y separado de los ejemplos para el trabajo de coordinación. No se activa con las claves de desarrollo ni sobre la base de la beta. Su activación requiere un dominio autorizado y Clerk de producción. Consulta [PRODUCCION.md](PRODUCCION.md).
+
+La beta compartida también puede empezar vacía, conservando sus accesos actuales: `CODED_SEED_EXAMPLES=false` desactiva los ejemplos y excluye los perfiles de demostración del directorio principal. Usar una base separada vacía con la marca `beta-empty-v1`; no cambiar la marca de una base que tenga ejemplos. En el despliegue actual se usa `coded_hub_beta_empty`. El espacio anterior queda conservado aparte. Los recorridos opcionales mantienen sus ejemplos aislados y el acceso de producción para datos reales sigue pendiente. `tests/empty-beta.integration.py` comprueba el arranque vacío y las altas compartidas usando exclusivamente una base local desechable.

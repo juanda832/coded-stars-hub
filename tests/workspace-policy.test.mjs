@@ -10,6 +10,13 @@ test('A team workspace is empty while every explicitly isolated review keeps its
  assert.equal(exampleWorkspace(undefined,true),false);assert.equal(exampleWorkspace('coded_hub_team',true),false)
  assert.equal(exampleWorkspace('coded_hub_review_12345678',true),true);assert.equal(exampleWorkspace('coded_hub_preview',true),false)
 })
+test('An empty beta excludes sample data without changing the production activation policy',()=>{
+ assert.equal(exampleWorkspace(undefined,false,false),false)
+ assert.equal(exampleWorkspace('coded_hub_beta_empty',false,false),false)
+ assert.equal(exampleWorkspace('coded_hub_preview',false,true),true)
+ assert.equal(exampleWorkspace('coded_hub_review_12345678',false,false),true)
+ assert.throws(()=>assertTeamConfiguration({...configured(),CLERK_SECRET_KEY:'sk_test_fake',CODED_SEED_EXAMPLES:'false'}),error=>error.status===503)
+})
 test('Hosted team data cannot use development credentials or demo login',()=>{
  for(const [key,value] of [['CLERK_SECRET_KEY','sk_test_fake'],['NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY','pk_test_fake'],['NEXT_PUBLIC_CODED_AUTH_MODE','demo']])assert.throws(()=>assertTeamConfiguration({...configured(),[key]:value}),error=>error.status===503)
 })

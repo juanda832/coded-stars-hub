@@ -6,6 +6,8 @@ Abre **[CODED Stars Hub](https://coded-stars-beta.vercel.app/)**, escribe tu cor
 
 Ambas pueden administrar reuniones, solicitudes, publicaciones y accesos. Cada perfil conserva sus propios avisos y borradores privados.
 
+La agenda compartida empieza en cero: no hay reuniones, solicitudes, publicaciones ni perfiles de ejemplo. Para agregar, usa **Inicio → Nueva reunión** o **Publicaciones → Agregar publicación**. Los cambios quedan compartidos entre las administradoras. Los ejemplos solo aparecen al abrir expresamente un recorrido de prueba separado. El acceso de producción para datos reales sigue pendiente.
+
 Empieza por **Revisión beta → Cómo empezar**. Los botones Administración, Anfitrión y Coded Star abren un recorrido con datos ficticios separados. La franja superior permite cambiar de rol y **Volver a mi cuenta**. Deja tus aportes desde tu cuenta habitual en **Revisión beta → Errores e ideas**.
 
 La [guía de la beta privada](BETA-PRIVADA.md) contiene la lista corta de pruebas, los límites actuales y los próximos pasos. Los correos externos están pendientes; los avisos llegan dentro del Hub.
