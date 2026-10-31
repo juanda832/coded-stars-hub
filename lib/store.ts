@@ -1,5 +1,6 @@
 import { query, queryOne, execute, withDatabase, currentDatabaseScope } from './database';
 import {exampleWorkspace,teamWorkspaceEnabled} from './workspace-mode';
+import {hasAssignedRole} from './account-roles';
 import { randomUUID } from 'node:crypto';
 import type { Meeting, Registration, Feedback, MeetingQuestion, ParticipationAnswer, HubNotification, MeetingReport, ReportReview } from './types';
 import { seedMeetings, profiles } from './seed';
@@ -35,7 +36,7 @@ export async function starProfiles(): Promise<StarProfile[]> {
         userId: string;
     }>('star_profiles');
     const directory = await directoryUsers(true);
-    return directory.filter(user => user.role === 'star').map(user => {
+    return directory.filter(user => hasAssignedRole(user,'star')).map(user => {
         const seed = profiles.find(profile => profile.userId === user.id);
         return { userId:user.id, name:user.name, initials:user.initials, languages:[], programs:[], availability:'', experience:'', history:[], internalNotes:'', ...seed, ...changes.find(change => change.userId === user.id) };
     });

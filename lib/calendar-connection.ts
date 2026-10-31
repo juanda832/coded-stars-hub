@@ -4,6 +4,7 @@ import {execute,query,queryOne,withDatabase} from './database'
 import {directoryUsers,assertAccountAccess} from './user-directory'
 import {resolvePersonalUser} from './auth-policy'
 import {requirePersonalAccess} from './auth-mode'
+import {hasAssignedRole} from './account-roles'
 import {snapshot,withStore} from './store'
 import {WorkflowError} from './workflow-error'
 import {calendarFeed,calendarMeetings} from './calendar-feed'
@@ -23,7 +24,7 @@ function eligible(user:User){
  if(user.reviewer)throw new WorkflowError('Vuelve a tu cuenta para conectar un calendario. El recorrido de prueba permanece separado.',403)
  if(process.env.VERCEL==='1'&&process.env.VERCEL_ENV!=='production')throw new WorkflowError('Conecta tu agenda desde la beta principal: coded-stars-beta.vercel.app.',403)
 }
-async function owned(user:User):Promise<Connection|undefined>{return (await query('SELECT json FROM records WHERE collection=?','calendar_connections')).map(row=>JSON.parse(String(row.json)) as Connection).find(item=>item.userId===user.id)}
+async function owned(user:User):Promise<Connection|undefined>{return (await query('SELECT json FROM records WHERE collection=?','calendar_connections')).map(row=>JSON.parse(String(row.json)) as Connection).find(item=>item.userId===user.id&&item.role===user.role)}
 async function lookup(id:string):Promise<Connection|undefined>{const row=await queryOne('SELECT json FROM records WHERE collection=? AND id=?','calendar_connections',id);return row?JSON.parse(String(row.json)):undefined}
 function view(connection?:Connection){return connection?{connected:true,id:connection.id,version:connection.version,createdAt:connection.createdAt,url:urlFor(connection)}:{connected:false}}
 export async function calendarConnection(user:User){eligible(user);secret();return withDatabase(async()=>{await assertAccountAccess(user);return view(await owned(user))})}
@@ -42,12 +43,13 @@ export async function changeCalendarConnection(user:User,body:Record<string,unkn
  })
 }
 async function feedUser(connection:Connection):Promise<User|null>{
- const directory=await directoryUsers(),user=directory.find(item=>item.id===connection.userId&&item.role===connection.role)
+ const directory=await directoryUsers(),user=directory.find(item=>item.id===connection.userId&&hasAssignedRole(item,connection.role))
  if(!user)return null
- if(!requirePersonalAccess())return user
+ if(!requirePersonalAccess())return {...user,role:connection.role}
  const {clerkClient}=await import('@clerk/nextjs/server'),client=await clerkClient()
  const identities=await client.users.getUserList({externalId:['coded-stars-hub:'+user.id],limit:2})
- return identities.totalCount===1?resolvePersonalUser(identities.data[0],directory):null
+ const verified=identities.totalCount===1?resolvePersonalUser(identities.data[0],directory):null
+ return verified&&hasAssignedRole(verified,connection.role)?{...verified,role:connection.role}:null
 }
 export async function readCalendarFeed(id:string,token:string){
  secret()

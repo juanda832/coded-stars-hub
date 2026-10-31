@@ -8,6 +8,8 @@ Ambas pueden administrar reuniones, solicitudes, publicaciones y accesos. Cada p
 
 La agenda compartida empieza en cero: no hay reuniones, solicitudes, publicaciones ni perfiles de ejemplo. Para agregar, usa **Inicio → Nueva reunión** o **Publicaciones → Agregar publicación**. Los cambios quedan compartidos entre las administradoras. Los ejemplos solo aparecen al abrir expresamente un recorrido de prueba separado. El acceso de producción para datos reales sigue pendiente.
 
+La cuenta de Juan tiene dos perfiles. **Administración** permite consultar y gestionar la información compartida del equipo, incluidos los borradores de Isa y Ela. **Usar como Coded Star**, arriba del contenido, abre su propio perfil para completar sus datos y solicitar reuniones. **Ir a Administración** devuelve las herramientas del equipo. Conserva el mismo correo, las solicitudes y el perfil; no utiliza la identidad de un estudiante de ejemplo. La confirmación sigue siendo manual. Cada perfil puede conectar su propia agenda de Google Calendar, con el alcance correspondiente.
+
 Empieza por **Revisión beta → Cómo empezar**. Los botones Administración, Anfitrión y Coded Star abren un recorrido con datos ficticios separados. La franja superior permite cambiar de rol y **Volver a mi cuenta**. Deja tus aportes desde tu cuenta habitual en **Revisión beta → Errores e ideas**.
 
 La [guía de la beta privada](BETA-PRIVADA.md) contiene la lista corta de pruebas, los límites actuales y los próximos pasos. Los correos externos están pendientes; los avisos llegan dentro del Hub.

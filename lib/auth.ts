@@ -6,10 +6,12 @@ import { resolvePersonalUser } from './auth-policy'
 import { User } from './types'
 import { reviewRole } from './review-policy'
 import {users as examples} from './demo-users'
+import {accountRole} from './account-roles'
 const secret = process.env.SESSION_SECRET || (process.env.NODE_ENV === 'production' ? '' : 'local-demo-secret-change-before-deploy')
 function sign(value: string) { if (!secret) throw new Error('SESSION_SECRET is required'); return createHmac('sha256',secret).update(value).digest('hex') }
 export function makeSession(id: string) { if(requirePersonalAccess())throw new Error('Demo sessions are disabled for personal access'); const expires = Date.now() + 7*24*60*60*1000; const payload = `${id}.${expires}`; return `${payload}.${sign(payload)}` }
 async function reviewedUser(user:User|null,ignoreReview:boolean){
+ if(user)user=accountRole(user,(await cookies()).get('coded_account_role')?.value)
  if(ignoreReview||!user)return user
  const role=reviewRole(user,(await cookies()).get('coded_review')?.value,process.env.CODED_ALLOW_REAL_ACCOUNTS==='true')
  if(!role)return user

@@ -5,6 +5,7 @@ import { snapshot, saveRecord, requestParticipation, withdrawParticipation, sele
 import { directoryUsers, assertAccountAccess } from '@/lib/user-directory';
 import { participationOptions } from '@/lib/types';
 import { saveBetaContribution, reviewBetaContribution } from '@/lib/beta-review';
+import {hasAssignedRole} from '@/lib/account-roles';
 export const runtime = 'nodejs';
 export async function POST(req: NextRequest) {
     let user;
@@ -63,7 +64,7 @@ export async function POST(req: NextRequest) {
                 case 'confirm':
                 case 'select':
                     admin();
-                    if (!(await directoryUsers()).some(u => u.id === body.userId && u.role === 'star'))
+                    if (!(await directoryUsers()).some(u => u.id === body.userId && hasAssignedRole(u,'star')))
                         fail('Candidato no encontrado', 404);
                     await selectParticipant(String(body.meetingId), String(body.userId));
                     break;

@@ -3,6 +3,7 @@ import { users as examples } from './demo-users'
 import { requirePersonalAccess } from './auth-mode'
 import { execute, query, queryOne, withDatabase, currentDatabaseScope } from './database'
 import {exampleWorkspace} from './workspace-mode'
+import {hasAssignedRole} from './account-roles'
 import type { ManagedAccount, User } from './types'
 import { WorkflowError } from './workflow-error'
 
@@ -11,9 +12,10 @@ const addresses:Record<string,string|undefined>={
  'admin-isa':process.env.CODED_ADMIN_ISA_EMAIL,
  'admin-ela':process.env.CODED_ADMIN_ELA_EMAIL,
 }
-export const users:User[]=requirePersonalAccess()?examples.map(user=>({
+const baseUsers:User[]=requirePersonalAccess()?examples.map(user=>({
  ...user,name:user.name.replace(/ · Demo$/,''),email:addresses[user.id]?.trim()||user.email,
-})).concat(process.env.CODED_OWNER_EMAIL?.trim()?[{id:'admin-owner',name:'Juan',email:process.env.CODED_OWNER_EMAIL.trim(),role:'admin',initials:'JM'}]:[]):examples
+})):examples
+export const users:User[]=[...baseUsers,...(process.env.CODED_OWNER_EMAIL?.trim()?[{id:'admin-owner',name:'Juan',email:process.env.CODED_OWNER_EMAIL.trim(),role:'admin' as const,roles:['admin','star'] as User['roles'],initials:'JM'}]:[])]
 
 export type PrivateAccount = ManagedAccount & { requestId:string; createdBy:string; providerId?:string }
 export async function managedAccounts():Promise<PrivateAccount[]> {
@@ -32,7 +34,7 @@ export async function directoryUsers(includeInactive=false):Promise<User[]> {
 export async function assertAccountAccess(user:User) {
  if(user.reviewer&&(process.env.CODED_ALLOW_REAL_ACCOUNTS==='true'||!users.some(admin=>admin.id===user.reviewer!.id&&admin.role==='admin')))throw new WorkflowError('Este recorrido ya no está disponible.',401)
  const record=await queryOne('SELECT json FROM records WHERE collection=? AND id=?','accounts',user.id)
- if(!record){if(!users.some(known=>known.id===user.id&&known.role===user.role))throw new WorkflowError('Tu cuenta ya no tiene acceso. Consulta con coordinación.',401);return}
+ if(!record){if(!users.some(known=>known.id===user.id&&hasAssignedRole(known,user.role)))throw new WorkflowError('Tu cuenta ya no tiene acceso. Consulta con coordinación.',401);return}
  const account=JSON.parse(String(record.json)) as PrivateAccount
  if(account.access!=='active'||account.provisioning!=='ready'||account.role!==user.role)throw new WorkflowError('Tu acceso está pausado. Consulta con coordinación.',401)
 }
