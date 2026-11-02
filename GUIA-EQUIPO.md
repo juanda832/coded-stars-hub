@@ -36,6 +36,8 @@ Para que un anfitrión vea esta JDP en su cuenta, coordinación debe asignarlo d
 
 El borrador de una JDP nueva se guarda por cuenta en este navegador y se limpia al registrar. **Reuniones → Gestionar reunión → Estado y detalles → Editar detalles y horario** permite modificar una JDP programada. Los registros anteriores conservan su nombre; no se usa como si fuera un nombre de colegio que nadie informó.
 
+Si otra persona actualiza la misma JDP mientras editas, el Hub conserva lo que escribiste y bloquea el guardado de la versión anterior. Puedes **Ver la versión actual**, copiar lo que quieras conservar y pulsar **Cargar versión actual** antes de seguir editando. La misma protección se aplica a las indicaciones, el enlace y los cambios de estado. Si tenías la página abierta antes de esta mejora, actualízala una vez.
+
 ## Cerrar la reunión y recibir el resultado
 
 Si no se informó una duración, no se calcula una hora de finalización. Al terminar, coordinación o el anfitrión abre la JDP y cambia **Estado de la reunión → Finalizada → Actualizar estado**.

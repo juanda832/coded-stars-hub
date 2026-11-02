@@ -6,6 +6,7 @@ import { directoryUsers, assertAccountAccess } from '@/lib/user-directory';
 import { participationOptions } from '@/lib/types';
 import { saveBetaContribution, reviewBetaContribution } from '@/lib/beta-review';
 import {hasAssignedRole} from '@/lib/account-roles';
+import {assertMeetingVersion} from '@/lib/meeting-version';
 export const runtime = 'nodejs';
 export async function POST(req: NextRequest) {
     let user;
@@ -30,6 +31,12 @@ export async function POST(req: NextRequest) {
                 fail('Solo administración puede tomar esta decisión', 403); };
             const star = () => { if (user.role !== 'star')
                 fail('Sin permiso', 403); };
+            const currentMeeting = () => {
+                if(!meeting)throw new WorkflowError('Reunión no encontrada.',404);
+                if(user.role!=='admin'&&!(user.role==='host'&&meeting.hostId===user.id))throw new WorkflowError('Sin permiso.',403);
+                assertMeetingVersion(meeting,body.expectedVersion);
+                return meeting;
+            };
             switch (body.action) {
                 case 'beta_contribution':
                     if(user.reviewer)fail('Vuelve a administración para compartir un aporte.',403);
@@ -96,10 +103,14 @@ export async function POST(req: NextRequest) {
                     break;
                 }
                 case 'status':
+                    currentMeeting();
                     await changeMeetingStatus(String(body.meetingId), user, body.status);
                     break;
                 case 'create':
+                    await changeMeeting(user, body);
+                    break;
                 case 'meeting_edit':
+                    admin();currentMeeting();
                     await changeMeeting(user, body);
                     break;
                 case 'ask':
@@ -109,6 +120,7 @@ export async function POST(req: NextRequest) {
                     await replyMeetingQuestion(String(body.questionId), user, body.reply);
                     break;
                 case 'meeting_update':
+                    currentMeeting();
                     await updateHostMessage(String(body.meetingId), user, body.hostNote, body.joinUrl);
                     break;
                 case 'participation':

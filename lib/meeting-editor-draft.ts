@@ -5,6 +5,9 @@ export type MeetingEditorValues={
  schoolName:string;title:string;description:string;program:string;language:Meeting['language'];duration:number|null;
  timeZone:string;date:string;hostId:string;hostNote:string;joinUrl:string;
 }
+export function meetingEditorValues(meeting?:Meeting):MeetingEditorValues {
+ return {schoolName:meeting?.schoolName||'',title:meeting?.title||'',description:meeting?.description||'',program:meeting?.program||'',language:meeting?.language||'',duration:meeting?.duration??null,timeZone:ORLANDO_ZONE,date:meeting?localDateTime(meeting.startsAt,ORLANDO_ZONE):'',hostId:meeting?.hostId||'',hostNote:meeting?.hostNote||'',joinUrl:meeting?.joinUrl||''}
+}
 export function meetingEditorDraftKey(userId:string) {return 'coded-meeting-draft-v1:'+encodeURIComponent(userId)}
 export function restoreMeetingEditorDraft(raw:string|null,hostIds:readonly string[],timeZones:readonly string[]):MeetingEditorValues|null {
  try {

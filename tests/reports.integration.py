@@ -2,7 +2,9 @@
 import concurrent.futures, datetime, http.cookiejar, json, sys, urllib.error, urllib.request, uuid
 BASE=sys.argv[1] if len(sys.argv)>1 else 'http://127.0.0.1:3001'
 passed=[]
+from hub_test_client import versioned_meeting_body
 def call(client,path,body=None):
+ if path=='/api/action':body=versioned_meeting_body(BASE,client,body)
  req=urllib.request.Request(BASE+path,data=json.dumps(body).encode() if body is not None else None,headers={'Content-Type':'application/json'},method='POST' if body is not None else 'GET')
  try:
   with client.open(req) as r:return r.status,json.load(r)

@@ -2,15 +2,18 @@
 import { useEffect, useState } from 'react'
 import { Check, Info, Save } from 'lucide-react'
 import type { Meeting, HubData } from '@/lib/types'
-import { localDateTime, ORLANDO_ZONE, zoneChoices, zonedDateTime } from '@/lib/time-zones'
+import { ORLANDO_ZONE, zoneChoices, zonedDateTime } from '@/lib/time-zones'
 import { programValue } from '@/lib/program-labels'
-import { meetingEditorDraftKey, restoreMeetingEditorDraft, type MeetingEditorValues } from '@/lib/meeting-editor-draft'
+import { meetingEditorDraftKey, restoreMeetingEditorDraft, meetingEditorValues, type MeetingEditorValues } from '@/lib/meeting-editor-draft'
+import {meetingEditVersion} from '@/lib/meeting-version'
 import type { HubAction } from './StarExperience'
 import Dialog from './Dialog'
 import MeetingEditorPreview from './MeetingEditorPreview'
 
-export default function MeetingEditor({meeting,hosts,userId,zone,busy,error,action,onClose}:{meeting?:Meeting;hosts:HubData['hosts'];userId:string;zone:string;busy:boolean;error:string;action:HubAction;onClose:()=>void}) {
- const [initial]=useState<MeetingEditorValues>(()=>({schoolName:meeting?.schoolName||'',title:meeting?.title||'',description:meeting?.description||'',program:meeting?.program||'',language:meeting?.language||'',duration:meeting?.duration??null,timeZone:ORLANDO_ZONE,date:meeting?localDateTime(meeting.startsAt,ORLANDO_ZONE):'',hostId:meeting?.hostId||'',hostNote:meeting?.hostNote||'',joinUrl:meeting?.joinUrl||''}))
+export default function MeetingEditor({meeting,latestMeeting,hosts,userId,zone,busy,error,action,onClose,onClearError}:{meeting?:Meeting;latestMeeting?:Meeting;hosts:HubData['hosts'];userId:string;zone:string;busy:boolean;error:string;action:HubAction;onClose:()=>void;onClearError:()=>void}) {
+ const [initial]=useState<MeetingEditorValues>(()=>meetingEditorValues(meeting))
+ const [baseVersion,setBaseVersion]=useState(()=>meeting?meetingEditVersion(meeting):0)
+ const latest=latestMeeting||meeting,conflict=!!meeting&&!!latest&&(baseVersion!==meetingEditVersion(latest)||latest.status!=='scheduled')
  const [hostIds]=useState(()=>hosts.map(host=>host.id))
  const [form,setForm]=useState(initial),[validation,setValidation]=useState(''),[ready,setReady]=useState(!!meeting),[draftStatus,setDraftStatus]=useState('Abriendo el borrador…')
  const storageKey=meeting?null:meetingEditorDraftKey(userId)
@@ -32,9 +35,10 @@ export default function MeetingEditor({meeting,hosts,userId,zone,busy,error,acti
  const [date='',time='']=form.date.split('T')
  async function submit(event:React.FormEvent) {
   event.preventDefault();setValidation('')
+  if(conflict)return
   try {
    zonedDateTime(form.date,ORLANDO_ZONE)
-   if(await action({action:meeting?'meeting_edit':'create',meetingId:meeting?.id,schoolName:form.schoolName,...(meeting?{title:meeting.title}:{}),description:form.description,program:form.program,language:form.language,duration:form.duration,date,time,sourceTimeZone:ORLANDO_ZONE,joinUrl:form.joinUrl,hostNote:form.hostNote,hostId:form.hostId},meeting?'JDP actualizada. Avisamos a las personas vinculadas.':'JDP registrada. Ya aparece en la agenda.')){
+   if(await action({action:meeting?'meeting_edit':'create',meetingId:meeting?.id,...(meeting?{expectedVersion:baseVersion,title:form.title}:{}),schoolName:form.schoolName,description:form.description,program:form.program,language:form.language,duration:form.duration,date,time,sourceTimeZone:ORLANDO_ZONE,joinUrl:form.joinUrl,hostNote:form.hostNote,hostId:form.hostId},meeting?'JDP actualizada. Avisamos a las personas vinculadas.':'JDP registrada. Ya aparece en la agenda.')){
     if(storageKey)try{localStorage.removeItem(storageKey)}catch{}
     onClose()
    }
@@ -58,7 +62,7 @@ export default function MeetingEditor({meeting,hosts,userId,zone,busy,error,acti
     <label className="field-label" htmlFor="edit-note">Indicaciones para el Star</label><textarea id="edit-note" maxLength={400} value={form.hostNote} onChange={e=>update({hostNote:e.target.value})}/>
     <details className="quick-preview"><summary>Ver cómo se mostrará</summary><MeetingEditorPreview form={form} startsAt={startsAt} hostName={hosts.find(host=>host.id===form.hostId)?.name||''}/></details>
    </details>
-   <div className="meeting-editor-footer"><p className="editor-selection-note"><Info size={16}/>Varias solicitudes, un único Star elegido manualmente por coordinación.</p>{(validation||error)&&<p className="error" role="alert">{validation||error}</p>}<div className="editor-submit-row">{!meeting&&<span className="editor-draft-status" role="status"><Save size={15}/>{draftStatus}</span>}<button className="primary" disabled={busy||!ready||!!dateError}>{busy?'Guardando…':meeting?'Guardar cambios':'Registrar JDP'} <Check size={17}/></button></div></div>
+   <div className="meeting-editor-footer"><p className="editor-selection-note"><Info size={16}/>Varias solicitudes, un único Star elegido manualmente por coordinación.</p>{conflict&&latest&&<section className="meeting-conflict" role="status"><b>Esta JDP tiene cambios recientes</b><p>{latest.status==='scheduled'?'Lo que escribiste sigue en el formulario. Copia lo que quieras conservar antes de cargar la versión actual.':'La reunión ya no está programada. Cierra el editor para revisar su estado; tus cambios no se guardaron.'}</p>{latest.status==='scheduled'&&<><details><summary>Ver la versión actual</summary><MeetingEditorPreview form={meetingEditorValues(latest)} startsAt={latest.startsAt} hostName={latest.host}/></details><button type="button" className="secondary-button" onClick={()=>{setForm(meetingEditorValues(latest));setBaseVersion(meetingEditVersion(latest));setValidation('');onClearError()}}>Cargar versión actual</button></>}</section>}{(validation||error)&&<p className="error" role="alert">{validation||error}</p>}<div className="editor-submit-row">{!meeting&&<span className="editor-draft-status" role="status"><Save size={15}/>{draftStatus}</span>}<button className="primary" disabled={busy||!ready||!!dateError||conflict}>{busy?'Guardando…':meeting?'Guardar cambios':'Registrar JDP'} <Check size={17}/></button></div></div>
   </fieldset></form>
  </Dialog>
 }

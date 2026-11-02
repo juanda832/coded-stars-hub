@@ -25,5 +25,7 @@
 .account-role-switch b{font-size:12px;line-height:1.7;font-weight:600}
 .account-role-switch p{font-size:12px;line-height:1.6;margin:5px 0 0;color:#9c244a}
 .account-role-switch .secondary-button{min-height:44px;flex-shrink:0;font-size:12px;gap:8px}
+.meeting-conflict{margin:16px 0;padding:16px;border:1px solid #e5c997;border-radius:12px;background:#fff9ed;color:#674817}
+.meeting-conflict b{font-size:13px;line-height:1.7}.meeting-conflict p{font-size:12px;line-height:1.8;margin:7px 0 12px}.meeting-conflict summary{font-size:12px;line-height:1.7;cursor:pointer;padding:8px 0}.meeting-conflict .secondary-button{min-height:44px;margin-top:8px;font-size:12px}
 @media(max-width:560px){.account-role-switch{flex-wrap:wrap;padding:12px 14px}.account-role-switch .secondary-button{width:100%;justify-content:center}}
 @media(max-width:760px){.hub-load-failure{padding:30px 20px}.hub-load-failure>section{padding:26px 22px}.hub-load-failure h1{font-size:23px}.connection-notice{align-items:flex-start;gap:10px;flex-wrap:wrap;padding:15px}.connection-notice>div{flex-basis:calc(100% - 35px)}.connection-notice .secondary-button{margin-left:30px}.team-examples{padding:0 14px}}
