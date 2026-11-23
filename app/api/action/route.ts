@@ -7,6 +7,7 @@ import { participationOptions } from '@/lib/types';
 import { saveBetaContribution, reviewBetaContribution } from '@/lib/beta-review';
 import {hasAssignedRole} from '@/lib/account-roles';
 import {assertMeetingVersion} from '@/lib/meeting-version';
+import {checkMutationRequest} from '@/lib/mutation-request';
 export const runtime = 'nodejs';
 export async function POST(req: NextRequest) {
     let user;
@@ -15,13 +16,16 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ error: 'Inicia sesión' }, { status: 401 });
     let body: Record<string, unknown>;
     try {
-        body = await req.json();
+        checkMutationRequest(req.headers,process.env.VERCEL==='1');
+        const declaredSize=Number(req.headers.get('content-length')||0);
+        if(declaredSize>65536)throw new WorkflowError('La solicitud es demasiado grande.',413);
+        const raw=await req.text();
+        if(raw.length>65536)throw new WorkflowError('La solicitud es demasiado grande.',413);
+        try{body=JSON.parse(raw)}catch{throw new WorkflowError('Solicitud inválida',400)}
+        if(!body||typeof body!=='object'||Array.isArray(body))throw new WorkflowError('Solicitud inválida',400);
+    }catch(error){
+        return NextResponse.json({error:error instanceof WorkflowError?error.message:'Solicitud inválida'},{status:error instanceof WorkflowError?error.status:400,headers:{'Cache-Control':'no-store'}});
     }
-    catch {
-        return NextResponse.json({ error: 'Solicitud inválida' }, { status: 400 });
-    }
-    if (!body || typeof body !== 'object')
-        return NextResponse.json({ error: 'Solicitud inválida' }, { status: 400 });
     const fail = (message: string, status = 400) => { throw new WorkflowError(message, status); };
     try {
         return await withHubStore(user,async () => {

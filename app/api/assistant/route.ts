@@ -4,6 +4,7 @@ import { currentUser } from '@/lib/auth'
 import { assistantSnapshot, sendAssistantMessage } from '@/lib/assistant-store'
 import { WorkflowError } from '@/lib/store'
 import { assertAccountAccess } from '@/lib/user-directory'
+import {checkMutationRequest} from '@/lib/mutation-request'
 export const runtime='nodejs'
 const headers={'Cache-Control':'no-store'}
 function failure(error:unknown){
@@ -18,6 +19,8 @@ export async function GET(req:NextRequest){
 export async function POST(req:NextRequest){
  try{const user=await currentUser();if(!user)return NextResponse.json({error:'Inicia sesión'},{status:401,headers})
 
+  checkMutationRequest(req.headers,process.env.VERCEL==='1')
+  const declaredSize=Number(req.headers.get('content-length')||0);if(declaredSize>6000)throw new WorkflowError('La consulta es demasiado larga.',413)
   const raw=await req.text();if(raw.length>6000)throw new WorkflowError('La consulta es demasiado larga.',413)
   let body:Record<string,unknown>;try{body=JSON.parse(raw)}catch{throw new WorkflowError('Consulta inválida.')}
   if(!body||typeof body!=='object'||Array.isArray(body))throw new WorkflowError('Consulta inválida.')
