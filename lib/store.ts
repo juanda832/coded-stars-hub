@@ -89,7 +89,16 @@ export async function savePublication(user: User, body: Record<string, unknown>)
 }
 export async function saveRecord(collection: string, id: string, value: unknown) { await execute('INSERT INTO records(collection,id,json) VALUES(?,?,?) ON CONFLICT(collection,id) DO UPDATE SET json=excluded.json', collection, id, JSON.stringify(value)); }
 export async function registrations(): Promise<Registration[]> { return await query('SELECT id,meeting_id AS "meetingId",user_id AS "userId",status,requested_at AS "requestedAt",updated_at AS "updatedAt" FROM applications ORDER BY requested_at,id') as unknown as Registration[]; }
-export async function snapshot() { return { meetings: await records<Meeting>('meetings'), registrations: await registrations(), feedback: await records<Feedback>('feedback'), questions: await records<MeetingQuestion>('questions'), participation: await records<ParticipationAnswer>('participation'), reports: await records<MeetingReport>('reports'), reportReviews: await records<ReportReview>('report_reviews') }; }
+export async function snapshot() {
+    // Batch read-only collections in the current transaction; preserve per-collection insertion order.
+    const names = ['meetings', 'feedback', 'questions', 'participation', 'reports', 'report_reviews'] as const;
+    const grouped = new Map<string, unknown[]>(names.map(name => [name, []]));
+    for (const row of await query('SELECT collection,json FROM records WHERE collection IN (?,?,?,?,?,?) ORDER BY rowid', ...names)) {
+        grouped.get(String(row.collection))?.push(JSON.parse(String(row.json)));
+    }
+    const get = <T,>(name: typeof names[number]) => grouped.get(name) as T[];
+    return { meetings: get<Meeting>('meetings'), registrations: await registrations(), feedback: get<Feedback>('feedback'), questions: get<MeetingQuestion>('questions'), participation: get<ParticipationAnswer>('participation'), reports: get<MeetingReport>('reports'), reportReviews: get<ReportReview>('report_reviews') };
+}
 async function notifyAdmins(meetingId: string, title: string, body: string) { for (const user of (await directoryUsers()).filter(u => u.role === 'admin'))
     await notify(user.id, meetingId, title, body); }
 async function notify(userId: string, meetingId: string, title: string, body: string) { if (!userId)

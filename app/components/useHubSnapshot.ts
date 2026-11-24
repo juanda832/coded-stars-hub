@@ -8,7 +8,7 @@ export function useHubSnapshot() {
   useEffect(() => {
     client.start()
     void client.refresh()
-    const visibleRefresh = () => { if (document.visibilityState === 'visible' && client.getSnapshot().phase !== 'signed_out') void client.refresh() }
+    const visibleRefresh = () => { if (document.visibilityState === 'visible' && client.getSnapshot().phase !== 'signed_out') void client.refreshIfIdle() }
     const connected = () => { if (client.getSnapshot().phase !== 'signed_out') void client.refresh() }
     const disconnected = () => client.offline()
     const timer = setInterval(() => {

@@ -17,6 +17,7 @@ export function createHubClient({ fetcher = fetch, online = () => true, timeout 
   let active = true
   let sequence = 0
   let controller: AbortController | undefined
+  let lastRefreshStartedAt = -Infinity
   const listeners = new Set<() => void>()
   function update(next: HubSnapshot) { state = next; listeners.forEach(listener => listener()) }
   function cancel() { sequence++; controller?.abort(); controller = undefined }
@@ -29,6 +30,7 @@ export function createHubClient({ fetcher = fetch, online = () => true, timeout 
     if (!online()) { offline(); return 'unavailable' }
     cancel()
     const request = sequence
+    lastRefreshStartedAt = Date.now()
     const pending = new AbortController()
     controller = pending
     update({ ...state, phase: state.data ? 'ready' : 'loading', refreshing: true })
@@ -60,6 +62,12 @@ export function createHubClient({ fetcher = fetch, online = () => true, timeout 
     getServerSnapshot: () => initial,
     subscribe(listener: () => void) { listeners.add(listener); return () => { listeners.delete(listener) } },
     refresh,
+    // Only passive events are coalesced. Explicit refreshes after login or saving
+    // must still replace older in-flight requests to avoid stale data.
+    refreshIfIdle(minInterval = 5000) {
+      if (!active || state.phase === 'signed_out' || state.refreshing || Date.now() - lastRefreshStartedAt < minInterval) return Promise.resolve<RefreshResult>('superseded')
+      return refresh()
+    },
     offline,
     reset() { cancel(); update({ data: null, phase: 'signed_out', issue: null, refreshing: false }) },
     start() { active = true },

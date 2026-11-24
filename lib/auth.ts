@@ -2,6 +2,7 @@ import { createHmac, timingSafeEqual } from 'crypto'
 import { cookies } from 'next/headers'
 import { directoryUsers, recordAccountVisit } from './user-directory'
 import { requirePersonalAccess } from './auth-mode'
+import { withDatabase } from './database'
 import { resolvePersonalUser } from './auth-policy'
 import { User } from './types'
 import { reviewRole } from './review-policy'
@@ -24,8 +25,14 @@ export async function currentUser(ignoreReview=false): Promise<User | null> {
   const {auth,currentUser:clerkUser}=await import('@clerk/nextjs/server')
   const session=await auth()
   if(!session.isAuthenticated)return null
-  const user=resolvePersonalUser(await clerkUser(),await directoryUsers())
-  if(user)await recordAccountVisit(user.id)
+  const identity=await clerkUser()
+  // Keep account lookup and visit bookkeeping in a single database transaction.
+  // Never cache an identity or grant across requests.
+  const user=await withDatabase(async()=>{
+   const resolved=resolvePersonalUser(identity,await directoryUsers())
+   if(resolved)await recordAccountVisit(resolved.id)
+   return resolved
+  })
   return reviewedUser(user,ignoreReview)
  }
  const raw=(await cookies()).get('coded_session')?.value; if (!raw) return null; const [id, expiry, sig]=raw.split('.'); if (!id || !expiry || !sig || Number(expiry)<Date.now()) return null; const expected=Buffer.from(sign(`${id}.${expiry}`),'hex'); const actual=Buffer.from(sig,'hex'); if (expected.length!==actual.length || !timingSafeEqual(expected,actual)) return null; return reviewedUser((await directoryUsers()).find(u=>u.id===id) ?? null,ignoreReview) }

@@ -107,3 +107,28 @@ test('An unexpected HTML response cannot masquerade as a signed-out account', as
   assert.equal(client.getSnapshot().phase, 'unavailable')
   assert.equal(client.getSnapshot().data, null)
 })
+
+
+test('Passive refresh never cancels an in-flight request', async () => {
+  const gate = deferred()
+  let requests = 0
+  const client = createHubClient({ fetcher: () => { requests++; return gate.promise } })
+  const original = client.refresh()
+  assert.equal(await client.refreshIfIdle(0), 'superseded')
+  assert.equal(requests, 1)
+  gate.resolve(response('isa'))
+  assert.equal(await original, 'updated')
+})
+
+test('Repeated focus events are coalesced without blocking explicit refresh', async () => {
+  let requests = 0
+  const client = createHubClient({ fetcher: async () => { requests++; return response('isa') } })
+  await client.refresh()
+  assert.equal(await client.refreshIfIdle(60000), 'superseded')
+  assert.equal(requests, 1)
+  assert.equal(await client.refresh(), 'updated')
+  assert.equal(requests, 2)
+  client.reset()
+  assert.equal(await client.refreshIfIdle(0), 'superseded')
+  assert.equal(requests, 2)
+})
