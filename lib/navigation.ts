@@ -18,6 +18,7 @@ const routes:Record<string,{slug:string;roles:Role[]}>= {
  Estadísticas:{slug:'estadisticas',roles:['admin']},
 }
 const messageViews:Record<string,string>={Novedades:'novedades',Preguntas:'preguntas',Indicaciones:'indicaciones'}
+const agendaViews:Record<string,string>={Pendientes:'pendientes'}
 const applicationViews:Record<string,string>={'En revisión':'revision',Confirmadas:'confirmadas',Historial:'historial',Todas:'todas'}
 // Only known Hub destinations are retained across the dedicated sign-in page.
 // They are resolved against the authenticated role before navigation resumes.
@@ -27,14 +28,14 @@ export function isHubHashRoute(hash:string) {
 }
 export function routeHash(section:string,view='') {
  const route=Object.hasOwn(routes,section)?routes[section]:routes.Inicio
- const views=section==='Mensajes'?messageViews:section==='Mis solicitudes'?applicationViews:{}
+ const views=section==='Mensajes'?messageViews:section==='Mis solicitudes'?applicationViews:section==='Reuniones'?agendaViews:{}
  return '#/'+route.slug+(Object.hasOwn(views,view)?'?vista='+views[view]:'')
 }
 export function readRoute(hash:string,role:Role) {
  const [slug,search='']=hash.replace(/^#\/?/,'').split('?')
  const section=Object.entries(routes).find(([,route])=>route.slug===slug&&route.roles.includes(role))?.[0]||'Inicio'
  const value=new URLSearchParams(search).get('vista')
- const views=section==='Mensajes'?messageViews:section==='Mis solicitudes'?applicationViews:{}
+ const views=section==='Mensajes'?messageViews:section==='Mis solicitudes'?applicationViews:section==='Reuniones'&&role==='admin'?agendaViews:{}
  const view=Object.entries(views).find(([,slug])=>slug===value)?.[0]||''
  return {section,view}
 }

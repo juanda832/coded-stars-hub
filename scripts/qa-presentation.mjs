@@ -91,6 +91,21 @@ try{
   await check('coordination queue fits '+width,'(()=>{const r=document.querySelector(".coordination-queue").getBoundingClientRect();return r.left>=0&&r.right<=innerWidth+1&&document.documentElement.scrollWidth<=innerWidth+1})()')
  }
  await resize(1024,800)
+ const queueCount=await run('Number(document.querySelector(".queue-pending-link strong").textContent)')
+ await run('document.querySelector(".queue-pending-link").click()')
+ await check('queue opens matching agenda view','location.hash==="#/reuniones?vista=pendientes"&&document.querySelector(".agenda-workflow-note")!==null')
+ await check('queue and filtered agenda counts match','Number(document.querySelector(".results-heading b").textContent)==='+queueCount)
+ await check('visible pending cards explain missing requirements','Array.from(document.querySelectorAll(".meeting-card")).every(card=>card.querySelector(".meeting-readiness span:not(.meeting-ready)"))')
+ for(const width of [320,375,768,1440]){
+  await resize(width,800)
+  await check('pending agenda fits '+width,'document.documentElement.scrollWidth<=innerWidth+1')
+ }
+ await send('Page.reload',{ignoreCache:true})
+ await check('pending view survives reload','!!document.querySelector(".agenda-workflow-note")')
+ await run('document.querySelector(".agenda-workflow-switch button:first-child").click()')
+ await check('complete agenda can be restored','location.hash==="#/reuniones"&&!document.querySelector(".agenda-workflow-note")')
+ await navigate('Inicio')
+ await resize(1024,800)
  await run('document.querySelector(".hub-quick-find").focus();document.querySelector(".hub-quick-find").click()')
  await check('search input focused','document.activeElement?.matches("[data-dialog-initial-focus]")')
  await send('Input.insertText',{text:'estadisticas'})

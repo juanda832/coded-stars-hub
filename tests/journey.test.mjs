@@ -26,3 +26,10 @@ for(const view of ['En revisión','Confirmadas','Historial'])test(`Application s
 test('Unknown routes use a defined start page',()=>assert.equal(readRoute('#/unknown','star').section,'Inicio'))
 test('Unknown message views are ignored',()=>assert.equal(readRoute('#/mensajes?vista=unknown','host').view,''))
 test('Prototype-like names cannot select routes',()=>assert.equal(routeHash('__proto__'),'#/inicio'))
+
+test('Coordination attention view survives reload and stays restricted to admin',()=>{
+ const hash=routeHash('Reuniones','Pendientes')
+ assert.equal(hash,'#/reuniones?vista=pendientes')
+ assert.deepEqual(readRoute(hash,'admin'),{section:'Reuniones',view:'Pendientes'})
+ for(const role of ['star','host'])assert.deepEqual(readRoute(hash,role),{section:'Reuniones',view:''})
+})

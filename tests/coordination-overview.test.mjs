@@ -25,3 +25,9 @@ test('Report coverage uses eligible unique meetings and excludes cancelled and f
  assert.deepEqual(result.coverage,{stars:1,expectedStars:1,hosts:1,expectedHosts:2})
 })
 test('Empty agenda has zero coverage without division by zero',()=>assert.deepEqual(coordinationOverview(base,now).coverage,{stars:0,expectedStars:0,hosts:0,expectedHosts:0}))
+
+test('Readiness uses the same missing requirements on the card and in the queue',()=>{
+ const m=meeting('m',1,{hostId:'',joinUrl:'  '})
+ const data={...base,meetings:[m],registrations:[{meetingId:'m',status:'pending'}]}
+ assert.deepEqual(coordinationOverview(data,now).attention[0].missing,['Falta anfitrión','Solicitudes por revisar','Falta enlace'])
+})
