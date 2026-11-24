@@ -10,6 +10,7 @@ import { programName } from '@/lib/program-labels'
 import MeetingSchedule from './MeetingSchedule'
 import { meetingSchedule } from '@/lib/meeting-schedule'
 import ProgramPhotoShelf from './ProgramPhotoShelf'
+import CoordinationQueue from './CoordinationQueue'
 
 export default function StaffHome({data,zone,onNavigate,onMeeting,onCreate,onReview}:{data:HubData;zone:string;onNavigate:(section:string,messageTab?:string)=>void;onMeeting:(meeting:Meeting)=>void;onCreate:()=>void;onReview:(meeting:Meeting)=>void}) {
  const admin=data.user.role==='admin'
@@ -40,6 +41,7 @@ export default function StaffHome({data,zone,onNavigate,onMeeting,onCreate,onRev
  return <section className="staff-home staff-home-focused staff-review-home">
   <div className="page-heading"><div><h1>Hola, {data.user.name.split(' ')[0]}.</h1><p>{admin?'Resumen del equipo':'Tus reuniones y pendientes'}</p></div>{admin&&<button className="primary" onClick={onCreate}><Plus size={18}/> Nueva reunión</button>}</div>
   <div className="staff-task-grid" aria-label="Pendientes">{tasks.map(({icon:Icon,count,title,detail,run})=><button key={title} className="staff-task" onClick={run}><span className="task-top"><span className="task-icon"><Icon size={21}/></span><strong>{count}</strong></span><b>{title}</b><small>{detail}</small><span className="task-go"><ArrowRight size={16}/></span></button>)}</div>
+  {admin&&<CoordinationQueue data={data} zone={zone} onMeeting={onMeeting} onAgenda={()=>onNavigate('Reuniones')}/>}
   {next?<section className="staff-next-card" aria-label="Próxima reunión"><ProgramArtwork program={next.program} photoKey={next.id} className="staff-next-photo"/><div className="staff-next-copy"><span className="section-label">Próxima reunión</span><span className="program-tag">{meetingMeta(next)}</span><h2>{next.title.replace(/^JDP · /,'')}</h2><p>{next.host?'Anfitrión: '+next.host:'Anfitrión sin asignar'}</p><MeetingSchedule meeting={next} zone={zone}/><div className="staff-next-status">{assigned?<Check size={17}/>:<Users size={17}/>}<span>{profile?.name||'Sin participante confirmado'}</span></div><div className="staff-next-actions"><button className="secondary-button" onClick={()=>onMeeting(next)}>Ver reunión <ArrowRight size={17}/></button>{admin&&!assigned&&<button className="text-link" onClick={()=>onReview(next)}>Revisar solicitudes <ArrowRight size={16}/></button>}</div></div></section>:<div className="friendly-empty"><CalendarDays size={28}/><h2>No hay reuniones próximas</h2>{admin&&<button className="primary" onClick={onCreate}>Crear reunión <Plus size={17}/></button>}</div>}
   <LatestPublication data={data} onOpen={()=>onNavigate('Publicaciones')}/>
   {upcoming.length>1&&<section className="staff-agenda"><div className="section-heading"><h2>Después en la agenda</h2><button className="text-link" onClick={()=>onNavigate('Reuniones')}>Ver todas <ArrowRight size={16}/></button></div>{upcoming.slice(1,5).map(meeting=>{

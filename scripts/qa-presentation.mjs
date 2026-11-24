@@ -73,6 +73,12 @@ try{
  await login('Administración')
  const check=async (label,expression)=>{await waitFor(expression);checked++;console.log('PASS',label)}
  await check('initial dashboard','!!document.querySelector(".sidebar")')
+ await check('admin coordination queue','!!document.querySelector(".coordination-queue")')
+ for(const width of [320,375,768,1440]){
+  await resize(width,800)
+  await check('coordination queue fits '+width,'(()=>{const r=document.querySelector(".coordination-queue").getBoundingClientRect();return r.left>=0&&r.right<=innerWidth+1&&document.documentElement.scrollWidth<=innerWidth+1})()')
+ }
+ await resize(1024,800)
  await run('document.querySelector(".hub-quick-find").focus();document.querySelector(".hub-quick-find").click()')
  await check('search input focused','document.activeElement?.matches("[data-dialog-initial-focus]")')
  await send('Input.insertText',{text:'estadisticas'})
@@ -103,10 +109,12 @@ try{
  await check('double submit sends a single request','window.__qaActionPosts===1&&!document.querySelector(".save-progress")&&document.querySelector(".toast")?.textContent.includes("guardados")')
  assert.equal(await run('window.__qaActionPosts'),1)
  await logout();await login('Coded Star')
+ await check('queue hidden for Stars','!document.querySelector(".coordination-queue")')
  for(const [name,selector] of [['Mis solicitudes','.my-applications-v2'],['Preparación','.preparation-page'],['Ayuda','.assistant-page'],['Mi cuenta','.account-summary']]){
   await navigate(name);await check('star '+name,'!!document.querySelector('+JSON.stringify(selector)+')&&!document.querySelector(".section-loading")')
  }
  await logout();await login('Anfitrión')
+ await check('queue hidden for hosts','!document.querySelector(".coordination-queue")')
  await navigate('Participante');await check('host assigned stars','!!document.querySelector(".assigned-meetings")&&!document.querySelector(".section-loading")')
  await logout()
  console.log('PRESENTATION_BROWSER_CHECKS',checked)
