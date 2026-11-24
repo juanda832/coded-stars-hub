@@ -74,8 +74,20 @@ try{
  const check=async (label,expression)=>{await waitFor(expression);checked++;console.log('PASS',label)}
  await check('initial dashboard','!!document.querySelector(".sidebar")')
  await check('admin coordination queue','!!document.querySelector(".coordination-queue")')
+ await check('staff welcome has a contextual next step','!!document.querySelector(".welcome-next-action")')
+ await check('three navigation groups','document.querySelectorAll(".sidebar .nav-group").length===3')
+ await run('document.querySelector(".welcome-secondary").click()')
+ await check('welcome shortcut opens requests','!!document.querySelector(".application-manager")')
+ await navigate('Inicio')
+ await check('welcome restored','!!document.querySelector(".staff-welcome-premium")')
+ await resize(375,800)
+ await run('document.querySelector(".menu-btn").click()')
+ await check('mobile navigation groups','document.querySelectorAll(".mobile-menu-dialog .nav-group").length===3')
+ await run('document.querySelector(".mobile-menu-dialog .dialog-close").click()')
+ await check('mobile menu closes','!document.querySelector(".mobile-menu-dialog")')
  for(const width of [320,375,768,1440]){
   await resize(width,800)
+  await check('staff welcome fits '+width,'(()=>{const r=document.querySelector(".staff-welcome-premium").getBoundingClientRect();return r.left>=0&&r.right<=innerWidth+1})()')
   await check('coordination queue fits '+width,'(()=>{const r=document.querySelector(".coordination-queue").getBoundingClientRect();return r.left>=0&&r.right<=innerWidth+1&&document.documentElement.scrollWidth<=innerWidth+1})()')
  }
  await resize(1024,800)
@@ -109,11 +121,13 @@ try{
  await check('double submit sends a single request','window.__qaActionPosts===1&&!document.querySelector(".save-progress")&&document.querySelector(".toast")?.textContent.includes("guardados")')
  assert.equal(await run('window.__qaActionPosts'),1)
  await logout();await login('Coded Star')
+ await check('star home has no staff welcome','!document.querySelector(".staff-welcome-premium")')
  await check('queue hidden for Stars','!document.querySelector(".coordination-queue")')
  for(const [name,selector] of [['Mis solicitudes','.my-applications-v2'],['Preparación','.preparation-page'],['Ayuda','.assistant-page'],['Mi cuenta','.account-summary']]){
   await navigate(name);await check('star '+name,'!!document.querySelector('+JSON.stringify(selector)+')&&!document.querySelector(".section-loading")')
  }
  await logout();await login('Anfitrión')
+ await check('host welcome is role specific','document.querySelector(".staff-welcome-kicker")?.textContent.includes("ANFITRIÓN")')
  await check('queue hidden for hosts','!document.querySelector(".coordination-queue")')
  await navigate('Participante');await check('host assigned stars','!!document.querySelector(".assigned-meetings")&&!document.querySelector(".section-loading")')
  await logout()

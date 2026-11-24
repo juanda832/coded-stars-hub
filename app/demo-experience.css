@@ -1,0 +1,47 @@
+/* A presentation-ready workspace, with CODED's original brand at its center. */
+.review-presentation .sidebar nav{gap:15px;margin-top:15px}
+.review-presentation .sidebar>.brand{margin-bottom:15px}
+.nav-group{display:grid;gap:3px;min-width:0}
+.nav-group-title{color:#675b7a;font-size:10px;font-weight:700;letter-spacing:.075em;text-transform:uppercase;padding:8px 12px 4px}
+.review-presentation .sidebar .nav-group .nav-item:last-child{border-top:0;margin-top:0;padding-top:12px;border-radius:10px}
+.review-presentation .sidebar .nav-group .nav-item{min-height:42px;padding-top:10px;padding-bottom:10px}
+.mobile-menu-dialog .nav-group{gap:4px;margin-bottom:12px}
+.mobile-menu-dialog .nav-group-title{padding:7px 12px;color:#61536f}
+.staff-welcome-premium{position:relative;isolation:isolate;overflow:hidden;display:grid;grid-template-columns:minmax(0,1.3fr) minmax(210px,.7fr);gap:30px;align-items:center;background:linear-gradient(115deg,#17064c,#34007f 60%,#5407ae);border:1px solid #34007f;border-radius:20px;padding:30px 32px;color:#fff;margin-bottom:24px;box-shadow:0 12px 32px #34007f18}
+.staff-welcome-premium:after{content:"";position:absolute;z-index:-1;right:-105px;top:-140px;width:380px;height:380px;border:1px solid #ffffff19;border-radius:50%;box-shadow:0 0 0 35px #ffffff09,0 0 0 75px #ffffff05;pointer-events:none}
+.staff-welcome-main,.staff-welcome-side{min-width:0}
+.staff-welcome-kicker{display:flex;align-items:center;gap:7px;color:#eee2ff;font-size:10px;font-weight:700;letter-spacing:.09em}
+.staff-welcome-star{color:#e0baff;font-size:21px;line-height:1}
+.staff-welcome-main h1{font:700 clamp(28px,3vw,38px)/1.2 'Plus Jakarta Sans',system-ui,sans-serif;letter-spacing:-1px;color:#fff;margin:14px 0 9px;overflow-wrap:anywhere}
+.staff-welcome-main p{color:#e6dbf5;font-size:13px;line-height:1.7;max-width:440px;margin:0}
+.staff-welcome-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:21px}
+.staff-welcome-actions>button{display:flex;align-items:center;justify-content:center;gap:8px;padding:10px 13px;min-height:44px;border-radius:10px;font-size:12px;font-weight:700}
+.welcome-primary{background:#fff;color:#43008f;border:1px solid #fff}
+.welcome-secondary{background:#ffffff12;color:#fff;border:1px solid #ffffff4a}
+.welcome-primary:hover{background:#f0e5ff}
+.welcome-secondary:hover{background:#ffffff25}
+.staff-welcome-side{display:grid;gap:13px;align-self:stretch;align-content:center}
+.welcome-date{display:flex;align-items:center;gap:7px;color:#eee2ff;font-size:11px;text-transform:capitalize}
+.welcome-next-action{display:flex;align-items:center;gap:12px;text-align:left;background:#ffffff13;color:#fff;border:1px solid #ffffff35;padding:15px;border-radius:14px;min-width:0}
+.welcome-next-action:hover{background:#ffffff24}
+.welcome-next-icon{display:grid;place-items:center;width:39px;height:39px;border-radius:11px;background:#ffffff20;flex:none}
+.welcome-next-action>span:nth-child(2){display:grid;gap:6px;flex:1;min-width:0;overflow-wrap:anywhere}
+.welcome-next-action small{color:#e6d9fb;font-size:10px}
+.welcome-next-action b{color:#fff;font-size:13px;line-height:1.4}
+.welcome-next-action>span:nth-child(2)>span{font-size:11px;line-height:1.5;color:#eee4fc}
+.welcome-next-action>svg{flex:none}
+.staff-welcome-premium button:focus-visible{outline-color:#fff}
+.review-presentation .program-invitation{border-color:#ddd2ee;border-radius:20px;box-shadow:var(--hub-shadow)}
+.review-presentation .invitation-copy{background:linear-gradient(150deg,#fff 20%,#f0e8ff)}
+.review-presentation .invitation-copy h2{color:#34007f}
+.review-presentation .invitation-copy>p,.review-presentation .invitation-copy>small{color:#514660}
+.review-presentation .invitation-program-picker{border-color:#ded8e9;gap:5px}
+.review-presentation .invitation-program-picker>button[aria-pressed=true]{background:#f0e8ff;border-color:#b99bdd;color:#5100a8}
+.review-presentation .invitation-program-picker small{color:#5d506a}
+.review-presentation .invitation-cover{transition:opacity .22s ease}
+.review-presentation .home-action-dock>button,.review-presentation .staff-agenda-row{border-radius:13px}
+@media(max-width:1000px){.staff-welcome-premium{grid-template-columns:minmax(0,1fr);gap:18px;padding:25px}.staff-welcome-side{gap:9px}}
+@media(max-width:760px){.staff-welcome-premium{border-radius:15px;padding:20px;gap:16px;margin-bottom:19px}.staff-welcome-main p{font-size:12px}.staff-welcome-actions{margin-top:16px}.staff-welcome-main h1{font-size:29px}.welcome-next-action{padding:12px}.welcome-next-icon{width:34px;height:34px}.welcome-next-action b{font-size:12px}}
+@media(max-width:350px){.staff-welcome-premium{padding:16px}.staff-welcome-actions>button{flex:1 1 auto;font-size:11px;padding:10px}.welcome-next-action{gap:8px}}
+@media(prefers-reduced-motion:no-preference){.staff-welcome-premium{animation:hub-welcome-in .28s ease-out both}.staff-welcome-actions>button,.welcome-next-action{transition:background-color .18s ease,border-color .18s ease}@keyframes hub-welcome-in{from{opacity:.75;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}}
+@media(prefers-reduced-motion:reduce){.staff-welcome-premium,.invitation-cover{animation:none!important;transition:none!important}}
