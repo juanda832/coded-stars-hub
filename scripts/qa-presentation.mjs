@@ -104,6 +104,16 @@ try{
  for(const [name,selector] of [['Solicitudes','.application-manager'],['Seguimiento','.coordination-results'],['Estadísticas','.hub-insights'],['Cuentas','.managed-directory'],['Mi cuenta','.account-summary'],['Ayuda','.assistant-page']]){
   await navigate(name);await check('admin '+name,'!!document.querySelector('+JSON.stringify(selector)+')&&!document.querySelector(".section-loading")')
  }
+ await navigate('Estadísticas')
+ await check('Excel controls visible','!!document.querySelector(".operational-export")')
+ await run('(()=>{const s=document.querySelector(".export-controls select");s.value="all";s.dispatchEvent(new Event("change",{bubbles:true}));return true})()')
+ await check('all meetings export selected','document.querySelector(".export-controls select").value==="all"')
+ await run('document.querySelector(".export-controls .primary").click()')
+ await check('download completed','document.querySelector(".export-result")?.textContent.includes("Archivo preparado")')
+ for(const width of [320,375,768,1440]){
+  await resize(width,800)
+  await check('export fits '+width,'(()=>{const r=document.querySelector(".operational-export").getBoundingClientRect();return r.left>=0&&r.right<=innerWidth+1&&document.documentElement.scrollWidth<=innerWidth+1})()')
+ }
  await navigate('Ayuda')
  await check('automatic help is clearly labelled','document.querySelector(".assistant-compose-note")?.textContent.includes("Respuestas automáticas")')
  await check('no simulated typing controls','!document.querySelector(".assistant-pace,.assistant-reveal-controls")')
@@ -122,6 +132,10 @@ try{
  assert.equal(await run('window.__qaActionPosts'),1)
  await logout();await login('Coded Star')
  await check('star home has no staff welcome','!document.querySelector(".staff-welcome-premium")')
+ await check('four-step guide visible','!!document.querySelector(".star-journey-guide")')
+ await run('document.querySelector(".star-journey-guide summary").click()')
+ await check('four-step guide opens','document.querySelector(".star-journey-guide").open&&document.querySelectorAll(".journey-guide-steps>div").length===4')
+ await check('export hidden for Stars','!document.querySelector(".operational-export")')
  await check('queue hidden for Stars','!document.querySelector(".coordination-queue")')
  for(const [name,selector] of [['Mis solicitudes','.my-applications-v2'],['Preparación','.preparation-page'],['Ayuda','.assistant-page'],['Mi cuenta','.account-summary']]){
   await navigate(name);await check('star '+name,'!!document.querySelector('+JSON.stringify(selector)+')&&!document.querySelector(".section-loading")')
