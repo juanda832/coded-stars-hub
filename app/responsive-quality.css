@@ -182,3 +182,9 @@
   .assistant-composer>textarea { min-height:30px; max-height:68px!important; overflow-y:auto; }
   .assistant-compose-note { display:none; }
 }
+
+/* Lightweight loading state for tools that are fetched only on demand. */
+.section-loading {display:flex;align-items:center;justify-content:center;gap:12px;min-height:160px;padding:24px;color:inherit;text-align:center;}
+.section-loading-spinner {width:20px;height:20px;flex:none;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;animation:section-loading-spin .8s linear infinite;}
+@keyframes section-loading-spin {to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.section-loading-spinner{animation:none}}

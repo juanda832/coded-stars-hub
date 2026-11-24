@@ -1,5 +1,6 @@
 'use client'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import dynamic from 'next/dynamic'
 import {useClerk,useUser} from '@clerk/nextjs'
 import {personalAccessEnabled} from '@/lib/auth-mode'
 import PersonalAccess from './components/PersonalAccess'
@@ -20,24 +21,26 @@ import MeetingWorkspace from './components/MeetingWorkspace'
 import MeetingEditor from './components/MeetingEditor'
 import Messages from './components/Messages'
 import Dialog from './components/Dialog'
-import ApplicationManager from './components/ApplicationManager'
-import AssignedStars from './components/AssignedStars'
 import Brand from './components/Brand'
 import MeetingExplorer from './components/MeetingExplorer'
-import MyApplications from './components/MyApplications'
 import ReportDialog from './components/ReportDialog'
 import ReportInbox from './components/ReportInbox'
-import CoordinationResults from './components/CoordinationResults'
-import PreparationGuide from './components/PreparationGuide'
 import StaffHome from './components/StaffHome'
 import StaffMeetingCard from './components/StaffMeetingCard'
-import HubInsights from './components/HubInsights'
-import AccountSpace from './components/AccountSpace'
-import AccountManager from './components/AccountManager'
 import BetaReview,{ReviewBanner} from './components/BetaReview'
 import Publications from './components/Publications'
-import HubAssistant from './components/HubAssistant'
 import type { AssistantAction, AssistantDraft } from '@/lib/assistant-types'
+
+function SectionLoading(){return <div className="section-loading" role="status" aria-live="polite"><span className="section-loading-spinner" aria-hidden="true"/> Abriendo herramienta…</div>}
+const HubAssistant=dynamic(()=>import('./components/HubAssistant'),{loading:SectionLoading})
+const AccountManager=dynamic(()=>import('./components/AccountManager'),{loading:SectionLoading})
+const HubInsights=dynamic(()=>import('./components/HubInsights'),{loading:SectionLoading})
+const PreparationGuide=dynamic(()=>import('./components/PreparationGuide'),{loading:SectionLoading})
+const CoordinationResults=dynamic(()=>import('./components/CoordinationResults'),{loading:SectionLoading})
+const AccountSpace=dynamic(()=>import('./components/AccountSpace'),{loading:SectionLoading})
+const ApplicationManager=dynamic(()=>import('./components/ApplicationManager'),{loading:SectionLoading})
+const AssignedStars=dynamic(()=>import('./components/AssignedStars'),{loading:SectionLoading})
+const MyApplications=dynamic(()=>import('./components/MyApplications'),{loading:SectionLoading})
 
 type NavItem = {label:string;icon:typeof LayoutDashboard;badge?:number}
 export default function Home(){return personalAccessEnabled()?<PersonalHome/>:<HubHome/>}
@@ -57,6 +60,8 @@ function PersonalEntry(){
 }
 function HubHome({signOut}:{signOut?:()=>Promise<unknown>}) {
  const {data,phase,issue,refreshing,refresh,reset}=useHubSnapshot()
+ const mutationInFlight=useRef(false)
+ const [zoneReady,setZoneReady]=useState(false)
  const [busy,setBusy]=useState(false),[error,setError]=useState(''),[toast,setToast]=useState(''),[importing,setImporting]=useState(false)
  const [messagesMeetingId,setMessagesMeetingId]=useState('')
  const [preparationProgram,setPreparationProgram]=useState<string|undefined>(undefined)
@@ -64,15 +69,15 @@ function HubHome({signOut}:{signOut?:()=>Promise<unknown>}) {
  const [assistantDraft,setAssistantDraft]=useState<AssistantDraft|null>(null)
  const [zone,setZone]=useState('America/La_Paz'),[section,setSection]=useState('Inicio'),[mobile,setMobile]=useState(false)
  const [selectedId,setSelectedId]=useState<string|null>(null),[reportFor,setReportFor]=useState<Meeting|null>(null),[editor,setEditor]=useState<Meeting|'new'|null>(null),[booked,setBooked]=useState<Meeting|null>(null),[reviewMeetingId,setReviewMeetingId]=useState(''),[messagesTab,setMessagesTab]=useState(''),[applicationsTab,setApplicationsTab]=useState('Todas')
- useEffect(()=>{try{const saved=localStorage.getItem('coded-zone');if(saved&&zoneChoices.some(([value])=>value===saved))setZone(saved)}catch{}},[])
- useEffect(()=>{try{localStorage.setItem('coded-zone',zone)}catch{}},[zone])
+ useEffect(()=>{try{const saved=localStorage.getItem('coded-zone');if(saved&&zoneChoices.some(([value])=>value===saved))setZone(saved)}catch{}finally{setZoneReady(true)}},[])
+ useEffect(()=>{if(zoneReady)try{localStorage.setItem('coded-zone',zone)}catch{}},[zone,zoneReady])
  useEffect(()=>{if(!toast)return;const timer=setTimeout(()=>setToast(''),4500);return()=>clearTimeout(timer)},[toast])
  useEffect(()=>{document.title=`${section==='Asistente'?'Ayuda':section} · CODED Stars Hub`},[section,data?.user.id])
  useEffect(()=>{if(!data?.user.id)return;const role=data.user.role;function syncRoute(){let destination=window.location.hash;try{const remembered=sessionStorage.getItem('coded-auth-destination');sessionStorage.removeItem('coded-auth-destination');if(!destination&&remembered)destination=remembered}catch{}const restored=readRoute(destination,role);const route=data?.user.reviewer&&restored.section==='Cuentas'?{section:'Inicio',view:''}:restored;setSection(route.section);setMessagesTab(route.section==='Mensajes'?route.view:'');setApplicationsTab(route.section==='Mis solicitudes'?(route.view||'Todas'):'Todas');setMobile(false);setSelectedId(null);setReportFor(null);setEditor(null);setBooked(null);setImporting(false);setAssistantDraft(null);setPreparationProgram(undefined);setPreparationMeetingId(undefined);setError('');window.history.replaceState(null,'',routeHash(route.section,route.view));window.scrollTo({top:0,behavior:'instant'})}syncRoute();window.addEventListener('hashchange',syncRoute);return()=>window.removeEventListener('hashchange',syncRoute)},[data?.user.id,data?.user.role])
  function navigate(next:string,view=''){if(next!=='Mensajes')setMessagesMeetingId('');if(next==='Mensajes')setMessagesTab(view);if(next==='Mis solicitudes')setApplicationsTab(view||'Todas');const hash=routeHash(next,view);if(window.location.hash!==hash)window.history.pushState(null,'',hash);setSection(next);setMobile(false);setError('');window.scrollTo({top:0,behavior:'instant'});requestAnimationFrame(()=>document.getElementById('main-content')?.focus({preventScroll:true}))}
  async function login(email:string,password:string){setBusy(true);setError('');try{const response=await fetch('/api/auth',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password})});const result=await response.json();if(!response.ok)throw new Error(result.error);await refresh()}catch(e){setError((e as Error).message)}finally{setBusy(false)}}
  async function logout(){try{if(data?.user.reviewer)await fetch('/api/review-session',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({role:'exit'})});reset();if(signOut){await signOut();return}const response=await fetch('/api/auth',{method:'DELETE'});if(!response.ok)throw new Error('No pudimos cerrar la sesión. Intenta de nuevo.');setPreparationProgram(undefined);setPreparationMeetingId(undefined);setAssistantDraft(null);setSelectedId(null);setReportFor(null);setEditor(null);navigate('Inicio')}catch{setError('No pudimos cerrar la sesión. Intenta de nuevo.')}}
- async function action(body:Record<string,unknown>,message:string){if(!navigator.onLine){setError('Necesitas conexión para guardar. Tu borrador sigue aquí.');return false}if(issue){setError('Actualiza la información antes de guardar cambios. Tu borrador sigue aquí.');void refresh();return false}setBusy(true);setError('');try{const accountAction=typeof body.action==='string'&&body.action.startsWith('account_');const payload=accountAction?{...body,action:String(body.action).slice(8)}:body;const response=await fetch(accountAction?'/api/accounts':'/api/action',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});const result=await response.json();if(!response.ok){if(response.status===409||(accountAction&&response.status===503))await refresh();if(response.status===401)reset();throw new Error(result.error)}await refresh();setToast(message);if(body.action==='report')setReportFor(null);return true}catch(e){setError(e instanceof TypeError||e instanceof SyntaxError?'No pudimos confirmar el guardado. Revisa tu conexión y actualiza antes de volver a enviar.':(e as Error).message);return false}finally{setBusy(false)}}
+ async function action(body:Record<string,unknown>,message:string){if(mutationInFlight.current)return false;if(!navigator.onLine){setError('Necesitas conexión para guardar. Tu borrador sigue aquí.');return false}if(issue){setError('Actualiza la información antes de guardar cambios. Tu borrador sigue aquí.');void refresh();return false}mutationInFlight.current=true;setBusy(true);setError('');try{const accountAction=typeof body.action==='string'&&body.action.startsWith('account_');const payload=accountAction?{...body,action:String(body.action).slice(8)}:body;const response=await fetch(accountAction?'/api/accounts':'/api/action',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});const result=await response.json();if(!response.ok){if(response.status===409||(accountAction&&response.status===503))await refresh();if(response.status===401)reset();throw new Error(result.error)}await refresh();setToast(message);if(body.action==='report')setReportFor(null);return true}catch(e){setError(e instanceof TypeError||e instanceof SyntaxError?'No pudimos confirmar el guardado. Revisa tu conexión y actualiza antes de volver a enviar.':(e as Error).message);return false}finally{mutationInFlight.current=false;setBusy(false)}}
  function handleAssistantAction(item:AssistantAction){
   if(item.kind==='navigate'){navigate(item.section,item.view);return}
   if(item.kind==='meeting'){const meeting=data?.meetings.find(m=>m.id===item.meetingId);if(meeting)openMeeting(meeting);return}

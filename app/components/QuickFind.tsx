@@ -13,7 +13,6 @@ const hints:Record<string,string>={Reuniones:'Agenda, colegios y horarios',Solic
 export default function QuickFind({destinations,meetings,zone,onNavigate,onMeeting}:{destinations:Destination[];meetings:Meeting[];zone:string;onNavigate:(section:string)=>void;onMeeting:(meeting:Meeting)=>void}){
  const [open,setOpen]=useState(false),[query,setQuery]=useState('')
  const resultsRef=useRef<HTMLDivElement>(null),inputRef=useRef<HTMLInputElement>(null)
- useEffect(()=>{if(open)inputRef.current?.focus()},[open])
  useEffect(()=>{
   function shortcut(event:KeyboardEvent){
    if((event.metaKey||event.ctrlKey)&&!event.altKey&&!event.repeat&&event.key.toLowerCase()==='k'&&!document.querySelector('dialog[open]')){event.preventDefault();setQuery('');setOpen(true)}
@@ -43,7 +42,7 @@ export default function QuickFind({destinations,meetings,zone,onNavigate,onMeeti
   <button className="hub-quick-find" aria-label="Buscar en el Hub" aria-haspopup="dialog" aria-keyshortcuts="Control+K Meta+K" title="Buscar en el Hub · Ctrl/⌘ K" onClick={()=>{setQuery('');setOpen(true)}}><Search size={17}/><span>Buscar en el Hub</span><kbd>⌘ / Ctrl K</kbd></button>
   {open&&<Dialog title="¿Qué estás buscando?" onClose={()=>setOpen(false)} className="quick-find-dialog">
    <form className="quick-find-form" onSubmit={event=>{event.preventDefault();if(sections[0])navigate(sections[0].label);else if(visibleMeetings[0])meeting(visibleMeetings[0])}} onKeyDown={move}>
-    <label className="quick-find-input"><Search size={21}/><input ref={inputRef} autoFocus type="search" autoComplete="off" aria-label="Buscar una reunión o herramienta" placeholder="Colegio, programa o herramienta…" maxLength={120} value={query} onChange={event=>setQuery(event.target.value)}/>{query&&<button type="button" aria-label="Limpiar búsqueda" onClick={()=>{setQuery('');inputRef.current?.focus()}}><X size={17}/></button>}</label>
+    <label className="quick-find-input"><Search size={21}/><input ref={inputRef} data-dialog-initial-focus type="search" autoComplete="off" aria-label="Buscar una reunión o herramienta" placeholder="Colegio, programa o herramienta…" maxLength={120} value={query} onChange={event=>setQuery(event.target.value)}/>{query&&<button type="button" aria-label="Limpiar búsqueda" onClick={()=>{setQuery('');inputRef.current?.focus()}}><X size={17}/></button>}</label>
     <div className="quick-find-results" ref={resultsRef}>
      {!!sections.length&&<section aria-label="Herramientas"><h3>{terms.length?'Herramientas':'Accesos rápidos'}</h3>{sections.map(({label,icon:Icon})=><button type="button" key={label} onClick={()=>navigate(label)}><span className="quick-result-icon"><Icon size={19}/></span><span><b>{labels[label]||label}</b><small>{hints[label]}</small></span><ArrowRight size={17}/></button>)}</section>}
      {!!visibleMeetings.length&&<section aria-label="Reuniones encontradas"><h3>{terms.length?'Reuniones':'En la agenda'}</h3>{visibleMeetings.map(item=><button type="button" key={item.id} onClick={()=>meeting(item)}><span className="quick-result-icon meeting"><CalendarDays size={19}/></span><span><b>{item.title.replace(/^JDP · /,'')}</b><small>{friendlyDay(item.startsAt,zone)} · {dateText(item.startsAt,zone,{hour:'2-digit',minute:'2-digit'})} · {meetingMeta(item)}</small></span><ArrowRight size={17}/></button>)}</section>}
