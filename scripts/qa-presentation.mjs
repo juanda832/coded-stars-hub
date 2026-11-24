@@ -86,6 +86,14 @@ try{
  for(const [name,selector] of [['Solicitudes','.application-manager'],['Seguimiento','.coordination-results'],['Estadísticas','.hub-insights'],['Cuentas','.managed-directory'],['Mi cuenta','.account-summary'],['Ayuda','.assistant-page']]){
   await navigate(name);await check('admin '+name,'!!document.querySelector('+JSON.stringify(selector)+')&&!document.querySelector(".section-loading")')
  }
+ await navigate('Ayuda')
+ await check('automatic help is clearly labelled','document.querySelector(".assistant-compose-note")?.textContent.includes("Respuestas automáticas")')
+ await check('no simulated typing controls','!document.querySelector(".assistant-pace,.assistant-reveal-controls")')
+ await run('document.querySelector("#assistant-input").focus()')
+ await send('Input.insertText',{text:'¿Qué reuniones hay?'})
+ await check('question entered','document.querySelector("#assistant-input")?.value.includes("reuniones")')
+ await run('document.querySelector(".assistant-composer>button").click()')
+ await check('complete answer and actions visible','!!document.querySelector(".assistant-message.assistant .assistant-text p")?.textContent&&!!document.querySelector(".assistant-message.assistant .assistant-message-tools")&&!document.querySelector(".assistant-text-cursor")')
  await navigate('Solicitudes')
  await check('criteria editor available','!!document.querySelector(".criteria-editor textarea")')
  await run('(()=>{document.querySelector(".criteria-block").open=true;const e=document.querySelector(".criteria-editor textarea");e.focus();e.select();return true})()')

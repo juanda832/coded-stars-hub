@@ -11,7 +11,7 @@ export default function PersonalAccess({onRetry,signInPage=false}:{onRetry:()=>v
  return <div className="access-page access-review">
   <section className="access-story"><Brand/><div className="access-story-copy"><h1>Tu espacio<br/>en CODED.</h1><p>Reuniones, solicitudes y mensajes del equipo.</p><CommunityArtwork className="access-community-art" eager/></div><p className="access-footnote">{teamWorkspaceEnabled()?'CODED Stars Hub · Equipo':'CODED Stars Hub · Beta con datos de prueba'}</p></section>
   <section className="access-form-side"><div className="access-card personal-access-card"><div className="access-mobile-brand"><Brand/></div>
-   {!isLoaded?<p role="status">Preparando tu acceso…</p>:isSignedIn?<>
+   {!isLoaded?<p role="status">Comprobando tu acceso…</p>:isSignedIn?<>
     <h2>Revisa tu acceso</h2><p>Iniciaste sesión, pero no pudimos vincularla con un perfil habilitado del Hub.</p><div className="access-help-panel" role="note"><b>Qué puedes comprobar</b><p>Usa el correo registrado para tu cuenta y completa su verificación si el servicio te la solicita. Si el problema continúa, envía a coordinación una captura del mensaje de error, sin mostrar códigos de acceso.</p></div>
     <button className="primary full" onClick={onRetry}>Volver a comprobar</button>
     <button className="secondary full" onClick={()=>void signOut({redirectUrl:'/'})}>Usar otra cuenta</button>

@@ -44,8 +44,8 @@ export default function AccountManager({data,busy,error,action,onClearError}:{da
  const startCreate=()=>{onClearError();setCreating(true)}
  async function copyAccess(id:string){setCopyError('');try{await navigator.clipboard.writeText(window.location.origin+'/');setCopied(id)}catch{setCopyError('No pudimos copiar el enlace. Puedes copiar la dirección de esta página desde el navegador.')}}
  return <>
-  <div className="page-heading"><div><h1>Cuentas</h1><p>Un acceso propio para cada persona.</p></div><button className="primary" onClick={startCreate} disabled={busy}><Plus size={18}/> Nuevo acceso</button></div>
-  <section className="account-management-intro"><div className="account-intro-icon"><Users size={25}/></div><div><h2>Tu equipo, en un mismo lugar</h2><p>Prepara cuentas de Stars y anfitriones. Cada persona verá las herramientas que le corresponden.</p></div><span><LockKeyhole size={15}/> Solo administración</span></section>
+  <div className="page-heading"><div><h1>Cuentas</h1><p>Gestiona los accesos del equipo.</p></div><button className="primary" onClick={startCreate} disabled={busy}><Plus size={18}/> Nuevo acceso</button></div>
+  <section className="account-management-intro"><div className="account-intro-icon"><Users size={25}/></div><div><h2>Accesos del equipo</h2><p>Crea y administra cuentas de Stars y anfitriones según su función.</p></div><span><LockKeyhole size={15}/> Solo administración</span></section>
   {error&&!creating&&!changing&&<p className="error" role="alert">{error}</p>}
   <section className="managed-directory" aria-label="Accesos de Stars y anfitriones">
    <div className="directory-heading"><h2>Stars y anfitriones <span>{accounts.length}</span></h2><p>{policy.allowReal?'Los correos de este directorio son privados.':'La beta admite altas con datos ficticios @example.com.'}</p></div>
